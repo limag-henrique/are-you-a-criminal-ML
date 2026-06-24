@@ -1,0 +1,17 @@
+{
+  "source": "https://www.dea.gov/fugitives/all?page=3",
+  "robots_checked": "https://www.dea.gov/robots.txt",
+  "reported_total_profiles": 541,
+  "unique_profiles_found": 541,
+  "profile_image_references": 536,
+  "images_downloaded_this_run": 0,
+  "total_image_files_on_disk": 525,
+  "unique_image_urls_seen": 525,
+  "duplicate_images_skipped_this_run": 0,
+  "duplicate_image_references_total": 11,
+  "profiles_without_images": 5,
+  "failures_or_missing_images": 5,
+  "output_dir": "C:\\Users\\marco\\OneDrive\\Área de Trabalho\\are-you-a-criminal-ML-main\\DEA",
+  "rate_limit_ms": 1200,
+  "completed_at": "2026-06-24T21:50:04.372Z"
+}
