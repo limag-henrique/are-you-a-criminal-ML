@@ -1,0 +1,25 @@
+{
+  "source": "https://www.disquedenuncia.org.br/novo-procurados",
+  "source_site": "Disque Denuncia RJ",
+  "listing_records_discovered": 189,
+  "selected_records": 189,
+  "rate_limits": {
+    "detail_delay_seconds": 1.5,
+    "image_delay_seconds": 0.25
+  },
+  "user_agent": "Mozilla/5.0 (compatible; CodexResearchBot/1.0; +https://www.disquedenuncia.org.br/; authorized institutional research)",
+  "robots": {
+    "robots_url": "https://www.disquedenuncia.org.br/robots.txt",
+    "checked_at": "2026-06-24T23:03:40+00:00",
+    "status": 404,
+    "allowed": true,
+    "note": "robots.txt not published; proceeding with conservative rate limits."
+  },
+  "data_minimization": {
+    "sensitive_identifiers_redacted_by_default": true,
+    "sensitive_identifier_flag": "--include-sensitive-identifiers",
+    "posters_downloaded_by_default": false,
+    "poster_download_flag": "--include-posters"
+  },
+  "created_at": "2026-06-24T23:15:47+00:00"
+}
