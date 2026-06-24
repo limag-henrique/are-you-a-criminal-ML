@@ -1,0 +1,3355 @@
+{
+  "2026-26092": {
+    "entity_id": "2026/26092",
+    "name": "DORJI",
+    "forename": "RINCHEN",
+    "nationalities": [
+      "BT"
+    ],
+    "date_of_birth": "1991/02/02",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-26092/images/63874495",
+        "file": "DORJI_RINCHEN_2026-26092.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-26092",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-26092/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-26092/images/63874495"
+    }
+  },
+  "2026-14394": {
+    "entity_id": "2026/14394",
+    "name": "NASIB",
+    "forename": "-",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "2006/06/17",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-14394/images/63827056",
+        "file": "NASIB_2026-14394.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-14394",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-14394/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-14394/images/63827056"
+    }
+  },
+  "2026-42759": {
+    "entity_id": "2026/42759",
+    "name": "TANDJIGORA",
+    "forename": "NOUROU",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "1988/11/13",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-42759/images/63943069",
+        "file": "TANDJIGORA_NOUROU_2026-42759.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-42759",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-42759/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-42759/images/63943069"
+    }
+  },
+  "2026-40056": {
+    "entity_id": "2026/40056",
+    "name": "AGUSTYA",
+    "forename": "LENY",
+    "nationalities": [
+      "ID"
+    ],
+    "date_of_birth": "2000/08/08",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-40056/images/63931782",
+        "file": "AGUSTYA_LENY_2026-40056.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-40056",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-40056/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-40056/images/63931782"
+    }
+  },
+  "2026-41615": {
+    "entity_id": "2026/41615",
+    "name": "CASTILLO",
+    "forename": "MANUEL",
+    "nationalities": [
+      "BZ"
+    ],
+    "date_of_birth": "1976/12/26",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-41615/images/63938488",
+        "file": "CASTILLO_MANUEL_2026-41615.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-41615",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-41615/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-41615/images/63938488"
+    }
+  },
+  "2026-26082": {
+    "entity_id": "2026/26082",
+    "name": "DORJI",
+    "forename": "THINLEY",
+    "nationalities": [
+      "BT"
+    ],
+    "date_of_birth": "1977/11/10",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-26082/images/63874469",
+        "file": "DORJI_THINLEY_2026-26082.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-26082",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-26082/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-26082/images/63874469"
+    }
+  },
+  "2026-41543": {
+    "entity_id": "2026/41543",
+    "name": "MIROSHNIK",
+    "forename": "ANDREI",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1985/04/07",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-41543/images/63938057",
+        "file": "MIROSHNIK_ANDREI_2026-41543.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-41543",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-41543/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-41543/images/63938057"
+    }
+  },
+  "2026-41647": {
+    "entity_id": "2026/41647",
+    "name": "ESPINOS",
+    "forename": "JORDAN",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "2003/10/29",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-41647/images/63938572",
+        "file": "ESPINOS_JORDAN_2026-41647.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-41647",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-41647/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-41647/images/63938572"
+    }
+  },
+  "2026-12161": {
+    "entity_id": "2026/12161",
+    "name": "IRAKOZE",
+    "forename": "CHRIST CARLIE",
+    "nationalities": [
+      "SE"
+    ],
+    "date_of_birth": "1999/11/10",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-12161/images/63817235",
+        "file": "IRAKOZE_CHRIST_CARLIE_2026-12161.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-12161",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-12161/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-12161/images/63817235"
+    }
+  },
+  "2026-41623": {
+    "entity_id": "2026/41623",
+    "name": "ESPINOS",
+    "forename": "JO",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "1996/11/08",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-41623/images/63938541",
+        "file": "ESPINOS_JO_2026-41623.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-41623",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-41623/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-41623/images/63938541"
+    }
+  },
+  "2025-35204": {
+    "entity_id": "2025/35204",
+    "name": "KOCEVSKI",
+    "forename": "DEJAN",
+    "nationalities": [
+      "MK"
+    ],
+    "date_of_birth": "1975/12/09",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-35204/images/63493284",
+        "file": "KOCEVSKI_DEJAN_2025-35204.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-35204",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-35204/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-35204/images/63493284"
+    }
+  },
+  "2024-14473": {
+    "entity_id": "2024/14473",
+    "name": "SINGH",
+    "forename": "PARGAT",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1998/09/15",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2024-14473/images/63012737",
+        "file": "SINGH_PARGAT_2024-14473.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2024-14473",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2024-14473/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2024-14473/images/63012737"
+    }
+  },
+  "2026-40020": {
+    "entity_id": "2026/40020",
+    "name": "MASUDA",
+    "forename": "KAZUHIKO",
+    "nationalities": [
+      "JP"
+    ],
+    "date_of_birth": "1978/05/18",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-40020/images/63931507",
+        "file": "MASUDA_KAZUHIKO_2026-40020.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-40020",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-40020/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-40020/images/63931507"
+    }
+  },
+  "2026-39418": {
+    "entity_id": "2026/39418",
+    "name": "MIARD",
+    "forename": "XAVIER BARTHELEMY",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "1992/08/24",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-39418/images/63928875",
+        "file": "MIARD_XAVIER_BARTHELEMY_2026-39418.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-39418",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-39418/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-39418/images/63928875"
+    }
+  },
+  "2026-27237": {
+    "entity_id": "2026/27237",
+    "name": "SINGH",
+    "forename": "PARDEEP",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1989/05/10",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-27237/images/63880949",
+        "file": "SINGH_PARDEEP_2026-27237.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-27237",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-27237/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-27237/images/63880949"
+    }
+  },
+  "2025-56036": {
+    "entity_id": "2025/56036",
+    "name": "AL FAHMI",
+    "forename": "MUHAMMAD LUTFI",
+    "nationalities": [
+      "ID"
+    ],
+    "date_of_birth": "1987/12/21",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-56036/images/63575929",
+        "file": "AL_FAHMI_MUHAMMAD_LUTFI_2025-56036.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-56036",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-56036/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-56036/images/63575929"
+    }
+  },
+  "2025-24980": {
+    "entity_id": "2025/24980",
+    "name": "ESPONDA MARTÍNEZ",
+    "forename": "JUAN CARLOS",
+    "nationalities": [
+      "UY"
+    ],
+    "date_of_birth": "1957/02/26",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-24980/images/63439197",
+        "file": "ESPONDA_MARTÍNEZ_JUAN_CARLOS_2025-24980.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-24980",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-24980/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-24980/images/63439197"
+    }
+  },
+  "2026-31861": {
+    "entity_id": "2026/31861",
+    "name": "MUKHLYNINA",
+    "forename": "ALENA",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1988/10/29",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-31861/images/63899227",
+        "file": "MUKHLYNINA_ALENA_2026-31861.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-31861",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-31861/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-31861/images/63899227"
+    }
+  },
+  "2026-38308": {
+    "entity_id": "2026/38308",
+    "name": "SOUDANI",
+    "forename": "TOUFIK",
+    "nationalities": [
+      "FR",
+      "TN"
+    ],
+    "date_of_birth": "1973/07/22",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-38308/images/63929485",
+        "file": "SOUDANI_TOUFIK_2026-38308.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-38308",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-38308/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-38308/images/63929485"
+    }
+  },
+  "2025-24496": {
+    "entity_id": "2025/24496",
+    "name": "PAGOLA  ALZAMORA",
+    "forename": "JUAN MANUEL",
+    "nationalities": [
+      "UY"
+    ],
+    "date_of_birth": "1951/03/05",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-24496/images/63439186",
+        "file": "PAGOLA_ALZAMORA_JUAN_MANUEL_2025-24496.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-24496",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-24496/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-24496/images/63439186"
+    }
+  },
+  "2026-36507": {
+    "entity_id": "2026/36507",
+    "name": "MOREIRA DE SOUZA",
+    "forename": "MIRIAN",
+    "nationalities": [
+      "BR"
+    ],
+    "date_of_birth": "1998/05/15",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-36507/images/63917835",
+        "file": "MOREIRA_DE_SOUZA_MIRIAN_2026-36507.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-36507",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-36507/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-36507/images/63917835"
+    }
+  },
+  "2024-75776": {
+    "entity_id": "2024/75776",
+    "name": "NUREDINI",
+    "forename": "SENAFI",
+    "nationalities": [
+      "MK"
+    ],
+    "date_of_birth": "1992/12/03",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2024-75776/images/63259641",
+        "file": "NUREDINI_SENAFI_2024-75776.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2024-75776",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2024-75776/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2024-75776/images/63259641"
+    }
+  },
+  "2026-12614": {
+    "entity_id": "2026/12614",
+    "name": "NEDIKJ",
+    "forename": "SEVASTIJAN",
+    "nationalities": [
+      "MK"
+    ],
+    "date_of_birth": "1997/10/24",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-12614/images/63819047",
+        "file": "NEDIKJ_SEVASTIJAN_2026-12614.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-12614",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-12614/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-12614/images/63819047"
+    }
+  },
+  "2026-35807": {
+    "entity_id": "2026/35807",
+    "name": "REYES",
+    "forename": "JULIO",
+    "nationalities": [
+      "BZ"
+    ],
+    "date_of_birth": "1978/10/21",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-35807/images/63914726",
+        "file": "REYES_JULIO_2026-35807.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-35807",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-35807/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-35807/images/63914726"
+    }
+  },
+  "2026-35614": {
+    "entity_id": "2026/35614",
+    "name": "PIATROU",
+    "forename": "ERYK",
+    "nationalities": [
+      "BY"
+    ],
+    "date_of_birth": "1992/11/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-35614/images/63913693",
+        "file": "PIATROU_ERYK_2026-35614.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-35614",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-35614/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-35614/images/63913693"
+    }
+  },
+  "2026-30493": {
+    "entity_id": "2026/30493",
+    "name": "MWEPU MUKENA",
+    "forename": "BENI",
+    "nationalities": [
+      "CD"
+    ],
+    "date_of_birth": "2000/12/09",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-30493/images/63914366",
+        "file": "MWEPU_MUKENA_BENI_2026-30493.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-30493",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-30493/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-30493/images/63914366"
+    }
+  },
+  "2026-34720": {
+    "entity_id": "2026/34720",
+    "name": "BONINO",
+    "forename": "MATTÉO YVON JEAN CHARLES",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "2002/01/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-34720/images/63910078",
+        "file": "BONINO_MATTÉO_YVON_JEAN_CHARLES_2026-34720.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-34720",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-34720/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-34720/images/63910078"
+    }
+  },
+  "2026-34722": {
+    "entity_id": "2026/34722",
+    "name": "LANG KUSMIERSKA",
+    "forename": "KYLIAN",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "2006/09/10",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-34722/images/63911603",
+        "file": "LANG_KUSMIERSKA_KYLIAN_2026-34722.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-34722",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-34722/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-34722/images/63911603"
+    }
+  },
+  "2026-30151": {
+    "entity_id": "2026/30151",
+    "name": "LIMA SANT ANA",
+    "forename": "DARLAN BRUNO",
+    "nationalities": [
+      "BR"
+    ],
+    "date_of_birth": "1990/07/21",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-30151/images/63891572",
+        "file": "LIMA_SANT_ANA_DARLAN_BRUNO_2026-30151.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-30151",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-30151/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-30151/images/63891572"
+    }
+  },
+  "2026-32689": {
+    "entity_id": "2026/32689",
+    "name": "FALCK",
+    "forename": "JOSEPH",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "1967/10/02",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-32689/images/63902371",
+        "file": "FALCK_JOSEPH_2026-32689.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-32689",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-32689/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-32689/images/63902371"
+    }
+  },
+  "2026-30107": {
+    "entity_id": "2026/30107",
+    "name": "OLIVEIRA DAHER SANT ANA",
+    "forename": "KALYL HYORRAN",
+    "nationalities": [
+      "BR"
+    ],
+    "date_of_birth": "1997/04/15",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-30107/images/63891400",
+        "file": "OLIVEIRA_DAHER_SANT_ANA_KALYL_HYORRAN_2026-30107.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-30107",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-30107/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-30107/images/63891400"
+    }
+  },
+  "2026-32624": {
+    "entity_id": "2026/32624",
+    "name": "TOSHTEMIROV",
+    "forename": "AZIZBEK",
+    "nationalities": [
+      "UZ"
+    ],
+    "date_of_birth": "1990/05/15",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-32624/images/63902152",
+        "file": "TOSHTEMIROV_AZIZBEK_2026-32624.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-32624",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-32624/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-32624/images/63902152"
+    }
+  },
+  "2025-6928": {
+    "entity_id": "2025/6928",
+    "name": "SINGH",
+    "forename": "HARPREET",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1993/01/08",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-6928/images/63354768",
+        "file": "SINGH_HARPREET_2025-6928.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-6928",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-6928/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-6928/images/63354768"
+    }
+  },
+  "2026-31875": {
+    "entity_id": "2026/31875",
+    "name": "TSUROEV",
+    "forename": "MOVLAT",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1991/09/24",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-31875/images/63899254",
+        "file": "TSUROEV_MOVLAT_2026-31875.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-31875",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-31875/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-31875/images/63899254"
+    }
+  },
+  "2026-4118": {
+    "entity_id": "2026/4118",
+    "name": "SAHU",
+    "forename": "SOURBH",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "2001/06/30",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-4118/images/63807338",
+        "file": "SAHU_SOURBH_2026-4118.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-4118",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-4118/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-4118/images/63807338"
+    }
+  },
+  "2024-21087": {
+    "entity_id": "2024/21087",
+    "name": "SINGH",
+    "forename": "JAKEPAL",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1992/08/15",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2024-21087/images/63034620",
+        "file": "SINGH_JAKEPAL_2024-21087.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2024-21087",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2024-21087/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2024-21087/images/63034620"
+    }
+  },
+  "2026-18485": {
+    "entity_id": "2026/18485",
+    "name": "TALUKDER",
+    "forename": "AL HAJ MD SHAFIQUL ISLAM",
+    "nationalities": [
+      "BD"
+    ],
+    "date_of_birth": "1952/06/26",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-18485/images/63853408",
+        "file": "TALUKDER_AL_HAJ_MD_SHAFIQUL_ISLAM_2026-18485.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-18485",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-18485/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-18485/images/63853408"
+    }
+  },
+  "2026-30811": {
+    "entity_id": "2026/30811",
+    "name": "TSUROEV",
+    "forename": "YUSUP",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1990/10/28",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-30811/images/63894986",
+        "file": "TSUROEV_YUSUP_2026-30811.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-30811",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-30811/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-30811/images/63894986"
+    }
+  },
+  "2026-27899": {
+    "entity_id": "2026/27899",
+    "name": "CLARA CASTILLO",
+    "forename": "JEFFREY ESTUARDO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1987/02/20",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-27899/images/63882128",
+        "file": "CLARA_CASTILLO_JEFFREY_ESTUARDO_2026-27899.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-27899",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-27899/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-27899/images/63882128"
+    }
+  },
+  "2026-26755": {
+    "entity_id": "2026/26755",
+    "name": "GOMEZ",
+    "forename": "KENNER MALONE",
+    "nationalities": [
+      "BZ"
+    ],
+    "date_of_birth": "1993/09/11",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-26755/images/63877328",
+        "file": "GOMEZ_KENNER_MALONE_2026-26755.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-26755",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-26755/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-26755/images/63877328"
+    }
+  },
+  "2026-3236": {
+    "entity_id": "2026/3236",
+    "name": "SULTANLY",
+    "forename": "MAMED",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1990/06/18",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-3236/images/63780110",
+        "file": "SULTANLY_MAMED_2026-3236.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-3236",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-3236/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-3236/images/63780110"
+    }
+  },
+  "2025-97751": {
+    "entity_id": "2025/97751",
+    "name": "AMAN",
+    "forename": "-",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1994/12/08",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-97751/images/63760254",
+        "file": "AMAN_2025-97751.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-97751",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-97751/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-97751/images/63760254"
+    }
+  },
+  "2026-26382": {
+    "entity_id": "2026/26382",
+    "name": "SALLAMI",
+    "forename": "AZIZ",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "1993/08/21",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-26382/images/63875791",
+        "file": "SALLAMI_AZIZ_2026-26382.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-26382",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-26382/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-26382/images/63875791"
+    }
+  },
+  "2025-78816": {
+    "entity_id": "2025/78816",
+    "name": "SINGH",
+    "forename": "IQBALPREET",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1996/06/20",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-78816/images/63669119",
+        "file": "SINGH_IQBALPREET_2025-78816.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-78816",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-78816/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-78816/images/63669119"
+    }
+  },
+  "2025-99207": {
+    "entity_id": "2025/99207",
+    "name": "JAISWAL",
+    "forename": "SHUBHAM",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1994/12/31",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-99207/images/63753135",
+        "file": "JAISWAL_SHUBHAM_2025-99207.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-99207",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-99207/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-99207/images/63753135"
+    }
+  },
+  "2025-96607": {
+    "entity_id": "2025/96607",
+    "name": "SINGH",
+    "forename": "HARPREET",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1963/06/15",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-96607/images/63741499",
+        "file": "SINGH_HARPREET_2025-96607.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-96607",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-96607/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-96607/images/63741499"
+    }
+  },
+  "2026-10606": {
+    "entity_id": "2026/10606",
+    "name": "WACHEKOSWSKI",
+    "forename": "BRUNO ALENCAR",
+    "nationalities": [
+      "BR"
+    ],
+    "date_of_birth": "1996/07/14",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-10606/images/63811819",
+        "file": "WACHEKOSWSKI_BRUNO_ALENCAR_2026-10606.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-10606",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-10606/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-10606/images/63811819"
+    }
+  },
+  "2026-22802": {
+    "entity_id": "2026/22802",
+    "name": "AKHMEDOV",
+    "forename": "DILSHOD",
+    "nationalities": [
+      "UZ"
+    ],
+    "date_of_birth": "1972/08/27",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-22802/images/63861271",
+        "file": "AKHMEDOV_DILSHOD_2026-22802.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-22802",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-22802/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-22802/images/63861271"
+    }
+  },
+  "2026-11474": {
+    "entity_id": "2026/11474",
+    "name": "KUSHALNAGAR SULAIMAN",
+    "forename": "SHAMEER",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1988/09/15",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-11474/images/63814101",
+        "file": "KUSHALNAGAR_SULAIMAN_SHAMEER_2026-11474.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-11474",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-11474/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-11474/images/63814101"
+    }
+  },
+  "2026-21762": {
+    "entity_id": "2026/21762",
+    "name": "LAFORCE",
+    "forename": "ZIEL GULBERT",
+    "nationalities": [
+      "US"
+    ],
+    "date_of_birth": "1987/12/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-21762/images/63856357",
+        "file": "LAFORCE_ZIEL_GULBERT_2026-21762.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-21762",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-21762/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-21762/images/63856357"
+    }
+  },
+  "2026-22632": {
+    "entity_id": "2026/22632",
+    "name": "TIUL MACZ",
+    "forename": "JOSÉ RAMIRO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1986/04/19",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-22632/images/63862879",
+        "file": "TIUL_MACZ_JOSÉ_RAMIRO_2026-22632.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-22632",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-22632/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-22632/images/63862879"
+    }
+  },
+  "2026-22040": {
+    "entity_id": "2026/22040",
+    "name": "RIVAS CASTILLO",
+    "forename": "ERASMO NAIM",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1978/06/03",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-22040/images/63858019",
+        "file": "RIVAS_CASTILLO_ERASMO_NAIM_2026-22040.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-22040",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-22040/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-22040/images/63858019"
+    }
+  },
+  "2003-36412": {
+    "entity_id": "2003/36412",
+    "name": "JOSA",
+    "forename": "RODION",
+    "nationalities": [
+      "MD"
+    ],
+    "date_of_birth": "1978/12/23",
+    "images": [],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2003-36412",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2003-36412/images",
+      "thumbnail": null
+    }
+  },
+  "2026-22032": {
+    "entity_id": "2026/22032",
+    "name": "POP SACUL",
+    "forename": "JUAN",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1986/09/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-22032/images/63858008",
+        "file": "POP_SACUL_JUAN_2026-22032.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-22032",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-22032/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-22032/images/63858008"
+    }
+  },
+  "2026-20532": {
+    "entity_id": "2026/20532",
+    "name": "BOUAFIA",
+    "forename": "HOSAYN",
+    "nationalities": [
+      "DZ"
+    ],
+    "date_of_birth": "1999/03/14",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-20532/images/63850936",
+        "file": "BOUAFIA_HOSAYN_2026-20532.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-20532",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-20532/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-20532/images/63850936"
+    }
+  },
+  "2026-20470": {
+    "entity_id": "2026/20470",
+    "name": "WANG",
+    "forename": "SHUAIBO",
+    "nationalities": [
+      "CN"
+    ],
+    "date_of_birth": "1990/01/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-20470/images/63870886",
+        "file": "WANG_SHUAIBO_2026-20470.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-20470",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-20470/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-20470/images/63870886"
+    }
+  },
+  "2011-55087": {
+    "entity_id": "2011/55087",
+    "name": "BODRUG",
+    "forename": "VITALIE",
+    "nationalities": [
+      "MD"
+    ],
+    "date_of_birth": "1979/05/09",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2011-55087/images/56073149",
+        "file": "BODRUG_VITALIE_2011-55087.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2011-55087",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2011-55087/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2011-55087/images/56073149"
+    }
+  },
+  "2026-15462": {
+    "entity_id": "2026/15462",
+    "name": "MOISEEV",
+    "forename": "SERGEI",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1986/10/10",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-15462/images/63830312",
+        "file": "MOISEEV_SERGEI_2026-15462.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-15462",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-15462/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-15462/images/63830312"
+    }
+  },
+  "2026-13563": {
+    "entity_id": "2026/13563",
+    "name": "MUHAMMED KUNJU",
+    "forename": "FAISAL",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1980/12/25",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-13563/images/63824071",
+        "file": "MUHAMMED_KUNJU_FAISAL_2026-13563.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-13563",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-13563/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-13563/images/63824071"
+    }
+  },
+  "2026-15452": {
+    "entity_id": "2026/15452",
+    "name": "MELNYK",
+    "forename": "ROMAN",
+    "nationalities": [
+      "UA"
+    ],
+    "date_of_birth": "1998/02/04",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-15452/images/63830291",
+        "file": "MELNYK_ROMAN_2026-15452.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-15452",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-15452/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-15452/images/63830291"
+    }
+  },
+  "2026-15460": {
+    "entity_id": "2026/15460",
+    "name": "HALUSHKO",
+    "forename": "DENYS",
+    "nationalities": [
+      "UA"
+    ],
+    "date_of_birth": "1991/09/20",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-15460/images/63830301",
+        "file": "HALUSHKO_DENYS_2026-15460.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-15460",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-15460/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-15460/images/63830301"
+    }
+  },
+  "2026-15454": {
+    "entity_id": "2026/15454",
+    "name": "PETRIK",
+    "forename": "NIKOLAI",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1997/03/17",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-15454/images/63830297",
+        "file": "PETRIK_NIKOLAI_2026-15454.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-15454",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-15454/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-15454/images/63830297"
+    }
+  },
+  "2025-102375": {
+    "entity_id": "2025/102375",
+    "name": "PROKOPISHYN",
+    "forename": "YURII",
+    "nationalities": [
+      "UA"
+    ],
+    "date_of_birth": "1994/04/26",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-102375/images/63765753",
+        "file": "PROKOPISHYN_YURII_2025-102375.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-102375",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-102375/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-102375/images/63765753"
+    }
+  },
+  "2026-15466": {
+    "entity_id": "2026/15466",
+    "name": "AKHANOV",
+    "forename": "VLADISLAV",
+    "nationalities": [
+      "KZ"
+    ],
+    "date_of_birth": "1998/04/29",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-15466/images/63830330",
+        "file": "AKHANOV_VLADISLAV_2026-15466.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-15466",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-15466/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-15466/images/63830330"
+    }
+  },
+  "2026-15464": {
+    "entity_id": "2026/15464",
+    "name": "NEMESH",
+    "forename": "VASYL",
+    "nationalities": [
+      "UA"
+    ],
+    "date_of_birth": "1983/05/05",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-15464/images/63830321",
+        "file": "NEMESH_VASYL_2026-15464.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-15464",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-15464/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-15464/images/63830321"
+    }
+  },
+  "2026-15322": {
+    "entity_id": "2026/15322",
+    "name": "TOURE",
+    "forename": "BEMBA",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "1990/12/28",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-15322/images/63829810",
+        "file": "TOURE_BEMBA_2026-15322.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-15322",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-15322/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-15322/images/63829810"
+    }
+  },
+  "2025-68228": {
+    "entity_id": "2025/68228",
+    "name": "SINGH",
+    "forename": "MAGANDEEP",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1997/02/16",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-68228/images/63626999",
+        "file": "SINGH_MAGANDEEP_2025-68228.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-68228",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-68228/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-68228/images/63626999"
+    }
+  },
+  "2026-10847": {
+    "entity_id": "2026/10847",
+    "name": "SAMSHUDDIN",
+    "forename": "",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1990/02/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-10847/images/63811265",
+        "file": "SAMSHUDDIN_2026-10847.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-10847",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-10847/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-10847/images/63811265"
+    }
+  },
+  "2026-16277": {
+    "entity_id": "2026/16277",
+    "name": "ABDUL HAMEED",
+    "forename": "IZYAN",
+    "nationalities": [
+      "MV"
+    ],
+    "date_of_birth": "1987/09/25",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-16277/images/63833767",
+        "file": "ABDUL_HAMEED_IZYAN_2026-16277.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-16277",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-16277/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-16277/images/63833767"
+    }
+  },
+  "2026-13401": {
+    "entity_id": "2026/13401",
+    "name": "PAULINO DISLA",
+    "forename": "GILBERTO ANTONIO",
+    "nationalities": [
+      "DO"
+    ],
+    "date_of_birth": "1953/11/28",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-13401/images/63822150",
+        "file": "PAULINO_DISLA_GILBERTO_ANTONIO_2026-13401.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-13401",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-13401/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-13401/images/63822150"
+    }
+  },
+  "2026-12183": {
+    "entity_id": "2026/12183",
+    "name": "ARAUJO",
+    "forename": "CARLOS DAMIAN",
+    "nationalities": [
+      "UY"
+    ],
+    "date_of_birth": "1973/11/29",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-12183/images/63823459",
+        "file": "ARAUJO_CARLOS_DAMIAN_2026-12183.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-12183",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-12183/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-12183/images/63823459"
+    }
+  },
+  "2026-13403": {
+    "entity_id": "2026/13403",
+    "name": "TOURIS RODRIGUEZ",
+    "forename": "JONATHAN MANUEL",
+    "nationalities": null,
+    "date_of_birth": "2000/09/27",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-13403/images/63822160",
+        "file": "TOURIS_RODRIGUEZ_JONATHAN_MANUEL_2026-13403.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-13403",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-13403/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-13403/images/63822160"
+    }
+  },
+  "2026-12636": {
+    "entity_id": "2026/12636",
+    "name": "PEREZ ALVARADO",
+    "forename": "ANICETO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1985/10/21",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-12636/images/63819101",
+        "file": "PEREZ_ALVARADO_ANICETO_2026-12636.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-12636",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-12636/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-12636/images/63819101"
+    }
+  },
+  "2026-10267": {
+    "entity_id": "2026/10267",
+    "name": "AJANEL CAVINAL",
+    "forename": "BRAYAN JERSON",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "2004/08/05",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-10267/images/63808914",
+        "file": "AJANEL_CAVINAL_BRAYAN_JERSON_2026-10267.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-10267",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-10267/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-10267/images/63808914"
+    }
+  },
+  "2025-16847": {
+    "entity_id": "2025/16847",
+    "name": "SYLLA",
+    "forename": "ALASSANE",
+    "nationalities": [
+      "CI"
+    ],
+    "date_of_birth": "1980/10/07",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-16847/images/63392538",
+        "file": "SYLLA_ALASSANE_2025-16847.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-16847",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-16847/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-16847/images/63392538"
+    }
+  },
+  "2026-12664": {
+    "entity_id": "2026/12664",
+    "name": "CHAVEZ",
+    "forename": "JOSE ANTONIO",
+    "nationalities": [
+      "SV"
+    ],
+    "date_of_birth": "1967/03/02",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-12664/images/63819235",
+        "file": "CHAVEZ_JOSE_ANTONIO_2026-12664.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-12664",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-12664/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-12664/images/63819235"
+    }
+  },
+  "2026-8243": {
+    "entity_id": "2026/8243",
+    "name": "SANTANA DE PAULA",
+    "forename": "LEANDRO",
+    "nationalities": [
+      "BR"
+    ],
+    "date_of_birth": "1982/05/31",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-8243/images/63801382",
+        "file": "SANTANA_DE_PAULA_LEANDRO_2026-8243.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-8243",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-8243/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-8243/images/63801382"
+    }
+  },
+  "2026-6812": {
+    "entity_id": "2026/6812",
+    "name": "BARYS",
+    "forename": "MICHAL ZBIGNIEW",
+    "nationalities": [
+      "PL"
+    ],
+    "date_of_birth": "1978/10/22",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-6812/images/63795189",
+        "file": "BARYS_MICHAL_ZBIGNIEW_2026-6812.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-6812",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-6812/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-6812/images/63795189"
+    }
+  },
+  "2025-96936": {
+    "entity_id": "2025/96936",
+    "name": "SINGH",
+    "forename": "AMRITPAL",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1998/04/14",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-96936/images/63760262",
+        "file": "SINGH_AMRITPAL_2025-96936.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-96936",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-96936/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-96936/images/63760262"
+    }
+  },
+  "2024-67821": {
+    "entity_id": "2024/67821",
+    "name": "RIOS REVOLLO",
+    "forename": "JOSUE YAVEL",
+    "nationalities": [
+      "BO"
+    ],
+    "date_of_birth": "1985/01/18",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2024-67821/images/63228299",
+        "file": "RIOS_REVOLLO_JOSUE_YAVEL_2024-67821.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2024-67821",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2024-67821/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2024-67821/images/63228299"
+    }
+  },
+  "2026-7397": {
+    "entity_id": "2026/7397",
+    "name": "QUIJADA MOJICA",
+    "forename": "ALEXANDER JAVIER",
+    "nationalities": [
+      "PA"
+    ],
+    "date_of_birth": "2000/04/24",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-7397/images/63852569",
+        "file": "QUIJADA_MOJICA_ALEXANDER_JAVIER_2026-7397.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-7397",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-7397/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-7397/images/63852569"
+    }
+  },
+  "2025-102139": {
+    "entity_id": "2025/102139",
+    "name": "KERAP",
+    "forename": "SHESEE MONICHA ELSHADAY",
+    "nationalities": [
+      "ID"
+    ],
+    "date_of_birth": "1998/06/10",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-102139/images/63764566",
+        "file": "KERAP_SHESEE_MONICHA_ELSHADAY_2025-102139.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-102139",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-102139/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-102139/images/63764566"
+    }
+  },
+  "2023-21420": {
+    "entity_id": "2023/21420",
+    "name": "WALESA",
+    "forename": "DAWID PIOTR",
+    "nationalities": [
+      "PL"
+    ],
+    "date_of_birth": "1987/10/22",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2023-21420/images/62706241",
+        "file": "WALESA_DAWID_PIOTR_2023-21420.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2023-21420",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2023-21420/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2023-21420/images/62706241"
+    }
+  },
+  "2026-6996": {
+    "entity_id": "2026/6996",
+    "name": "MEDENICA",
+    "forename": "MILOS",
+    "nationalities": [
+      "ME"
+    ],
+    "date_of_birth": "1986/05/20",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-6996/images/63824202",
+        "file": "MEDENICA_MILOS_2026-6996.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-6996",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-6996/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-6996/images/63824202"
+    }
+  },
+  "2024-84247": {
+    "entity_id": "2024/84247",
+    "name": "XHAVIT",
+    "forename": "MUSA",
+    "nationalities": [
+      "MK"
+    ],
+    "date_of_birth": "2000/12/05",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2024-84247/images/63293654",
+        "file": "XHAVIT_MUSA_2024-84247.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2024-84247",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2024-84247/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2024-84247/images/63293654"
+    }
+  },
+  "2026-4116": {
+    "entity_id": "2026/4116",
+    "name": "PAYZIKULOV",
+    "forename": "ORZIKUL",
+    "nationalities": [
+      "UZ"
+    ],
+    "date_of_birth": "1978/07/25",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-4116/images/63783314",
+        "file": "PAYZIKULOV_ORZIKUL_2026-4116.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-4116",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-4116/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-4116/images/63783314"
+    }
+  },
+  "2026-5819": {
+    "entity_id": "2026/5819",
+    "name": "SOUMAHORO",
+    "forename": "AHMED",
+    "nationalities": [
+      "CI"
+    ],
+    "date_of_birth": "1978/01/04",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-5819/images/63791100",
+        "file": "SOUMAHORO_AHMED_2026-5819.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-5819",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-5819/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-5819/images/63791100"
+    }
+  },
+  "2026-3921": {
+    "entity_id": "2026/3921",
+    "name": "TAJMOUTI",
+    "forename": "WASSIM",
+    "nationalities": [
+      "TN"
+    ],
+    "date_of_birth": "2001/02/02",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-3921/images/63782634",
+        "file": "TAJMOUTI_WASSIM_2026-3921.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-3921",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-3921/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-3921/images/63782634"
+    }
+  },
+  "2026-2774": {
+    "entity_id": "2026/2774",
+    "name": "BAKER",
+    "forename": "KEMARLY",
+    "nationalities": [
+      "JM"
+    ],
+    "date_of_birth": "2002/09/16",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-2774/images/63778374",
+        "file": "BAKER_KEMARLY_2026-2774.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-2774",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-2774/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-2774/images/63778374"
+    }
+  },
+  "2025-34191": {
+    "entity_id": "2025/34191",
+    "name": "DHALIWAL",
+    "forename": "PARAMJIT",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1968/01/02",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-34191/images/63489755",
+        "file": "DHALIWAL_PARAMJIT_2025-34191.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-34191",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-34191/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-34191/images/63489755"
+    }
+  },
+  "2025-97992": {
+    "entity_id": "2025/97992",
+    "name": "SINGH",
+    "forename": "JASPREET",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1998/03/19",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-97992/images/63758155",
+        "file": "SINGH_JASPREET_2025-97992.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-97992",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-97992/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-97992/images/63758155"
+    }
+  },
+  "2026-688": {
+    "entity_id": "2026/688",
+    "name": "GULL",
+    "forename": "MOHAMMAD SHAHZAD",
+    "nationalities": [
+      "NO"
+    ],
+    "date_of_birth": "1979/01/19",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-688/images/63769928",
+        "file": "GULL_MOHAMMAD_SHAHZAD_2026-688.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-688",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-688/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-688/images/63769928"
+    }
+  },
+  "2026-1182": {
+    "entity_id": "2026/1182",
+    "name": "VASILJEVS",
+    "forename": "PAULIS",
+    "nationalities": [
+      "LV"
+    ],
+    "date_of_birth": "1975/04/10",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2026-1182/images/63771784",
+        "file": "VASILJEVS_PAULIS_2026-1182.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2026-1182",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2026-1182/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2026-1182/images/63771784"
+    }
+  },
+  "2017-1671": {
+    "entity_id": "2017/1671",
+    "name": "GYNDY",
+    "forename": "HASSAN FAYAS",
+    "nationalities": [
+      "IQ",
+      "DE"
+    ],
+    "date_of_birth": "1972/07/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2017-1671/images/63756908",
+        "file": "GYNDY_HASSAN_FAYAS_2017-1671.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2017-1671",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2017-1671/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2017-1671/images/63756908"
+    }
+  },
+  "2025-100086": {
+    "entity_id": "2025/100086",
+    "name": "NEFEDOV",
+    "forename": "OLEG EVGENIEVICH",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1990/06/03",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-100086/images/63756193",
+        "file": "NEFEDOV_OLEG_EVGENIEVICH_2025-100086.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-100086",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-100086/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-100086/images/63756193"
+    }
+  },
+  "2025-99577": {
+    "entity_id": "2025/99577",
+    "name": "CASTELLI",
+    "forename": "ANDREI",
+    "nationalities": [
+      "BR"
+    ],
+    "date_of_birth": "1985/08/25",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-99577/images/63754208",
+        "file": "CASTELLI_ANDREI_2025-99577.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-99577",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-99577/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-99577/images/63754208"
+    }
+  },
+  "2025-99289": {
+    "entity_id": "2025/99289",
+    "name": "ADAMCZEWSKI",
+    "forename": "PIOTR PAWEL",
+    "nationalities": [
+      "PL"
+    ],
+    "date_of_birth": "1992/05/20",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-99289/images/63753172",
+        "file": "ADAMCZEWSKI_PIOTR_PAWEL_2025-99289.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-99289",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-99289/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-99289/images/63753172"
+    }
+  },
+  "2025-98916": {
+    "entity_id": "2025/98916",
+    "name": "SZAFRAN GORCZYCA",
+    "forename": "MAGDALENA STANISLAWA",
+    "nationalities": [
+      "PL"
+    ],
+    "date_of_birth": "1986/07/10",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-98916/images/63751526",
+        "file": "SZAFRAN_GORCZYCA_MAGDALENA_STANISLAWA_2025-98916.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-98916",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-98916/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-98916/images/63751526"
+    }
+  },
+  "2025-97437": {
+    "entity_id": "2025/97437",
+    "name": "ROSSI",
+    "forename": "JOHAN MARCO",
+    "nationalities": [
+      "SE"
+    ],
+    "date_of_birth": "1983/07/20",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-97437/images/63745041",
+        "file": "ROSSI_JOHAN_MARCO_2025-97437.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-97437",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-97437/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-97437/images/63745041"
+    }
+  },
+  "2025-98243": {
+    "entity_id": "2025/98243",
+    "name": "DA COSTA FILHO",
+    "forename": "AMADEU",
+    "nationalities": [
+      "BR"
+    ],
+    "date_of_birth": "1965/09/25",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-98243/images/63748656",
+        "file": "DA_COSTA_FILHO_AMADEU_2025-98243.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-98243",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-98243/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-98243/images/63748656"
+    }
+  },
+  "2025-97143": {
+    "entity_id": "2025/97143",
+    "name": "NAMDAR",
+    "forename": "ALI",
+    "nationalities": [
+      "SE"
+    ],
+    "date_of_birth": "2004/12/11",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-97143/images/63743747",
+        "file": "NAMDAR_ALI_2025-97143.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-97143",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-97143/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-97143/images/63743747"
+    }
+  },
+  "2025-96487": {
+    "entity_id": "2025/96487",
+    "name": "DOBRININ",
+    "forename": "VLADIMIR",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1974/03/31",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-96487/images/63740962",
+        "file": "DOBRININ_VLADIMIR_2025-96487.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-96487",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-96487/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-96487/images/63740962"
+    }
+  },
+  "2025-56012": {
+    "entity_id": "2025/56012",
+    "name": "BIN USMAN ALI",
+    "forename": "ERIDHA NATASYA",
+    "nationalities": [
+      "ID"
+    ],
+    "date_of_birth": "1986/10/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-56012/images/63575887",
+        "file": "BIN_USMAN_ALI_ERIDHA_NATASYA_2025-56012.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-56012",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-56012/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-56012/images/63575887"
+    }
+  },
+  "2025-56030": {
+    "entity_id": "2025/56030",
+    "name": "BINTI ABDUL GANI",
+    "forename": "RATNA DEWI",
+    "nationalities": [
+      "ID"
+    ],
+    "date_of_birth": "1984/11/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-56030/images/63575913",
+        "file": "BINTI_ABDUL_GANI_RATNA_DEWI_2025-56030.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-56030",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-56030/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-56030/images/63575913"
+    }
+  },
+  "2025-96058": {
+    "entity_id": "2025/96058",
+    "name": "TOUOIBATI CHADULI",
+    "forename": "YANIK",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "2006/05/30",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-96058/images/63739761",
+        "file": "TOUOIBATI_CHADULI_YANIK_2025-96058.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-96058",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-96058/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-96058/images/63739761"
+    }
+  },
+  "2025-95737": {
+    "entity_id": "2025/95737",
+    "name": "SWEENEY",
+    "forename": "ISHMEL SHAVAUGHNE",
+    "nationalities": [
+      "US"
+    ],
+    "date_of_birth": "1977/06/05",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-95737/images/63737603",
+        "file": "SWEENEY_ISHMEL_SHAVAUGHNE_2025-95737.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-95737",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-95737/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-95737/images/63737603"
+    }
+  },
+  "2025-95359": {
+    "entity_id": "2025/95359",
+    "name": "YULDOSHEV",
+    "forename": "IKROM",
+    "nationalities": [
+      "TJ"
+    ],
+    "date_of_birth": "1987/04/13",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-95359/images/63735696",
+        "file": "YULDOSHEV_IKROM_2025-95359.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-95359",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-95359/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-95359/images/63735696"
+    }
+  },
+  "2025-94447": {
+    "entity_id": "2025/94447",
+    "name": "LOPES DA SILVA SANTOS",
+    "forename": "GABRIEL",
+    "nationalities": [
+      "BR"
+    ],
+    "date_of_birth": "1997/07/30",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-94447/images/63732582",
+        "file": "LOPES_DA_SILVA_SANTOS_GABRIEL_2025-94447.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-94447",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-94447/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-94447/images/63732582"
+    }
+  },
+  "2025-92605": {
+    "entity_id": "2025/92605",
+    "name": "ASKHABOV",
+    "forename": "SEJFULLA CEZARY",
+    "nationalities": [
+      "PL"
+    ],
+    "date_of_birth": "2003/03/07",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-92605/images/63724881",
+        "file": "ASKHABOV_SEJFULLA_CEZARY_2025-92605.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-92605",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-92605/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-92605/images/63724881"
+    }
+  },
+  "2025-93146": {
+    "entity_id": "2025/93146",
+    "name": "AKHMEDKHANOVA",
+    "forename": "BURLIIAT",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1995/01/16",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-93146/images/63727327",
+        "file": "AKHMEDKHANOVA_BURLIIAT_2025-93146.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-93146",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-93146/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-93146/images/63727327"
+    }
+  },
+  "2025-93298": {
+    "entity_id": "2025/93298",
+    "name": "BEAUTRAIT",
+    "forename": "CLARANCE CLAUDE PHILIPPE",
+    "nationalities": null,
+    "date_of_birth": "2005/08/06",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-93298/images/63727967",
+        "file": "BEAUTRAIT_CLARANCE_CLAUDE_PHILIPPE_2025-93298.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-93298",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-93298/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-93298/images/63727967"
+    }
+  },
+  "2025-93316": {
+    "entity_id": "2025/93316",
+    "name": "MARTINET",
+    "forename": "SAMY BRAHIM PIERRE",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "2002/01/28",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-93316/images/63728008",
+        "file": "MARTINET_SAMY_BRAHIM_PIERRE_2025-93316.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-93316",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-93316/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-93316/images/63728008"
+    }
+  },
+  "2025-82175": {
+    "entity_id": "2025/82175",
+    "name": "SINGH",
+    "forename": "JOGA",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1992/05/14",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-82175/images/63682722",
+        "file": "SINGH_JOGA_2025-82175.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-82175",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-82175/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-82175/images/63682722"
+    }
+  },
+  "2025-78864": {
+    "entity_id": "2025/78864",
+    "name": "ABHAY",
+    "forename": "",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "2002/11/13",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-78864/images/63669371",
+        "file": "ABHAY_2025-78864.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-78864",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-78864/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-78864/images/63669371"
+    }
+  },
+  "2025-89578": {
+    "entity_id": "2025/89578",
+    "name": "DE PAULA XAVIER",
+    "forename": "AILTON",
+    "nationalities": [
+      "BR"
+    ],
+    "date_of_birth": "1959/10/30",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-89578/images/63712244",
+        "file": "DE_PAULA_XAVIER_AILTON_2025-89578.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-89578",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-89578/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-89578/images/63712244"
+    }
+  },
+  "2025-86800": {
+    "entity_id": "2025/86800",
+    "name": "BATAEV",
+    "forename": "ADAM",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1993/10/31",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-86800/images/63701831",
+        "file": "BATAEV_ADAM_2025-86800.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-86800",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-86800/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-86800/images/63701831"
+    }
+  },
+  "2025-86993": {
+    "entity_id": "2025/86993",
+    "name": "TUMGOEVA",
+    "forename": "ELIZAVETA",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1996/12/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-86993/images/63702433",
+        "file": "TUMGOEVA_ELIZAVETA_2025-86993.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-86993",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-86993/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-86993/images/63702433"
+    }
+  },
+  "2025-86501": {
+    "entity_id": "2025/86501",
+    "name": "ISIEV",
+    "forename": "ISSA",
+    "nationalities": [
+      "RU"
+    ],
+    "date_of_birth": "1986/03/28",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-86501/images/63700256",
+        "file": "ISIEV_ISSA_2025-86501.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-86501",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-86501/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-86501/images/63700256"
+    }
+  },
+  "2024-7375": {
+    "entity_id": "2024/7375",
+    "name": "KUZMICKI",
+    "forename": "JACEK BOLESLAW",
+    "nationalities": [
+      "PL"
+    ],
+    "date_of_birth": "1963/01/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2024-7375/images/62979029",
+        "file": "KUZMICKI_JACEK_BOLESLAW_2024-7375.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2024-7375",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2024-7375/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2024-7375/images/62979029"
+    }
+  },
+  "2025-87252": {
+    "entity_id": "2025/87252",
+    "name": "KWOK",
+    "forename": "HO LUN",
+    "nationalities": [
+      "CN"
+    ],
+    "date_of_birth": "1997/04/06",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-87252/images/63703305",
+        "file": "KWOK_HO_LUN_2025-87252.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-87252",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-87252/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-87252/images/63703305"
+    }
+  },
+  "2025-87303": {
+    "entity_id": "2025/87303",
+    "name": "CHEUNG",
+    "forename": "CHON CHENG",
+    "nationalities": [
+      "CN"
+    ],
+    "date_of_birth": "1995/04/04",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-87303/images/63703477",
+        "file": "CHEUNG_CHON_CHENG_2025-87303.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-87303",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-87303/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-87303/images/63703477"
+    }
+  },
+  "2025-86779": {
+    "entity_id": "2025/86779",
+    "name": "BENARROCH",
+    "forename": "INONE",
+    "nationalities": [
+      "IL"
+    ],
+    "date_of_birth": "1978/05/19",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-86779/images/63701653",
+        "file": "BENARROCH_INONE_2025-86779.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-86779",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-86779/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-86779/images/63701653"
+    }
+  },
+  "2025-86873": {
+    "entity_id": "2025/86873",
+    "name": "HADJEJ",
+    "forename": "OLIVIER",
+    "nationalities": [
+      "FR",
+      "IL"
+    ],
+    "date_of_birth": "1967/07/17",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-86873/images/63701978",
+        "file": "HADJEJ_OLIVIER_2025-86873.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-86873",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-86873/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-86873/images/63701978"
+    }
+  },
+  "2025-86855": {
+    "entity_id": "2025/86855",
+    "name": "GUETTA",
+    "forename": "YAËL",
+    "nationalities": [
+      "IL",
+      "FR"
+    ],
+    "date_of_birth": "1972/07/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-86855/images/63701895",
+        "file": "GUETTA_YAËL_2025-86855.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-86855",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-86855/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-86855/images/63701895"
+    }
+  },
+  "2025-87419": {
+    "entity_id": "2025/87419",
+    "name": "MERENTES PALMA",
+    "forename": "WALTER JESUS",
+    "nationalities": [
+      "UY",
+      "VE"
+    ],
+    "date_of_birth": "2002/01/28",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-87419/images/63703909",
+        "file": "MERENTES_PALMA_WALTER_JESUS_2025-87419.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-87419",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-87419/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-87419/images/63703909"
+    }
+  },
+  "2025-86841": {
+    "entity_id": "2025/86841",
+    "name": "ALMESTICA",
+    "forename": "JOSE",
+    "nationalities": [
+      "US"
+    ],
+    "date_of_birth": "1987/12/09",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-86841/images/63701926",
+        "file": "ALMESTICA_JOSE_2025-86841.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-86841",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-86841/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-86841/images/63701926"
+    }
+  },
+  "2025-86917": {
+    "entity_id": "2025/86917",
+    "name": "BURGOS",
+    "forename": "JOHN",
+    "nationalities": [
+      "US"
+    ],
+    "date_of_birth": "1998/03/15",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-86917/images/63702170",
+        "file": "BURGOS_JOHN_2025-86917.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-86917",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-86917/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-86917/images/63702170"
+    }
+  },
+  "2025-81681": {
+    "entity_id": "2025/81681",
+    "name": "MEREIRA ARISTONDO",
+    "forename": "WILSON STIVENSON",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1982/11/29",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81681/images/63680530",
+        "file": "MEREIRA_ARISTONDO_WILSON_STIVENSON_2025-81681.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81681",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81681/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81681/images/63680530"
+    }
+  },
+  "2025-81680": {
+    "entity_id": "2025/81680",
+    "name": "REYES POPOL",
+    "forename": "CARLOS AGUSTIN",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1984/12/24",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81680/images/63680518",
+        "file": "REYES_POPOL_CARLOS_AGUSTIN_2025-81680.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81680",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81680/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81680/images/63680518"
+    }
+  },
+  "2025-81701": {
+    "entity_id": "2025/81701",
+    "name": "SINAY DIONICIO",
+    "forename": "HEBER JONATHAN",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1982/12/15",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81701/images/63680621",
+        "file": "SINAY_DIONICIO_HEBER_JONATHAN_2025-81701.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81701",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81701/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81701/images/63680621"
+    }
+  },
+  "2025-85386": {
+    "entity_id": "2025/85386",
+    "name": "ABDULLAHI FARAH",
+    "forename": "AHMED",
+    "nationalities": [
+      "SE"
+    ],
+    "date_of_birth": "1991/02/05",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-85386/images/63695510",
+        "file": "ABDULLAHI_FARAH_AHMED_2025-85386.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-85386",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-85386/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-85386/images/63695510"
+    }
+  },
+  "2025-81647": {
+    "entity_id": "2025/81647",
+    "name": "MONZON PANIAGUA",
+    "forename": "WILFRIDO ALFREDO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1988/01/15",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81647/images/63680365",
+        "file": "MONZON_PANIAGUA_WILFRIDO_ALFREDO_2025-81647.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81647",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81647/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81647/images/63680365"
+    }
+  },
+  "2025-81704": {
+    "entity_id": "2025/81704",
+    "name": "ORTIZ MORALES",
+    "forename": "RUDY AUGUSTO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1981/06/02",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81704/images/63680629",
+        "file": "ORTIZ_MORALES_RUDY_AUGUSTO_2025-81704.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81704",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81704/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81704/images/63680629"
+    }
+  },
+  "2025-81630": {
+    "entity_id": "2025/81630",
+    "name": "RAMIREZ IBOY",
+    "forename": "EDWIN RENÉ",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1984/02/17",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81630/images/63680315",
+        "file": "RAMIREZ_IBOY_EDWIN_RENÉ_2025-81630.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81630",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81630/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81630/images/63680315"
+    }
+  },
+  "2025-85162": {
+    "entity_id": "2025/85162",
+    "name": "SILVA MORÁN",
+    "forename": "JUAN JOSÉ",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1995/11/18",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-85162/images/63694602",
+        "file": "SILVA_MORÁN_JUAN_JOSÉ_2025-85162.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-85162",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-85162/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-85162/images/63694602"
+    }
+  },
+  "2025-81692": {
+    "entity_id": "2025/81692",
+    "name": "HERRERA ARDIANO",
+    "forename": "ESVIN ESTUARDO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1983/11/28",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81692/images/63680582",
+        "file": "HERRERA_ARDIANO_ESVIN_ESTUARDO_2025-81692.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81692",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81692/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81692/images/63680582"
+    }
+  },
+  "2025-81668": {
+    "entity_id": "2025/81668",
+    "name": "SINAY ORTIZ",
+    "forename": "JOSE CARMELO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1988/09/06",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81668/images/63694354",
+        "file": "SINAY_ORTIZ_JOSE_CARMELO_2025-81668.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81668",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81668/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81668/images/63694354"
+    }
+  },
+  "2025-81656": {
+    "entity_id": "2025/81656",
+    "name": "GOMEZ LIC",
+    "forename": "JULIO CRISTOBAL",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1992/01/24",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81656/images/63680416",
+        "file": "GOMEZ_LIC_JULIO_CRISTOBAL_2025-81656.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81656",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81656/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81656/images/63680416"
+    }
+  },
+  "2025-81693": {
+    "entity_id": "2025/81693",
+    "name": "AGUILAR ESCOBAR",
+    "forename": "CARLOS AUGUSTO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1981/01/18",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81693/images/63694618",
+        "file": "AGUILAR_ESCOBAR_CARLOS_AUGUSTO_2025-81693.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81693",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81693/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81693/images/63694618"
+    }
+  },
+  "2025-81677": {
+    "entity_id": "2025/81677",
+    "name": "BOCH RUIZ",
+    "forename": "CARLOS ESTUARDO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1987/07/26",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81677/images/63680506",
+        "file": "BOCH_RUIZ_CARLOS_ESTUARDO_2025-81677.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81677",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81677/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81677/images/63680506"
+    }
+  },
+  "2025-85206": {
+    "entity_id": "2025/85206",
+    "name": "SOSA FERNÁNDEZ",
+    "forename": "JOHAN MARCOS",
+    "nationalities": [
+      "UY"
+    ],
+    "date_of_birth": "1994/04/21",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-85206/images/63699177",
+        "file": "SOSA_FERNÁNDEZ_JOHAN_MARCOS_2025-85206.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-85206",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-85206/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-85206/images/63699177"
+    }
+  },
+  "2025-81694": {
+    "entity_id": "2025/81694",
+    "name": "NAJARRO GARCIA",
+    "forename": "MILTON NOEL",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1995/09/27",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81694/images/63680592",
+        "file": "NAJARRO_GARCIA_MILTON_NOEL_2025-81694.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81694",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81694/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81694/images/63680592"
+    }
+  },
+  "2025-81653": {
+    "entity_id": "2025/81653",
+    "name": "GONZALES ORTEGA",
+    "forename": "EDWIN ROBERTO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1984/06/19",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81653/images/63694591",
+        "file": "GONZALES_ORTEGA_EDWIN_ROBERTO_2025-81653.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81653",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81653/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81653/images/63694591"
+    }
+  },
+  "2025-81648": {
+    "entity_id": "2025/81648",
+    "name": "RAMOS AGUILAR",
+    "forename": "JOSE ANGEL AROLDO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1986/09/25",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81648/images/63680381",
+        "file": "RAMOS_AGUILAR_JOSE_ANGEL_AROLDO_2025-81648.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81648",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81648/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81648/images/63680381"
+    }
+  },
+  "2025-81684": {
+    "entity_id": "2025/81684",
+    "name": "OSORIO HERRERA",
+    "forename": "GERSON ALEXANDER",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1977/07/11",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81684/images/63680562",
+        "file": "OSORIO_HERRERA_GERSON_ALEXANDER_2025-81684.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81684",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81684/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81684/images/63680562"
+    }
+  },
+  "2025-85210": {
+    "entity_id": "2025/85210",
+    "name": "SAMPAYO FREITAS",
+    "forename": "MATHIAS RODRIGO",
+    "nationalities": [
+      "UY"
+    ],
+    "date_of_birth": "1996/09/29",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-85210/images/63699188",
+        "file": "SAMPAYO_FREITAS_MATHIAS_RODRIGO_2025-85210.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-85210",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-85210/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-85210/images/63699188"
+    }
+  },
+  "2025-85219": {
+    "entity_id": "2025/85219",
+    "name": "MUÑOZ SINAR",
+    "forename": "FERNANDO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1982/04/10",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-85219/images/63694813",
+        "file": "MUÑOZ_SINAR_FERNANDO_2025-85219.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-85219",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-85219/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-85219/images/63694813"
+    }
+  },
+  "2025-82424": {
+    "entity_id": "2025/82424",
+    "name": "GONZALEZ",
+    "forename": "ROBERT DENIS",
+    "nationalities": [
+      "GB"
+    ],
+    "date_of_birth": "1999/11/20",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-82424/images/63683516",
+        "file": "GONZALEZ_ROBERT_DENIS_2025-82424.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-82424",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-82424/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-82424/images/63683516"
+    }
+  },
+  "2025-26550": {
+    "entity_id": "2025/26550",
+    "name": "PANCHAL",
+    "forename": "MANOJ",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1999/04/01",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-26550/images/63519359",
+        "file": "PANCHAL_MANOJ_2025-26550.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-26550",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-26550/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-26550/images/63519359"
+    }
+  },
+  "2025-59417": {
+    "entity_id": "2025/59417",
+    "name": "SHARMA",
+    "forename": "SACHIN",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1988/12/05",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-59417/images/63590200",
+        "file": "SHARMA_SACHIN_2025-59417.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-59417",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-59417/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-59417/images/63590200"
+    }
+  },
+  "2024-14818": {
+    "entity_id": "2024/14818",
+    "name": "SIBINSKI",
+    "forename": "PATRYK DARIUSZ",
+    "nationalities": [
+      "PL"
+    ],
+    "date_of_birth": "1991/10/14",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2024-14818/images/63010343",
+        "file": "SIBINSKI_PATRYK_DARIUSZ_2024-14818.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2024-14818",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2024-14818/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2024-14818/images/63010343"
+    }
+  },
+  "2025-80810": {
+    "entity_id": "2025/80810",
+    "name": "VIDAL SUÁREZ",
+    "forename": "ANDERSON AXEL",
+    "nationalities": [
+      "UY"
+    ],
+    "date_of_birth": "2003/09/17",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-80810/images/63680001",
+        "file": "VIDAL_SUÁREZ_ANDERSON_AXEL_2025-80810.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-80810",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-80810/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-80810/images/63680001"
+    }
+  },
+  "2025-82408": {
+    "entity_id": "2025/82408",
+    "name": "SOUFI",
+    "forename": "AYAD",
+    "nationalities": [
+      "FR"
+    ],
+    "date_of_birth": "1995/01/15",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-82408/images/63683397",
+        "file": "SOUFI_AYAD_2025-82408.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-82408",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-82408/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-82408/images/63683397"
+    }
+  },
+  "2025-82955": {
+    "entity_id": "2025/82955",
+    "name": "CORONA ROMAN",
+    "forename": "ALFREDO",
+    "nationalities": [
+      "MX"
+    ],
+    "date_of_birth": "1982/09/28",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-82955/images/63685459",
+        "file": "CORONA_ROMAN_ALFREDO_2025-82955.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-82955",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-82955/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-82955/images/63685459"
+    }
+  },
+  "2025-81361": {
+    "entity_id": "2025/81361",
+    "name": "CABRAL DE AMARAL",
+    "forename": "BRUNO",
+    "nationalities": [
+      "BR"
+    ],
+    "date_of_birth": "1981/05/31",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-81361/images/63678931",
+        "file": "CABRAL_DE_AMARAL_BRUNO_2025-81361.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-81361",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-81361/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-81361/images/63678931"
+    }
+  },
+  "2025-67536": {
+    "entity_id": "2025/67536",
+    "name": "GONSALVES",
+    "forename": "SUNNY",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "1996/05/13",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-67536/images/63633103",
+        "file": "GONSALVES_SUNNY_2025-67536.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-67536",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-67536/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-67536/images/63633103"
+    }
+  },
+  "2025-40582": {
+    "entity_id": "2025/40582",
+    "name": "GHAZI KAREEM",
+    "forename": "GORAN",
+    "nationalities": null,
+    "date_of_birth": "1989/09/18",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-40582/images/63679769",
+        "file": "GHAZI_KAREEM_GORAN_2025-40582.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-40582",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-40582/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-40582/images/63679769"
+    }
+  },
+  "2025-80876": {
+    "entity_id": "2025/80876",
+    "name": "GAMBOA MONTUFAR",
+    "forename": "NIXON MANOLO",
+    "nationalities": [
+      "GT"
+    ],
+    "date_of_birth": "1986/01/13",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-80876/images/63677305",
+        "file": "GAMBOA_MONTUFAR_NIXON_MANOLO_2025-80876.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-80876",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-80876/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-80876/images/63677305"
+    }
+  },
+  "2025-74080": {
+    "entity_id": "2025/74080",
+    "name": "SINGH",
+    "forename": "NISHAN",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "2000/06/18",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-74080/images/63650459",
+        "file": "SINGH_NISHAN_2025-74080.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-74080",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-74080/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-74080/images/63650459"
+    }
+  },
+  "2025-76653": {
+    "entity_id": "2025/76653",
+    "name": "AMRIT",
+    "forename": "",
+    "nationalities": [
+      "IN"
+    ],
+    "date_of_birth": "2000/12/04",
+    "images": [
+      {
+        "url": "https://ws-public.interpol.int/notices/v1/red/2025-76653/images/63660474",
+        "file": "AMRIT_2025-76653.jpg",
+        "type": "thumbnail"
+      }
+    ],
+    "_links": {
+      "self": "https://ws-public.interpol.int/notices/v1/red/2025-76653",
+      "images": "https://ws-public.interpol.int/notices/v1/red/2025-76653/images",
+      "thumbnail": "https://ws-public.interpol.int/notices/v1/red/2025-76653/images/63660474"
+    }
+  }
+}
