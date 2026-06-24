@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """
 Interpol Red Notices Image Scraper
-Downloads mugshot photos from the Interpol public Red Notices portal.
+Downloads public photos from the Interpol Red Notices portal.
 
 API: https://ws-public.interpol.int/notices/v1/red
      (same API used by the official Interpol website)
 
-Key requirement: the Interpol API blocks standard Python HTTP libraries because
-they have a different TLS/JA3 fingerprint from real browsers.  This script uses
-`curl-cffi` to impersonate Chrome's TLS handshake and bypass that protection.
+The Interpol website's public API expects browser-like TLS behavior. This
+script uses `curl-cffi` to make requests with a Chrome-compatible profile.
 
 Dependencies:
     pip install curl-cffi tqdm
@@ -16,7 +15,7 @@ Dependencies:
 Usage:
     python scrape_interpol.py                              # download everything
     python scrape_interpol.py -o data/interpol -c 8       # custom output dir / threads
-    python scrape_interpol.py --max-pages 2 --verbose     # test run (first 2 pages)
+    python scrape_interpol.py --max-pages 2 --verbose     # test run (first 2 listing pages)
     python scrape_interpol.py --help
 """
 
@@ -52,7 +51,7 @@ logger = logging.getLogger(__name__)
 BASE_API          = "https://ws-public.interpol.int/notices/v1/red"
 PAGE_ORIGIN       = "https://www.interpol.int"
 PAGE_REFERER      = "https://www.interpol.int/How-we-work/Notices/Red-Notices/View-Red-Notices"
-BROWSER_IMPERSONATE = "chrome131"   # curl-cffi impersonation profile
+BROWSER_IMPERSONATE = "chrome131"   # curl-cffi browser profile
 
 # Number of results per API page — must stay small (e.g. 20) because the
 # Interpol CDN caches resultPerPage=160 responses and serves the same
@@ -173,14 +172,49 @@ def cffi_get_image(url: str, base_path: str, max_retries: int = 3) -> str | None
 # Per-notice processing
 # ---------------------------------------------------------------------------
 
+def list_notice_images(links: dict) -> list[dict]:
+    """
+    Return image links for a notice.
+
+    The listing response includes a thumbnail link, but the per-notice images
+    endpoint contains the full public photo set. If that endpoint fails, the
+    thumbnail is used as a fallback so the notice still has a usable photo.
+    """
+    images_url = (links.get("images") or {}).get("href")
+    thumbnail_url = (links.get("thumbnail") or {}).get("href")
+    image_links = []
+
+    if images_url:
+        res = cffi_get_json(images_url)
+        embedded_images = ((res or {}).get("_embedded") or {}).get("images", [])
+        for idx, image in enumerate(embedded_images):
+            href = ((image.get("_links") or {}).get("self") or {}).get("href")
+            if href:
+                image_links.append(
+                    {
+                        "url": href,
+                        "picture_id": str(image.get("picture_id") or idx),
+                        "type": "image",
+                    }
+                )
+
+    if not image_links and thumbnail_url:
+        picture_id = thumbnail_url.rstrip("/").split("/")[-1]
+        image_links.append(
+            {
+                "url": thumbnail_url,
+                "picture_id": picture_id,
+                "type": "thumbnail",
+            }
+        )
+
+    return image_links
+
+
 def process_notice(notice: dict, output_dir: str) -> tuple[str, dict]:
     """
-    Download the mugshot photo for a single Red Notice entry.
+    Download all public photos for a single Red Notice entry.
     Returns (safe_id, metadata_dict).
-
-    Only uses the thumbnail URL already present in the listing response —
-    this avoids a second API call to /images which is aggressively rate-limited.
-    The thumbnail is the same portrait photo shown on the Interpol website.
     """
     entity_id = notice.get("entity_id", "")
     forename  = notice.get("forename") or ""
@@ -191,15 +225,21 @@ def process_notice(notice: dict, output_dir: str) -> tuple[str, dict]:
     safe_name   = safe_filename(f"{name}_{forename}", fallback=safe_id)
     file_prefix = f"{safe_name}_{safe_id}"
 
-    thumbnail_url = (links.get("thumbnail") or {}).get("href")
-
     downloaded = []
 
-    if thumbnail_url:
-        base  = os.path.join(output_dir, f"{file_prefix}")
-        fname = cffi_get_image(thumbnail_url, base)
+    for image in list_notice_images(links):
+        picture_id = safe_filename(image.get("picture_id"), fallback="PHOTO")
+        base = os.path.join(output_dir, f"{file_prefix}_{picture_id}")
+        fname = cffi_get_image(image["url"], base)
         if fname:
-            downloaded.append({"url": thumbnail_url, "file": fname, "type": "thumbnail"})
+            downloaded.append(
+                {
+                    "url": image["url"],
+                    "file": fname,
+                    "type": image["type"],
+                    "picture_id": image.get("picture_id"),
+                }
+            )
 
     metadata = {
         "entity_id":     entity_id,
@@ -259,10 +299,12 @@ def _paginate_query_pages(base_query, first_res, delay):
             
         q = {**base_query, "page": page}
         res = cffi_get_json(BASE_API, params=q)
-        if not res: break
+        if not res:
+            break
         
         notices = (res.get("_embedded") or {}).get("notices", [])
-        if not notices: break
+        if not notices:
+            break
         yield base_query, page, notices
 
 
@@ -273,12 +315,14 @@ def iter_notice_pages(delay=0):
     """
     import string
     
-    for age in range(18, 121):
+    for age in range(0, 121):
         q_age = {"ageMin": age, "ageMax": age, "resultPerPage": RESULTS_PER_PAGE}
         res_age = cffi_get_json(BASE_API, params=q_age)
-        if not res_age: continue
+        if not res_age:
+            continue
         t_age = res_age.get("total", 0)
-        if t_age == 0: continue
+        if t_age == 0:
+            continue
         
         if t_age <= 160:
             yield from _paginate_query_pages(q_age, res_age, delay)
@@ -288,9 +332,11 @@ def iter_notice_pages(delay=0):
         for sex in ["M", "F", "U"]:
             q_sex = {**q_age, "sexId": sex}
             res_sex = cffi_get_json(BASE_API, params=q_sex)
-            if not res_sex: continue
+            if not res_sex:
+                continue
             t_sex = res_sex.get("total", 0)
-            if t_sex == 0: continue
+            if t_sex == 0:
+                continue
             
             if t_sex <= 160:
                 yield from _paginate_query_pages(q_sex, res_sex, delay)
@@ -300,9 +346,11 @@ def iter_notice_pages(delay=0):
             for letter in string.ascii_uppercase:
                 q_name = {**q_sex, "name": f"^{letter}"}
                 res_name = cffi_get_json(BASE_API, params=q_name)
-                if not res_name: continue
+                if not res_name:
+                    continue
                 t_name = res_name.get("total", 0)
-                if t_name == 0: continue
+                if t_name == 0:
+                    continue
                 
                 if t_name > 160:
                     logger.warning("Query %s still has %d results! Truncating to 160.", q_name, t_name)
@@ -373,14 +421,34 @@ def main() -> None:
 
     new_images = 0
     skipped    = 0
+    page_count = 0
+    seen_ids = set()
 
     for query, page, notices in iter_notice_pages(args.delay):
-        logger.info("Processing %d notices for query %s (page %d) ...", len(notices), query, page)
+        page_count += 1
+        if args.max_pages is not None and page_count > args.max_pages:
+            logger.info("Reached --max-pages=%d; stopping early.", args.max_pages)
+            break
+
+        unique_notices = []
+        for notice in notices:
+            safe_id = (notice.get("entity_id") or "").replace("/", "-")
+            if safe_id in seen_ids:
+                skipped += 1
+                continue
+            seen_ids.add(safe_id)
+            unique_notices.append(notice)
+
+        if not unique_notices:
+            logger.info("Skipping query %s page %d: all notices already seen this run.", query, page)
+            continue
+
+        logger.info("Processing %d notices for query %s (page %d) ...", len(unique_notices), query, page)
 
         with ThreadPoolExecutor(max_workers=args.concurrency) as pool:
             futures = {
                 pool.submit(process_notice, notice, args.output_dir): notice
-                for notice in notices
+                for notice in unique_notices
             }
 
             for future in tqdm(
@@ -397,10 +465,19 @@ def main() -> None:
                     continue
 
                 if safe_id in db:
-                    old_n = len(db[safe_id].get("images", []))
-                    new_n = len(meta.get("images", []))
-                    if new_n > old_n:
-                        new_images += new_n - old_n
+                    old_files = {
+                        image.get("file")
+                        for image in db[safe_id].get("images", [])
+                        if image.get("file")
+                    }
+                    new_files = {
+                        image.get("file")
+                        for image in meta.get("images", [])
+                        if image.get("file")
+                    }
+                    added_files = new_files - old_files
+                    if added_files:
+                        new_images += len(added_files)
                     else:
                         skipped += 1
                 else:
