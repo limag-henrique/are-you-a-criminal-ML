@@ -47,9 +47,9 @@ Como este repositório já inclui os **modelos treinados e configurados** na pas
 **Opção 1: Aplicativo Web Local (Mais amigável)**
 Abre uma interface no seu navegador usando a webcam:
 ```bash
-python scripts/serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8765
+python scripts/serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8766
 ```
-> Após rodar o comando acima, acesse **http://127.0.0.1:8765** no seu navegador e permita o uso da câmera.
+> Após rodar o comando acima, acesse **http://127.0.0.1:8766** no seu navegador e permita o uso da câmera.
 
 **Opção 2: Demo em Janela Nativa (OpenCV)**
 Para testar direto numa janela desktop de vídeo:

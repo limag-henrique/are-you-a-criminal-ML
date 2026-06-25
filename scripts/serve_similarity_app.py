@@ -998,7 +998,7 @@ class AppHandler(BaseHTTPRequestHandler):
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Serve the local face similarity browser app.")
     parser.add_argument("--host", default="127.0.0.1")
-    parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--port", type=int, default=8766)
     parser.add_argument("--model-dir", default="artifacts/model")
     parser.add_argument("--features", default="artifacts/embedding_manifest.csv")
     parser.add_argument("--embeddings", default="artifacts/embeddings.npy")
