@@ -355,13 +355,13 @@ def render_html(summary: dict[str, object], rows: pd.DataFrame, samples_csv: Pat
 <body>
   <header>
     <h1>Face Profile Audit</h1>
-    <div><a href="{html.escape(samples_csv.name)}">CSV de amostras</a> · <a href="{html.escape(summary_path.name)}">Resumo JSON</a></div>
+    <div><a href="{html.escape(samples_csv.name)}">CSV de amostras</a> | <a href="{html.escape(summary_path.name)}">Resumo JSON</a></div>
   </header>
   <main>
     <section class="summary">
       <div class="note">
-        Este relatório audita os splits atuais com faces alinhadas, amostras aleatórias e exemplos difíceis.
-        Os rótulos positivos/negativos continuam semânticos por cluster de embedding, não por anotação humana.
+        Este relatorio audita os splits atuais com faces alinhadas, amostras aleatorias e exemplos dificeis.
+        Os rotulos positivos/negativos continuam semanticos por cluster de embedding, nao por anotacao humana.
       </div>
       <pre>{summary_json}</pre>
     </section>

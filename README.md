@@ -70,7 +70,9 @@ Extrair embeddings:
 face-profile extract ^
   --manifest manifest.csv ^
   --out-dir artifacts ^
-  --save-aligned
+  --save-aligned ^
+  --model-name buffalo_s ^
+  --det-size 320
 ```
 
 Treinar o perfil:
@@ -113,7 +115,47 @@ Demo em tempo real:
 face-profile demo ^
   --model-dir artifacts/model ^
   --camera 0 ^
-  --frame-window 9
+  --frame-window 9 ^
+  --model-name buffalo_s ^
+  --det-size 320
+```
+
+Aplicativo local no navegador:
+
+```bash
+python scripts/serve_similarity_app.py ^
+  --model-dir artifacts/model ^
+  --model-name buffalo_s ^
+  --det-size 320 ^
+  --port 8765
+```
+
+Depois abra `http://127.0.0.1:8765` e permita o uso da camera.
+
+## Auditoria visual
+
+Depois de extrair embeddings e treinar/calibrar um modelo, gere um relatorio
+HTML com thumbnails por split:
+
+```bash
+python scripts/build_audit_report.py ^
+  --features artifacts/embedding_manifest.csv ^
+  --embeddings artifacts/embeddings.npy ^
+  --model-dir artifacts/model ^
+  --out-dir artifacts/audit ^
+  --samples-per-split 64 ^
+  --hard-examples-per-class 32
+```
+
+Abra `artifacts/audit/index.html`. O relatorio tambem grava:
+
+- `artifacts/audit/audit_samples.csv`
+- `artifacts/audit/audit_summary.json`
+
+Use a auditoria para validar visualmente se `profile`, `calib_pos` e
+`test_pos` representam o perfil facial pretendido. Se o perfil alvo real for
+outro, ajuste `manifest.csv` com anotacao humana ou rode novamente
+`scripts/build_semantic_manifest.py` com thresholds diferentes e retreine.
 ```
 
 ## Artefatos gerados
@@ -141,6 +183,9 @@ Metricas:
 
 ## Observacoes
 
-O modelo neural nao e treinado. Trocar ArcFace por AdaFace ou MagFace pode ser
-feito criando outro extrator que respeite a interface de embeddings L2
-normalizados. O restante do pipeline continua igual.
+A rede neural base (extrator de features) não é treinada neste pipeline (são utilizados modelos pré-treinados, como o ArcFace). O treinamento realizado pelo projeto diz respeito apenas ao modelo de perfil facial (One-Class SVM, métricas de distância) e ao modelo calibrador, que aprendem a partir dos embeddings extraídos. Trocar ArcFace por AdaFace ou MagFace pode ser feito criando outro extrator que respeite a interface de embeddings L2 normalizados. O restante do pipeline continua igual.
+
+Os splits atuais foram derivados da geometria dos embeddings, nao de anotacao
+humana. Portanto, as metricas medem a separacao desse perfil semantico
+automatico contra negativos distantes; elas nao provam que o perfil coincide
+com uma definicao operacional externa.
