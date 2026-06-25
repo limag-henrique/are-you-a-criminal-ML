@@ -1,0 +1,6 @@
+2026-06-24 22:52:15,690 [INFO] Found 11724 images under C:\Users\Henrique Lima\Desktop\Repositórios\ia-usp-jailer\data
+2026-06-24 22:52:15,756 [WARNING] MediaPipe unavailable; falling back to OpenCV Haar detector: No module named 'mediapipe'
+2026-06-24 23:55:58,503 [WARNING] InsightFace embeddings unavailable: ModuleNotFoundError: No module named 'insightface'
+2026-06-24 23:56:01,730 [INFO] Decision summary: {'quarantine': 4511, 'approved': 2065, 'rejected': 5148}
+2026-06-24 23:56:01,730 [INFO] JSON report: C:\Users\Henrique Lima\Desktop\Repositórios\ia-usp-jailer\data_curated\reports\preprocess_report.json
+2026-06-24 23:56:01,739 [INFO] CSV report: C:\Users\Henrique Lima\Desktop\Repositórios\ia-usp-jailer\data_curated\reports\preprocess_report.csv

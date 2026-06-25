@@ -1,0 +1,6 @@
+Após a automação da movimentação de qualidade de fotos automaticamente feita por Python, cerca de 2.065 itens foram diretamente aprovados, 4.511 itens foram postos em quarentena e 5.148 foram rejeitados. (Total: 11.724)
+
+Após uma limpeza individual, existem: 9.764 fotos
+
+curated: 2065 high quality/3736 mid quality/3963 low quality
+white bg: 2065 high quality/3736 mid quality/3783 low quality (9584) -18% do total
