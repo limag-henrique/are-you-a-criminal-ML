@@ -2,13 +2,14 @@ requests>=2.31.0
 tqdm>=4.66.0
 curl-cffi>=0.7.0
 beautifulsoup4>=4.12.0
-numpy>=2.0.0
+numpy>=1.26.0,<2.0.0
 opencv-python>=4.10.0
 pillow>=10.0.0
 pandas>=2.2.0
 scikit-learn>=1.5.0
 mediapipe>=0.10.14; python_version < "3.13"
 
-# Optional but recommended for stronger local face detection/embeddings:
-# insightface>=0.7.3
-# onnxruntime>=1.18.0
+# Required by the face_profile_ml package for pretrained ArcFace embeddings.
+# Use Python 3.10-3.12 for best compatibility with InsightFace/ONNX Runtime.
+insightface==1.0.1; python_version < "3.13"
+onnxruntime==1.18.1; python_version < "3.13"

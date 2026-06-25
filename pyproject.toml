@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "face-profile-ml"
+version = "0.1.0"
+description = "Face profile modeling with pretrained embeddings and classical scoring."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.26.0,<2.0.0",
+  "pandas>=2.2.0",
+  "scikit-learn>=1.5.0",
+  "opencv-python>=4.10.0",
+  "pillow>=10.0.0",
+  "tqdm>=4.66.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+arcface = [
+  "insightface==1.0.1; python_version < '3.13'",
+  "onnxruntime==1.18.1; python_version < '3.13'",
+]
+gpu = [
+  "insightface==1.0.1; python_version < '3.13'",
+  "onnxruntime-gpu==1.18.1; python_version < '3.13'",
+]
+
+[project.scripts]
+face-profile = "face_profile_ml.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["face_profile_ml*"]

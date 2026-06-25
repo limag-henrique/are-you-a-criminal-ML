@@ -1,0 +1,28 @@
+{
+  "embedding": {
+    "model_name": "buffalo_l",
+    "ctx_id": -1,
+    "det_size": 640,
+    "save_aligned": true
+  },
+  "profile": {
+    "top_k": 5,
+    "mahalanobis_regularization": 0.05,
+    "use_ocsvm": false,
+    "ocsvm_nu": 0.05,
+    "score_weights": {
+      "cos_mean": 0.35,
+      "topk": 0.35,
+      "mahalanobis": 0.20,
+      "ocsvm": 0.10
+    }
+  },
+  "splits": {
+    "profile": ["profile", "enroll"],
+    "calibration_positive": ["calib_pos"],
+    "calibration_negative": ["calib_neg"],
+    "test_positive": ["test_pos"],
+    "test_negative": ["test_neg"]
+  }
+}
+
