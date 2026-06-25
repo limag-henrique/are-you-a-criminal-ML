@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "score_raw": 0.9841110706329346,
+  "score": 0.9944122433662415,
+  "similarity_percent": 99.44122433662415,
+  "threshold": 0.85,
+  "accepted": true,
+  "det_score": 0.8167759776115417,
+  "source_det_score": 0.8879091143608093,
+  "score_filter_applied": true,
+  "face_box": [
+    170.68592834472656,
+    92.09502410888672,
+    339.9016418457031,
+    328.61199951171875
+  ],
+  "frame_width": 880,
+  "frame_height": 437
+}

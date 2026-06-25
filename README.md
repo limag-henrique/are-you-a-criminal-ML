@@ -40,6 +40,25 @@ pip install -e ".[gpu]"
 Em Python 3.13+, o pacote principal instala, mas a extracao ArcFace dependera
 de o ecossistema InsightFace/ONNX Runtime publicar wheels compativeis.
 
+## 🚀 Quick Start (Uso Direto)
+
+Como este repositório já inclui os **modelos treinados e configurados** na pasta `artifacts/model`, você **não precisa** rodar o longo processo de treinamento e extração. Após instalar as dependências (veja acima), basta executar um único comando no terminal:
+
+**Opção 1: Aplicativo Web Local (Mais amigável)**
+Abre uma interface no seu navegador usando a webcam:
+```bash
+python scripts/serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8765
+```
+> Após rodar o comando acima, acesse **http://127.0.0.1:8765** no seu navegador e permita o uso da câmera.
+
+**Opção 2: Demo em Janela Nativa (OpenCV)**
+Para testar direto numa janela desktop de vídeo:
+```bash
+face-profile demo --model-dir artifacts/model --camera 0 --frame-window 9 --model-name buffalo_s --det-size 320
+```
+
+---
+
 ## Manifest
 
 O `manifest.csv` deve ter as colunas:
@@ -62,7 +81,9 @@ Uma convencao simples de splits:
 Como o dataset tem uma imagem por pessoa, o projeto modela um perfil agregado
 de um conjunto positivo, nao faz treino supervisionado de identidade.
 
-## Fluxo principal
+## 🧠 Treinamento e Avaliação (Avançado)
+
+Caso você queira rodar o treinamento desde o zero com o próprio conjunto de imagens (e extrair os embeddings), você precisará rodar o pipeline completo abaixo.
 
 Extrair embeddings:
 
@@ -108,29 +129,6 @@ face-profile evaluate ^
   --negative-splits test_neg ^
   --out-dir artifacts/eval
 ```
-
-Demo em tempo real:
-
-```bash
-face-profile demo ^
-  --model-dir artifacts/model ^
-  --camera 0 ^
-  --frame-window 9 ^
-  --model-name buffalo_s ^
-  --det-size 320
-```
-
-Aplicativo local no navegador:
-
-```bash
-python scripts/serve_similarity_app.py ^
-  --model-dir artifacts/model ^
-  --model-name buffalo_s ^
-  --det-size 320 ^
-  --port 8765
-```
-
-Depois abra `http://127.0.0.1:8765` e permita o uso da camera.
 
 ## Auditoria visual
 

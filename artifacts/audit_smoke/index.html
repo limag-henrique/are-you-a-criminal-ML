@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Face Profile Audit</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f7f8;
+      color: #172026;
+    }
+    body { margin: 0; }
+    header {
+      background: #172026;
+      color: #fff;
+      padding: 24px 32px;
+    }
+    h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }
+    a { color: #0b66c3; }
+    header a { color: #b8e0ff; }
+    main { padding: 24px 32px 40px; }
+    .summary {
+      display: grid;
+      grid-template-columns: minmax(260px, 420px) 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+    pre {
+      margin: 0;
+      overflow: auto;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid #d7dde2;
+      border-radius: 6px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .note {
+      background: #fff;
+      border: 1px solid #d7dde2;
+      border-left: 4px solid #0b66c3;
+      border-radius: 6px;
+      padding: 16px;
+      line-height: 1.45;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #d7dde2;
+      border-radius: 6px;
+      overflow: hidden;
+      min-width: 0;
+    }
+    .card img, .missing {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      background: #eef1f4;
+      display: block;
+    }
+    .missing {
+      display: grid;
+      place-items: center;
+      color: #64717c;
+      font-size: 13px;
+    }
+    .meta, .score {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px 0;
+      font-size: 12px;
+      color: #52616c;
+      min-width: 0;
+    }
+    .meta strong {
+      color: #172026;
+      font-size: 13px;
+    }
+    .score {
+      justify-content: space-between;
+      color: #172026;
+      font-weight: 700;
+    }
+    .score span {
+      color: #6b7780;
+      font-weight: 400;
+    }
+    .card p {
+      margin: 8px 10px 4px;
+      font-size: 12px;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card small {
+      display: block;
+      margin: 0 10px 10px;
+      font-size: 11px;
+      line-height: 1.3;
+      color: #6b7780;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @media (max-width: 760px) {
+      header, main { padding-left: 16px; padding-right: 16px; }
+      .summary { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Face Profile Audit</h1>
+    <div><a href="audit_samples.csv">CSV de amostras</a> | <a href="audit_summary.json">Resumo JSON</a></div>
+  </header>
+  <main>
+    <section class="summary">
+      <div class="note">
+        Este relatorio audita os splits atuais com faces alinhadas, amostras aleatorias e exemplos dificeis.
+        Os rotulos positivos/negativos continuam semanticos por cluster de embedding, nao por anotacao humana.
+      </div>
+      <pre>{
+  &quot;rows_valid&quot;: 9472,
+  &quot;split_counts&quot;: {
+    &quot;calib_neg&quot;: 1922,
+    &quot;calib_pos&quot;: 219,
+    &quot;ignore&quot;: 4262,
+    &quot;profile&quot;: 750,
+    &quot;test_neg&quot;: 2062,
+    &quot;test_pos&quot;: 257
+  },
+  &quot;quality_by_split&quot;: {
+    &quot;high&quot;: {
+      &quot;calib_neg&quot;: 444,
+      &quot;calib_pos&quot;: 40,
+      &quot;ignore&quot;: 916,
+      &quot;profile&quot;: 167,
+      &quot;test_neg&quot;: 446,
+      &quot;test_pos&quot;: 52
+    },
+    &quot;low&quot;: {
+      &quot;calib_neg&quot;: 714,
+      &quot;calib_pos&quot;: 89,
+      &quot;ignore&quot;: 1747,
+      &quot;profile&quot;: 284,
+      &quot;test_neg&quot;: 791,
+      &quot;test_pos&quot;: 94
+    },
+    &quot;mid&quot;: {
+      &quot;calib_neg&quot;: 764,
+      &quot;calib_pos&quot;: 90,
+      &quot;ignore&quot;: 1599,
+      &quot;profile&quot;: 299,
+      &quot;test_neg&quot;: 825,
+      &quot;test_pos&quot;: 111
+    }
+  },
+  &quot;score_calibrated_by_split&quot;: {
+    &quot;profile&quot;: {
+      &quot;n&quot;: 750,
+      &quot;min&quot;: 0.7219786643981934,
+      &quot;p10&quot;: 0.9237943530082703,
+      &quot;median&quot;: 0.9685319662094116,
+      &quot;p90&quot;: 0.9905541241168976,
+      &quot;max&quot;: 0.9989001750946045
+    },
+    &quot;calib_pos&quot;: {
+      &quot;n&quot;: 219,
+      &quot;min&quot;: 0.2020314335823059,
+      &quot;p10&quot;: 0.6719942569732666,
+      &quot;median&quot;: 0.892164409160614,
+      &quot;p90&quot;: 0.9659883975982666,
+      &quot;max&quot;: 0.9877499938011169
+    },
+    &quot;test_pos&quot;: {
+      &quot;n&quot;: 257,
+      &quot;min&quot;: 0.2617291212081909,
+      &quot;p10&quot;: 0.7147360920906067,
+      &quot;median&quot;: 0.8720313906669617,
+      &quot;p90&quot;: 0.96482173204422,
+      &quot;max&quot;: 0.9925751686096191
+    },
+    &quot;calib_neg&quot;: {
+      &quot;n&quot;: 1922,
+      &quot;min&quot;: 0.01345983799546957,
+      &quot;p10&quot;: 0.05919809117913246,
+      &quot;median&quot;: 0.14357337355613708,
+      &quot;p90&quot;: 0.2830350995063782,
+      &quot;max&quot;: 0.6187211871147156
+    },
+    &quot;test_neg&quot;: {
+      &quot;n&quot;: 2062,
+      &quot;min&quot;: 0.007739678490906954,
+      &quot;p10&quot;: 0.05858319960534573,
+      &quot;median&quot;: 0.1406230628490448,
+      &quot;p90&quot;: 0.28212302029132846,
+      &quot;max&quot;: 0.6737308502197266
+    }
+  },
+  &quot;decision_threshold&quot;: 0.36053770780563354
+}</pre>
+    </section>
+    <section class="grid">
+      
+            <article class="card calib_neg">
+              <img src="thumbnails/calib_neg_005106.jpg" alt="salvatore_esposito__salvatore_esposito__320b472a6a_b404ccd5ba">
+              <div class="meta">
+                <strong>calib_neg</strong><span>low</span><span>random</span>
+              </div>
+              <div class="score">cal 0.132<span>raw 0.024</span></div>
+              <p title="salvatore_esposito__salvatore_esposito__320b472a6a_b404ccd5ba">salvatore_esposito__salvatore_esposito__320b472a6a_b404ccd5ba</p>
+              <small title="photos/Low quality/salvatore_esposito__salvatore_esposito__320b472a6a_b404ccd5ba.jpg">photos/Low quality/salvatore_esposito__salvatore_esposito__320b472a6a_b404ccd5ba.jpg</small>
+            </article>
+            
+            <article class="card calib_neg">
+              <img src="thumbnails/calib_neg_000863.jpg" alt="src_6cbd341589_007269_king_robert_lee_2011-62489_56304976_c2e47f27b9_37f8022e80">
+              <div class="meta">
+                <strong>calib_neg</strong><span>high</span><span>random</span>
+              </div>
+              <div class="score">cal 0.131<span>raw 0.023</span></div>
+              <p title="src_6cbd341589_007269_king_robert_lee_2011-62489_56304976_c2e47f27b9_37f8022e80">src_6cbd341589_007269_king_robert_lee_2011-62489_56304976_c2e47f27b9_37f8022e80</p>
+              <small title="photos/Best quality/src_6cbd341589_007269_king_robert_lee_2011-62489_56304976_c2e47f27b9_37f8022e80.jpg">photos/Best quality/src_6cbd341589_007269_king_robert_lee_2011-62489_56304976_c2e47f27b9_37f8022e80.jpg</small>
+            </article>
+            
+            <article class="card calib_pos">
+              <img src="thumbnails/calib_pos_005573.jpg" alt="VALEEV_SAYFUTDIN_2015-45869_59842171_108e2afe0f">
+              <div class="meta">
+                <strong>calib_pos</strong><span>low</span><span>lowest_positive_scores</span>
+              </div>
+              <div class="score">cal 0.202<span>raw 0.048</span></div>
+              <p title="VALEEV_SAYFUTDIN_2015-45869_59842171_108e2afe0f">VALEEV_SAYFUTDIN_2015-45869_59842171_108e2afe0f</p>
+              <small title="photos/Low quality/VALEEV_SAYFUTDIN_2015-45869_59842171_108e2afe0f.jpg">photos/Low quality/VALEEV_SAYFUTDIN_2015-45869_59842171_108e2afe0f.jpg</small>
+            </article>
+            
+            <article class="card calib_pos">
+              <img src="thumbnails/calib_pos_004742.jpg" alt="OSPANOV_RUZEL_2018-106743_61245147_21669c9912">
+              <div class="meta">
+                <strong>calib_pos</strong><span>low</span><span>random</span>
+              </div>
+              <div class="score">cal 0.962<span>raw 0.271</span></div>
+              <p title="OSPANOV_RUZEL_2018-106743_61245147_21669c9912">OSPANOV_RUZEL_2018-106743_61245147_21669c9912</p>
+              <small title="photos/Low quality/OSPANOV_RUZEL_2018-106743_61245147_21669c9912.jpg">photos/Low quality/OSPANOV_RUZEL_2018-106743_61245147_21669c9912.jpg</small>
+            </article>
+            
+            <article class="card calib_pos">
+              <img src="thumbnails/calib_pos_004775.jpg" alt="PASHAEV_SABUGA_2020-69250_61927326_c918987daa">
+              <div class="meta">
+                <strong>calib_pos</strong><span>low</span><span>random</span>
+              </div>
+              <div class="score">cal 0.757<span>raw 0.169</span></div>
+              <p title="PASHAEV_SABUGA_2020-69250_61927326_c918987daa">PASHAEV_SABUGA_2020-69250_61927326_c918987daa</p>
+              <small title="photos/Low quality/PASHAEV_SABUGA_2020-69250_61927326_c918987daa.jpg">photos/Low quality/PASHAEV_SABUGA_2020-69250_61927326_c918987daa.jpg</small>
+            </article>
+            
+            <article class="card profile">
+              <img src="thumbnails/profile_007450.jpg" alt="ISRAILOV_RIZVAN_2018-40867_61039509_5c7abf1580">
+              <div class="meta">
+                <strong>profile</strong><span>mid</span><span>random</span>
+              </div>
+              <div class="score">cal 0.990<span>raw 0.336</span></div>
+              <p title="ISRAILOV_RIZVAN_2018-40867_61039509_5c7abf1580">ISRAILOV_RIZVAN_2018-40867_61039509_5c7abf1580</p>
+              <small title="photos/Mid quality/ISRAILOV_RIZVAN_2018-40867_61039509_5c7abf1580.jpg">photos/Mid quality/ISRAILOV_RIZVAN_2018-40867_61039509_5c7abf1580.jpg</small>
+            </article>
+            
+            <article class="card profile">
+              <img src="thumbnails/profile_000899.jpg" alt="src_71e9c9f3a6_008985_osmanov_magomedimin_2017-255461_60827686_fdb2022489_162436b9a7">
+              <div class="meta">
+                <strong>profile</strong><span>high</span><span>random</span>
+              </div>
+              <div class="score">cal 0.989<span>raw 0.334</span></div>
+              <p title="src_71e9c9f3a6_008985_osmanov_magomedimin_2017-255461_60827686_fdb2022489_162436b9a7">src_71e9c9f3a6_008985_osmanov_magomedimin_2017-255461_60827686_fdb2022489_162436b9a7</p>
+              <small title="photos/Best quality/src_71e9c9f3a6_008985_osmanov_magomedimin_2017-255461_60827686_fdb2022489_162436b9a7.jpg">photos/Best quality/src_71e9c9f3a6_008985_osmanov_magomedimin_2017-255461_60827686_fdb2022489_162436b9a7.jpg</small>
+            </article>
+            
+            <article class="card test_neg">
+              <img src="thumbnails/test_neg_006096.jpg" alt="ALYPKACHEV_ABDULALIM_2016-41985_60118326_126f3ecbcf">
+              <div class="meta">
+                <strong>test_neg</strong><span>mid</span><span>highest_negative_scores</span>
+              </div>
+              <div class="score">cal 0.674<span>raw 0.150</span></div>
+              <p title="ALYPKACHEV_ABDULALIM_2016-41985_60118326_126f3ecbcf">ALYPKACHEV_ABDULALIM_2016-41985_60118326_126f3ecbcf</p>
+              <small title="photos/Mid quality/ALYPKACHEV_ABDULALIM_2016-41985_60118326_126f3ecbcf.jpg">photos/Mid quality/ALYPKACHEV_ABDULALIM_2016-41985_60118326_126f3ecbcf.jpg</small>
+            </article>
+            
+            <article class="card test_neg">
+              <img src="thumbnails/test_neg_007473.jpg" alt="JABBERZEUS_SUBJECTS_330f3ba9-f601-4daf-b56c-13da8dd6ff14_1_678fea855b">
+              <div class="meta">
+                <strong>test_neg</strong><span>mid</span><span>random</span>
+              </div>
+              <div class="score">cal 0.162<span>raw 0.035</span></div>
+              <p title="JABBERZEUS_SUBJECTS_330f3ba9-f601-4daf-b56c-13da8dd6ff14_1_678fea855b">JABBERZEUS_SUBJECTS_330f3ba9-f601-4daf-b56c-13da8dd6ff14_1_678fea855b</p>
+              <small title="photos/Mid quality/JABBERZEUS_SUBJECTS_330f3ba9-f601-4daf-b56c-13da8dd6ff14_1_678fea855b.jpg">photos/Mid quality/JABBERZEUS_SUBJECTS_330f3ba9-f601-4daf-b56c-13da8dd6ff14_1_678fea855b.jpg</small>
+            </article>
+            
+            <article class="card test_neg">
+              <img src="thumbnails/test_neg_007220.jpg" alt="GOTTIPARTHI_SRINIVAS_2014-74297_59671163_81a6249a71">
+              <div class="meta">
+                <strong>test_neg</strong><span>mid</span><span>random</span>
+              </div>
+              <div class="score">cal 0.036<span>raw -0.044</span></div>
+              <p title="GOTTIPARTHI_SRINIVAS_2014-74297_59671163_81a6249a71">GOTTIPARTHI_SRINIVAS_2014-74297_59671163_81a6249a71</p>
+              <small title="photos/Mid quality/GOTTIPARTHI_SRINIVAS_2014-74297_59671163_81a6249a71.jpg">photos/Mid quality/GOTTIPARTHI_SRINIVAS_2014-74297_59671163_81a6249a71.jpg</small>
+            </article>
+            
+            <article class="card test_pos">
+              <img src="thumbnails/test_pos_000828.jpg" alt="src_6864e873bb_008689_naurbaev_rustam_2016-64220_60197154_b9baf530c4_1cfb163bd5">
+              <div class="meta">
+                <strong>test_pos</strong><span>high</span><span>random</span>
+              </div>
+              <div class="score">cal 0.870<span>raw 0.207</span></div>
+              <p title="src_6864e873bb_008689_naurbaev_rustam_2016-64220_60197154_b9baf530c4_1cfb163bd5">src_6864e873bb_008689_naurbaev_rustam_2016-64220_60197154_b9baf530c4_1cfb163bd5</p>
+              <small title="photos/Best quality/src_6864e873bb_008689_naurbaev_rustam_2016-64220_60197154_b9baf530c4_1cfb163bd5.jpg">photos/Best quality/src_6864e873bb_008689_naurbaev_rustam_2016-64220_60197154_b9baf530c4_1cfb163bd5.jpg</small>
+            </article>
+            
+            <article class="card test_pos">
+              <img src="thumbnails/test_pos_007009.jpg" alt="GADJIALIEV_ARSLANBEK_2019-67091_61464901_77a64f1c09">
+              <div class="meta">
+                <strong>test_pos</strong><span>mid</span><span>random</span>
+              </div>
+              <div class="score">cal 0.844<span>raw 0.196</span></div>
+              <p title="GADJIALIEV_ARSLANBEK_2019-67091_61464901_77a64f1c09">GADJIALIEV_ARSLANBEK_2019-67091_61464901_77a64f1c09</p>
+              <small title="photos/Mid quality/GADJIALIEV_ARSLANBEK_2019-67091_61464901_77a64f1c09.jpg">photos/Mid quality/GADJIALIEV_ARSLANBEK_2019-67091_61464901_77a64f1c09.jpg</small>
+            </article>
+            
+    </section>
+  </main>
+</body>
+</html>

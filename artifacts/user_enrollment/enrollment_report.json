@@ -1,0 +1,262 @@
+{
+  "backup_previous_model_dir": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\model_semantic_backup_20260625_150020",
+  "calibration_threshold": 0.9922968745231628,
+  "negative_score_raw": {
+    "25%": -0.04623473808169365,
+    "50%": 0.0021893291268497705,
+    "75%": 0.05042113550007343,
+    "count": 4000.0,
+    "max": 0.30207687616348267,
+    "mean": 0.003485408378764987,
+    "min": -0.25820353627204895,
+    "std": 0.07290846109390259
+  },
+  "num_negative_embeddings": 4000,
+  "num_positive_embeddings": 16,
+  "operational_threshold": 0.85,
+  "operational_threshold_reason": "Chosen after user-profile enrollment: 0 FMR on 4000 sampled dataset negatives and more tolerance than the EER threshold from 16 augmented positives.",
+  "positive_rows": [
+    {
+      "bbox": [
+        176.75657653808594,
+        121.01345825195312,
+        361.57293701171875,
+        383.2540588378906
+      ],
+      "det_score": 0.8460642099380493,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-806e402e-3c05-41e3-8a4a-1a5636d10164.png",
+      "variant": "raw",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_00_raw.jpg"
+    },
+    {
+      "bbox": [
+        19.910310745239258,
+        162.66175842285156,
+        206.23338317871094,
+        443.3255310058594
+      ],
+      "det_score": 0.8448386788368225,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-806e402e-3c05-41e3-8a4a-1a5636d10164.png",
+      "variant": "face_white",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_00_face_white.jpg"
+    },
+    {
+      "bbox": [
+        19.737537384033203,
+        162.7044677734375,
+        206.29086303710938,
+        443.3851318359375
+      ],
+      "det_score": 0.8449534177780151,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-806e402e-3c05-41e3-8a4a-1a5636d10164.png",
+      "variant": "face_white_bright",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_00_face_white_bright.jpg"
+    },
+    {
+      "bbox": [
+        20.00104331970215,
+        162.6495361328125,
+        206.1761932373047,
+        443.1335754394531
+      ],
+      "det_score": 0.8448954820632935,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-806e402e-3c05-41e3-8a4a-1a5636d10164.png",
+      "variant": "face_white_dim",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_00_face_white_dim.jpg"
+    },
+    {
+      "bbox": [
+        21.83339500427246,
+        163.68821716308594,
+        208.8477020263672,
+        443.0029602050781
+      ],
+      "det_score": 0.8381843566894531,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-806e402e-3c05-41e3-8a4a-1a5636d10164.png",
+      "variant": "face_white_rot_neg2",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_00_face_white_rot_neg2.jpg"
+    },
+    {
+      "bbox": [
+        16.10628318786621,
+        162.0484161376953,
+        203.91856384277344,
+        442.9759826660156
+      ],
+      "det_score": 0.8544291257858276,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-806e402e-3c05-41e3-8a4a-1a5636d10164.png",
+      "variant": "face_white_rot_pos2",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_00_face_white_rot_pos2.jpg"
+    },
+    {
+      "bbox": [
+        24.101266860961914,
+        161.62722778320312,
+        210.00770568847656,
+        443.1614990234375
+      ],
+      "det_score": 0.8389390707015991,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-806e402e-3c05-41e3-8a4a-1a5636d10164.png",
+      "variant": "face_white_rot_neg4",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_00_face_white_rot_neg4.jpg"
+    },
+    {
+      "bbox": [
+        12.69932746887207,
+        163.43508911132812,
+        201.89596557617188,
+        443.31341552734375
+      ],
+      "det_score": 0.8605782985687256,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-806e402e-3c05-41e3-8a4a-1a5636d10164.png",
+      "variant": "face_white_rot_pos4",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_00_face_white_rot_pos4.jpg"
+    },
+    {
+      "bbox": [
+        170.68592834472656,
+        92.09502410888672,
+        339.9016418457031,
+        328.61199951171875
+      ],
+      "det_score": 0.8879091143608093,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-5a38dfbc-b5bc-4e51-92fe-8773dc88c53a.png",
+      "variant": "raw",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_01_raw.jpg"
+    },
+    {
+      "bbox": [
+        21.316904067993164,
+        162.92359924316406,
+        185.68772888183594,
+        393.0076599121094
+      ],
+      "det_score": 0.8167759776115417,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-5a38dfbc-b5bc-4e51-92fe-8773dc88c53a.png",
+      "variant": "face_white",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_01_face_white.jpg"
+    },
+    {
+      "bbox": [
+        21.382131576538086,
+        162.91554260253906,
+        185.51426696777344,
+        393.346923828125
+      ],
+      "det_score": 0.818160891532898,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-5a38dfbc-b5bc-4e51-92fe-8773dc88c53a.png",
+      "variant": "face_white_bright",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_01_face_white_bright.jpg"
+    },
+    {
+      "bbox": [
+        21.312822341918945,
+        162.85183715820312,
+        185.6310272216797,
+        393.0446472167969
+      ],
+      "det_score": 0.8168414831161499,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-5a38dfbc-b5bc-4e51-92fe-8773dc88c53a.png",
+      "variant": "face_white_dim",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_01_face_white_dim.jpg"
+    },
+    {
+      "bbox": [
+        24.27003288269043,
+        162.6210174560547,
+        186.71107482910156,
+        390.3697814941406
+      ],
+      "det_score": 0.805345356464386,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-5a38dfbc-b5bc-4e51-92fe-8773dc88c53a.png",
+      "variant": "face_white_rot_neg2",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_01_face_white_rot_neg2.jpg"
+    },
+    {
+      "bbox": [
+        19.182235717773438,
+        163.2104949951172,
+        184.0434112548828,
+        392.5053405761719
+      ],
+      "det_score": 0.8287935256958008,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-5a38dfbc-b5bc-4e51-92fe-8773dc88c53a.png",
+      "variant": "face_white_rot_pos2",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_01_face_white_rot_pos2.jpg"
+    },
+    {
+      "bbox": [
+        25.368106842041016,
+        162.68446350097656,
+        189.34400939941406,
+        389.3589172363281
+      ],
+      "det_score": 0.8159071207046509,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-5a38dfbc-b5bc-4e51-92fe-8773dc88c53a.png",
+      "variant": "face_white_rot_neg4",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_01_face_white_rot_neg4.jpg"
+    },
+    {
+      "bbox": [
+        17.581981658935547,
+        164.59144592285156,
+        182.41419982910156,
+        391.3574523925781
+      ],
+      "det_score": 0.8379057049751282,
+      "source": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-5a38dfbc-b5bc-4e51-92fe-8773dc88c53a.png",
+      "variant": "face_white_rot_pos4",
+      "variant_path": "C:\\Users\\Henrique Lima\\Desktop\\Reposit\u00f3rios\\ia-usp-jailer\\artifacts\\user_enrollment\\enroll_01_face_white_rot_pos4.jpg"
+    }
+  ],
+  "positive_score_raw": {
+    "25%": 0.9794828444719315,
+    "50%": 0.9810830652713776,
+    "75%": 0.9825081080198288,
+    "count": 16.0,
+    "max": 0.9841111302375793,
+    "mean": 0.9786084890365601,
+    "min": 0.9541981220245361,
+    "std": 0.007849804125726223
+  },
+  "prompt_scores": [
+    {
+      "accepted": true,
+      "image": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-806e402e-3c05-41e3-8a4a-1a5636d10164.png",
+      "score_raw": 0.9541981816291809,
+      "similarity_percent": 99.22968745231628,
+      "threshold_percent": 85.0,
+      "variant": "raw"
+    },
+    {
+      "accepted": true,
+      "image": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-806e402e-3c05-41e3-8a4a-1a5636d10164.png",
+      "score_raw": 0.9813324809074402,
+      "similarity_percent": 99.42428469657898,
+      "threshold_percent": 85.0,
+      "variant": "face_white"
+    },
+    {
+      "accepted": true,
+      "image": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-5a38dfbc-b5bc-4e51-92fe-8773dc88c53a.png",
+      "score_raw": 0.9652933478355408,
+      "similarity_percent": 99.31610822677612,
+      "threshold_percent": 85.0,
+      "variant": "raw"
+    },
+    {
+      "accepted": true,
+      "image": "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-5a38dfbc-b5bc-4e51-92fe-8773dc88c53a.png",
+      "score_raw": 0.9841110706329346,
+      "similarity_percent": 99.44122433662415,
+      "threshold_percent": 85.0,
+      "variant": "face_white"
+    }
+  ],
+  "purpose": "local_user_identity_profile_from_prompt_enrollment_images",
+  "source_images": [
+    "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-806e402e-3c05-41e3-8a4a-1a5636d10164.png",
+    "C:\\Users\\Henrique Lima\\AppData\\Local\\Temp\\codex-clipboard-5a38dfbc-b5bc-4e51-92fe-8773dc88c53a.png"
+  ],
+  "trained_at": "2026-06-25T15:00:29"
+}

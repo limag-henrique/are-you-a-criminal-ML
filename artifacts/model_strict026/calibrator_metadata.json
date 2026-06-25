@@ -1,0 +1,10 @@
+{
+  "coef": [
+    20.569169998168945
+  ],
+  "intercept": [
+    -2.483541250228882
+  ],
+  "method": "logistic_regression",
+  "threshold": 0.4956517219543457
+}

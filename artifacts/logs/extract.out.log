@@ -1,0 +1,11 @@
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: C:\Users\Henrique Lima/.insightface\models\buffalo_s\1k3d68.onnx landmark_3d_68
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: C:\Users\Henrique Lima/.insightface\models\buffalo_s\2d106det.onnx landmark_2d_106
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: C:\Users\Henrique Lima/.insightface\models\buffalo_s\det_500m.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: C:\Users\Henrique Lima/.insightface\models\buffalo_s\genderage.onnx genderage
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: C:\Users\Henrique Lima/.insightface\models\buffalo_s\w600k_mbf.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (320, 320)
