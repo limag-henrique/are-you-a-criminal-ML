@@ -16,6 +16,7 @@ class FaceEmbedding:
     bbox: tuple[float, float, float, float]
     det_score: float
     aligned_bgr: np.ndarray | None = None
+    face_count: int = 1
 
 
 class ArcFaceEmbedder:
@@ -71,7 +72,7 @@ class ArcFaceEmbedder:
 
         bbox = tuple(float(v) for v in face.bbox)
         score = float(getattr(face, "det_score", 0.0))
-        return FaceEmbedding(l2_normalize(np.asarray(embedding, dtype=np.float32)), bbox, score, aligned)
+        return FaceEmbedding(l2_normalize(np.asarray(embedding, dtype=np.float32)), bbox, score, aligned, len(faces))
 
 
 def _bbox_area(bbox: np.ndarray) -> float:

@@ -136,6 +136,40 @@ HTML = """<!doctype html>
       color: rgba(255, 255, 255, 0.74);
       font-size: 15px;
     }
+    .details {
+      min-height: 42px;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .reference {
+      display: none;
+      grid-template-columns: 74px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      min-height: 88px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .reference img {
+      width: 74px;
+      height: 88px;
+      display: block;
+      object-fit: cover;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+    }
+    .reference strong {
+      display: block;
+      overflow: hidden;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 650;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     .bar {
       height: 10px;
       overflow: hidden;
@@ -216,13 +250,18 @@ HTML = """<!doctype html>
       </div>
       <div class="panel">
         <div>
-          <h1>Similaridade</h1>
-          <p class="sub">Comparacao local com a galeria de procurados.</p>
+          <h1>Similaridade facial</h1>
+          <p class="sub">Comparacao local com imagens de referencia.</p>
         </div>
         <div class="score" aria-live="polite">
           <div id="number" class="number">--%</div>
           <div class="bar"><div id="fill" class="fill"></div></div>
           <div id="label" class="label">Aguardando camera.</div>
+          <div id="details" class="details"></div>
+          <div id="reference" class="reference">
+            <img id="referenceImage" alt="Referencia mais proxima">
+            <div id="referenceMeta"></div>
+          </div>
         </div>
         <div class="actions">
           <div class="actions-row">
@@ -248,6 +287,10 @@ HTML = """<!doctype html>
     const number = document.getElementById("number");
     const fill = document.getElementById("fill");
     const label = document.getElementById("label");
+    const details = document.getElementById("details");
+    const reference = document.getElementById("reference");
+    const referenceImage = document.getElementById("referenceImage");
+    const referenceMeta = document.getElementById("referenceMeta");
     const empty = document.getElementById("empty");
 
     let running = false;
@@ -255,6 +298,7 @@ HTML = """<!doctype html>
     let intervalId = null;
     let previewFrameId = null;
     let lastFace = null;
+    let referenceSrc = "";
 
     function setScore(value, text) {
       if (Number.isFinite(value)) {
@@ -269,6 +313,59 @@ HTML = """<!doctype html>
       number.textContent = "--%";
       fill.style.width = "0%";
       label.textContent = text;
+      details.textContent = "";
+      reference.style.display = "none";
+      referenceImage.removeAttribute("src");
+      referenceMeta.textContent = "";
+      referenceSrc = "";
+    }
+
+    function updateDetails(data) {
+      const nearest = data.nearest || {};
+      const subject = nearest.subject_id || "referencia";
+      const cosine = Number(nearest.cosine);
+      const fmr = Number(data.estimated_false_match_rate);
+      const parts = [];
+      if (Number.isFinite(cosine)) parts.push(`Mais proximo: ${subject} | cosine ${cosine.toFixed(4)}`);
+      if (Number.isFinite(fmr)) parts.push(`FMR estimado: ${(fmr * 100).toFixed(3)}%`);
+      if (data.reference_image_match) parts.push("Imagem praticamente identica a uma referencia local.");
+      if (Array.isArray(data.warnings) && data.warnings.length) parts.push(data.warnings[0]);
+      details.textContent = parts.join(" | ");
+    }
+
+    function updateReference(data) {
+      const nearest = data.nearest || {};
+      if (!nearest.image_url) {
+        reference.style.display = "none";
+        referenceImage.removeAttribute("src");
+        referenceMeta.textContent = "";
+        referenceSrc = "";
+        return;
+      }
+      if (referenceSrc !== nearest.image_url) {
+        referenceImage.src = nearest.image_url;
+        referenceSrc = nearest.image_url;
+      }
+      const cosine = Number(nearest.cosine);
+      const similarity = Number(nearest.similarity_percent);
+      const fmr = Number(data.estimated_false_match_rate);
+      const subject = nearest.subject_id || "referencia";
+      const meta = [];
+      if (Number.isFinite(similarity)) meta.push(`${similarity.toFixed(1)}% visual`);
+      if (Number.isFinite(cosine)) meta.push(`COSIM ${cosine.toFixed(4)}`);
+      if (Number.isFinite(fmr)) meta.push(`FMR ${(fmr * 100).toFixed(3)}%`);
+      referenceMeta.innerHTML = `<strong>${escapeHtml(subject)}</strong>${escapeHtml(meta.join(" | "))}`;
+      reference.style.display = "grid";
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[char]);
     }
 
     function syncCanvasSize(target, width, height) {
@@ -358,13 +455,19 @@ HTML = """<!doctype html>
         if (data.ok) {
           updateFace(data, canvas.width, canvas.height);
           if (!mirrorPreview) drawServerPreview(data.preview_jpeg, false);
-          setScore(data.similarity_percent, data.accepted ? "Semelhanca visual forte na galeria." : "Sem correspondencia forte na galeria.");
+          setScore(data.similarity_percent, data.accepted ? "Similaridade visual forte nas referencias." : "Sem correspondencia visual forte.");
+          updateDetails(data);
+          updateReference(data);
         } else {
           drawWhitePreview();
           setScore(NaN, data.error || "Nenhum rosto detectado.");
+          details.textContent = "";
+          updateReference({});
         }
       } catch (err) {
         setScore(NaN, "Nao foi possivel calcular agora.");
+        details.textContent = "";
+        updateReference({});
       } finally {
         busy = false;
       }
@@ -503,6 +606,7 @@ class GallerySimilarityScorer:
         det_size: int,
         gallery_splits: tuple[str, ...] | None = None,
         calibration_sample: int = 1800,
+        top_matches: int = 5,
     ) -> None:
         self.features_path = features_path
         self.embeddings_path = embeddings_path
@@ -510,6 +614,7 @@ class GallerySimilarityScorer:
         self.ctx_id = ctx_id
         self.det_size = det_size
         self.gallery_splits = gallery_splits
+        self.top_matches = max(1, int(top_matches))
         self._embedder = None
         self._lock = threading.Lock()
 
@@ -532,6 +637,8 @@ class GallerySimilarityScorer:
         self.gallery_count = int(gallery_embeddings.shape[0])
         self.calibration_quantiles = self._calibrate_impostor_distribution(max(64, calibration_sample))
         self.threshold_percent = 85.0
+        self.min_det_score = 0.45
+        self.min_face_area_ratio = 0.015
 
     def score_jpeg(self, payload: bytes) -> dict[str, object]:
         image = cv2.imdecode(np.frombuffer(payload, dtype=np.uint8), cv2.IMREAD_COLOR)
@@ -542,16 +649,25 @@ class GallerySimilarityScorer:
                 result = self._get_embedder().extract_bgr(image)
                 score = self.score_embedding(result.embedding)
                 filtered_preview = white_face_filter_bgr(image, result.bbox)
+                warnings = self._quality_warnings(image.shape[:2], result)
             return {
                 "ok": True,
                 "score_raw": score["best_cosine"],
                 "score": score["best_cosine"],
                 "similarity_percent": score["similarity_percent"],
                 "percentile_rank": score["percentile_rank"],
+                "impostor_percentile": score["percentile_rank"],
+                "estimated_false_match_rate": score["estimated_false_match_rate"],
                 "threshold_percent": self.threshold_percent,
                 "accepted": bool(score["similarity_percent"] >= self.threshold_percent),
+                "decision": "strong_visual_match"
+                if score["similarity_percent"] >= self.threshold_percent
+                else "no_strong_visual_match",
+                "reference_image_match": bool(score["best_cosine"] >= 0.999),
                 "det_score": float(result.det_score),
                 "source_det_score": float(result.det_score),
+                "face_count": int(result.face_count),
+                "warnings": warnings,
                 "score_filter_applied": False,
                 "face_box": [float(value) for value in result.bbox],
                 "frame_width": int(image.shape[1]),
@@ -559,6 +675,7 @@ class GallerySimilarityScorer:
                 "preview_jpeg": encode_preview_jpeg(filtered_preview),
                 "gallery_count": self.gallery_count,
                 "nearest": score["nearest"],
+                "top_matches": score["top_matches"],
             }
         except Exception as exc:
             return {"ok": False, "error": str(exc)}
@@ -567,22 +684,89 @@ class GallerySimilarityScorer:
         query = np.asarray(embedding, dtype=np.float32).reshape(-1)
         query = query / max(float(np.linalg.norm(query)), 1e-12)
         similarities = self.gallery_embeddings @ query
-        best_index = int(np.argmax(similarities))
+        top_n = min(self.top_matches, similarities.shape[0])
+        top_indices = np.argpartition(similarities, -top_n)[-top_n:]
+        top_indices = top_indices[np.argsort(similarities[top_indices])[::-1]]
+        best_index = int(top_indices[0])
         best = float(similarities[best_index])
-        row = self.gallery.iloc[best_index]
+        top_matches = [self._match_payload(int(index), float(similarities[index])) for index in top_indices]
         percentile_rank = float(np.mean(self.impostor_max_scores <= best) * 100.0)
+        estimated_false_match_rate = float(np.mean(self.impostor_max_scores >= best))
         return {
             "best_cosine": best,
             "similarity_percent": self._display_percent(best),
             "percentile_rank": percentile_rank,
-            "nearest": {
-                "path": str(row.get("path", "")),
-                "subject_id": str(row.get("subject_id", "")),
-                "quality": str(row.get("quality", "")),
-                "split": str(row.get("split", "")),
-                "cosine": best,
-            },
+            "estimated_false_match_rate": estimated_false_match_rate,
+            "nearest": top_matches[0],
+            "top_matches": top_matches,
         }
+
+    def _match_payload(self, index: int, cosine: float) -> dict[str, object]:
+        row = self.gallery.iloc[index]
+        return {
+            "match_id": index,
+            "path": str(row.get("path", "")),
+            "subject_id": str(row.get("subject_id", "")),
+            "quality": str(row.get("quality", "")),
+            "split": str(row.get("split", "")),
+            "cosine": cosine,
+            "similarity_percent": self._display_percent(cosine),
+            "image_url": f"/api/reference/{index}",
+        }
+
+    def reference_image_bytes(self, match_id: int, max_side: int = 720) -> bytes | None:
+        if match_id < 0 or match_id >= len(self.gallery):
+            return None
+        image_path = self._reference_image_path(match_id)
+        if image_path is None:
+            return None
+        try:
+            data = np.fromfile(str(image_path), dtype=np.uint8)
+        except OSError:
+            return None
+        image = cv2.imdecode(data, cv2.IMREAD_COLOR)
+        if image is None:
+            return None
+        height, width = image.shape[:2]
+        scale = min(1.0, float(max_side) / max(height, width, 1))
+        if scale < 1.0:
+            image = cv2.resize(
+                image,
+                (max(1, int(round(width * scale))), max(1, int(round(height * scale)))),
+                interpolation=cv2.INTER_AREA,
+            )
+        ok, encoded = cv2.imencode(".jpg", image, [int(cv2.IMWRITE_JPEG_QUALITY), 88])
+        return encoded.tobytes() if ok else None
+
+    def _reference_image_path(self, match_id: int) -> Path | None:
+        row = self.gallery.iloc[match_id]
+        for column in ("resolved_path", "path", "aligned_path"):
+            value = row.get(column, "")
+            if pd.isna(value):
+                continue
+            text = str(value).strip()
+            if not text:
+                continue
+            candidate = Path(text)
+            if not candidate.is_absolute():
+                candidate = Path.cwd() / candidate
+            if candidate.is_file():
+                return candidate
+        return None
+
+    def _quality_warnings(self, image_shape: tuple[int, int], result) -> list[str]:
+        height, width = image_shape
+        x1, y1, x2, y2 = [float(value) for value in result.bbox]
+        face_area = max(0.0, x2 - x1) * max(0.0, y2 - y1)
+        image_area = max(1.0, float(height * width))
+        warnings: list[str] = []
+        if result.face_count > 1:
+            warnings.append("Mais de um rosto detectado; a comparacao usou o maior rosto.")
+        if result.det_score < self.min_det_score:
+            warnings.append("Deteccao facial fraca; a pontuacao pode ser instavel.")
+        if face_area / image_area < self.min_face_area_ratio:
+            warnings.append("Rosto pequeno na imagem; envie um recorte frontal mais nitido.")
+        return warnings
 
     def _calibrate_impostor_distribution(self, calibration_sample: int) -> dict[str, float]:
         rng = np.random.default_rng(42)
@@ -948,6 +1132,22 @@ class AppHandler(BaseHTTPRequestHandler):
         if path in {"/", "/index.html"}:
             self._send(200, HTML.encode("utf-8"), "text/html; charset=utf-8")
             return
+        if path.startswith("/api/reference/"):
+            try:
+                match_id = int(path.rsplit("/", 1)[-1])
+            except ValueError:
+                self._send(400, b"Invalid reference id", "text/plain; charset=utf-8")
+                return
+            image_getter = getattr(self.scorer, "reference_image_bytes", None)
+            if image_getter is None:
+                self._send(404, b"Reference image unavailable", "text/plain; charset=utf-8")
+                return
+            image_bytes = image_getter(match_id)
+            if image_bytes is None:
+                self._send(404, b"Reference image not found", "text/plain; charset=utf-8")
+                return
+            self._send(200, image_bytes, "image/jpeg")
+            return
         if path == "/api/status":
             self._send_json(
                 {
@@ -962,6 +1162,7 @@ class AppHandler(BaseHTTPRequestHandler):
                     "det_size": getattr(self.scorer, "det_size", None),
                     "score_filter": getattr(self.scorer, "score_filter", False),
                     "gallery_count": getattr(self.scorer, "gallery_count", None),
+                    "top_matches": getattr(self.scorer, "top_matches", None),
                     "calibration_quantiles": getattr(self.scorer, "calibration_quantiles", None),
                 }
             )
@@ -1015,6 +1216,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model-name", default="buffalo_s")
     parser.add_argument("--ctx-id", type=int, default=-1)
     parser.add_argument("--det-size", type=int, default=320)
+    parser.add_argument("--top-matches", type=int, default=5, help="Number of nearest reference images returned.")
     parser.add_argument(
         "--enable-score-filter",
         dest="score_filter",
@@ -1055,6 +1257,7 @@ def main() -> int:
             args.ctx_id,
             args.det_size,
             gallery_splits=gallery_splits,
+            top_matches=args.top_matches,
         )
     server = ThreadingHTTPServer((args.host, args.port), AppHandler)
     print(f"App local em http://{args.host}:{args.port}")

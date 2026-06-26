@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+import cv2
 
 from face_profile_ml.metrics import binary_metrics
 from face_profile_ml.profile import FaceProfileModel
@@ -82,14 +83,22 @@ def test_gallery_similarity_uses_nearest_visual_neighbor(tmp_path) -> None:
     )
     embeddings_path = tmp_path / "embeddings.npy"
     np.save(embeddings_path, embeddings)
+    for name, value in {
+        "a.jpg": 40,
+        "b.jpg": 80,
+        "c.jpg": 120,
+        "d.jpg": 160,
+        "e.jpg": 200,
+    }.items():
+        cv2.imwrite(str(tmp_path / name), np.full((24, 20, 3), value, dtype=np.uint8))
     features_path = tmp_path / "features.csv"
     features_path.write_text(
         "path,subject_id,quality,split,embedding_index\n"
-        "a.jpg,a,high,profile,0\n"
-        "b.jpg,b,high,profile,1\n"
-        "c.jpg,c,high,profile,2\n"
-        "d.jpg,d,high,profile,3\n"
-        "e.jpg,e,high,profile,4\n",
+        f"{tmp_path / 'a.jpg'},a,high,profile,0\n"
+        f"{tmp_path / 'b.jpg'},b,high,profile,1\n"
+        f"{tmp_path / 'c.jpg'},c,high,profile,2\n"
+        f"{tmp_path / 'd.jpg'},d,high,profile,3\n"
+        f"{tmp_path / 'e.jpg'},e,high,profile,4\n",
         encoding="utf-8",
     )
 
@@ -99,3 +108,8 @@ def test_gallery_similarity_uses_nearest_visual_neighbor(tmp_path) -> None:
 
     assert near["nearest"]["subject_id"] in {"a", "b"}
     assert near["best_cosine"] > far["best_cosine"]
+    assert len(near["top_matches"]) == 5
+    assert 0.0 <= near["estimated_false_match_rate"] <= 1.0
+    assert near["nearest"]["cosine"] == near["best_cosine"]
+    assert near["nearest"]["image_url"].startswith("/api/reference/")
+    assert scorer.reference_image_bytes(near["nearest"]["match_id"]) is not None

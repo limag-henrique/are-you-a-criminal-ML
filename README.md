@@ -4,6 +4,18 @@ Projeto Python para modelagem de perfil facial usando embeddings pre-treinados.
 Ele nao faz fine-tuning de rede neural: a rede e usada apenas como extrator de
 embeddings, e o perfil e modelado com metodos classicos.
 
+## Objetivo operacional
+
+O sistema recebe uma imagem de rosto enviada pelo usuario, detecta/alinha o
+maior rosto, extrai um embedding facial normalizado e compara esse embedding
+com o conjunto local de imagens de referencia. A resposta operacional e uma
+pontuacao de similaridade visual, acompanhada dos candidatos mais proximos,
+cosine bruto, percentil contra impostores e estimativa de taxa de falso match.
+
+A pontuacao nao deve ser interpretada como prova de identidade nem como
+probabilidade absoluta. Quando a imagem enviada ja existe nas referencias, o
+resultado pode chegar a 100% por comparacao quase identica com a propria imagem.
+
 ## O que esta implementado
 
 - Leitura e validacao de `manifest.csv` com `path`, `subject_id`, `quality`,
@@ -18,44 +30,49 @@ embeddings, e o perfil e modelado com metodos classicos.
 - ROC, AUC, EER, FMR e FNMR.
 - Avaliacao separada por qualidade `high`, `mid` e `low`.
 - Demo em tempo real com OpenCV usando mediana de multiplos frames.
+- Aplicativo local de similaridade por galeria com top-k candidatos, imagem da
+  referencia mais proxima, COSIM, FMR estimado, avisos de qualidade e marcacao
+  de imagem de referencia quase identica.
 - Persistencia em `.pkl`, `.npy` e `.json`.
 
-## Instalacao
+## Como executar
 
 Use Python 3.10, 3.11 ou 3.12. O backend `insightface` ainda costuma ter
 suporte irregular em Python 3.13+.
 
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -e ".[arcface]"
+Como este repositorio ja inclui os modelos treinados e configurados em
+`artifacts/model`, nao e necessario rodar o pipeline de treinamento para usar a
+aplicacao local.
+
+### 1. Primeira execucao
+
+Use este comando se voce nunca rodou o projeto nesta maquina. Ele cria o
+ambiente virtual, instala as dependencias e inicia o aplicativo web local.
+
+```powershell
+python -m venv .venv; .\.venv\Scripts\python.exe -m pip install --upgrade pip; .\.venv\Scripts\python.exe -m pip install -e ".[arcface]"; .\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8766
 ```
 
-Para GPU, instale o extra e garanta que o runtime CUDA esteja correto:
+### 2. Projeto ja instalado
 
-```bash
-pip install -e ".[gpu]"
+Use este comando se o ambiente virtual e as dependencias ja foram instalados.
+
+```powershell
+.\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8766
+```
+
+Apos iniciar, acesse `http://127.0.0.1:8766` no navegador e permita o uso da
+camera.
+
+Para GPU, instale o extra manualmente e garanta que o runtime CUDA esteja
+correto:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e ".[gpu]"
 ```
 
 Em Python 3.13+, o pacote principal instala, mas a extracao ArcFace dependera
 de o ecossistema InsightFace/ONNX Runtime publicar wheels compativeis.
-
-## 🚀 Quick Start (Uso Direto)
-
-Como este repositório já inclui os **modelos treinados e configurados** na pasta `artifacts/model`, você **não precisa** rodar o longo processo de treinamento e extração. Após instalar as dependências (veja acima), basta executar um único comando no terminal:
-
-**Opção 1: Aplicativo Web Local (Mais amigável)**
-Abre uma interface no seu navegador usando a webcam:
-```bash
-python scripts/serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8766
-```
-> Após rodar o comando acima, acesse **http://127.0.0.1:8766** no seu navegador e permita o uso da câmera.
-
-**Opção 2: Demo em Janela Nativa (OpenCV)**
-Para testar direto numa janela desktop de vídeo:
-```bash
-face-profile demo --model-dir artifacts/model --camera 0 --frame-window 9 --model-name buffalo_s --det-size 320
-```
 
 ---
 
@@ -154,7 +171,6 @@ Use a auditoria para validar visualmente se `profile`, `calib_pos` e
 `test_pos` representam o perfil facial pretendido. Se o perfil alvo real for
 outro, ajuste `manifest.csv` com anotacao humana ou rode novamente
 `scripts/build_semantic_manifest.py` com thresholds diferentes e retreine.
-```
 
 ## Artefatos gerados
 
