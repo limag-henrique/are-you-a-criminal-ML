@@ -35,34 +35,71 @@ resultado pode chegar a 100% por comparacao quase identica com a propria imagem.
   de imagem de referencia quase identica.
 - Persistencia em `.pkl`, `.npy` e `.json`.
 
-## Como executar
+## Quick setup
 
 Use Python 3.10, 3.11 ou 3.12. O backend `insightface` ainda costuma ter
-suporte irregular em Python 3.13+.
+suporte irregular em Python 3.13+; portanto, nao use Python 3.13 para rodar a
+aplicacao com deteccao facial e ArcFace.
 
 Como este repositorio ja inclui os modelos treinados e configurados em
 `artifacts/model`, nao e necessario rodar o pipeline de treinamento para usar a
 aplicacao local.
 
-### 1. Primeira execucao
+### 1. Primeira execucao completa
 
-Use este comando se voce nunca rodou o projeto nesta maquina. Ele cria o
-ambiente virtual, instala as dependencias e inicia o aplicativo web local.
+Use estes passos se voce nunca rodou o projeto nesta maquina. Rode os comandos
+abaixo no PowerShell, dentro da pasta do projeto.
 
 ```powershell
-python -m venv .venv; .\.venv\Scripts\python.exe -m pip install --upgrade pip; .\.venv\Scripts\python.exe -m pip install -e ".[arcface]"; .\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8766
+python --version
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
+.\.venv\Scripts\python.exe -m pip install -e ".[arcface]"
+.\.venv\Scripts\python.exe -c "import insightface, onnxruntime; print('InsightFace e ONNX Runtime instalados com sucesso')"
+.\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8766
+```
+
+O comando `python --version` deve mostrar Python 3.10, 3.11 ou 3.12. Se ele
+mostrar Python 3.13 ou superior, instale uma versao suportada e crie o ambiente
+virtual com ela, por exemplo:
+
+```powershell
+py -3.12 -m venv .venv
 ```
 
 ### 2. Projeto ja instalado
 
-Use este comando se o ambiente virtual e as dependencias ja foram instalados.
+Use estes comandos se o ambiente virtual e as dependencias ja foram instalados.
 
 ```powershell
+.\.venv\Scripts\python.exe -c "import insightface, onnxruntime; print('Dependencias OK')"
 .\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8766
 ```
 
 Apos iniciar, acesse `http://127.0.0.1:8766` no navegador e permita o uso da
 camera.
+
+### Corrigindo erro do InsightFace
+
+Se aparecer a mensagem abaixo, o ambiente ativo nao tem o `insightface` e o
+`onnxruntime` instalados:
+
+```text
+InsightFace is required for detection/alignment/ArcFace embeddings. Install with: pip install insightface onnxruntime
+```
+
+Corrija rodando:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e ".[arcface]"
+.\.venv\Scripts\python.exe -c "import insightface, onnxruntime; print('InsightFace e ONNX Runtime instalados com sucesso')"
+.\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8766
+```
+
+Se o comando de instalacao falhar, confira primeiro a versao do Python com
+`python --version`. Em Python 3.13+, o extra `arcface` nao instala
+`insightface`/`onnxruntime` por causa das restricoes de compatibilidade do
+projeto.
 
 Para GPU, instale o extra manualmente e garanta que o runtime CUDA esteja
 correto:
