@@ -1,18 +1,18 @@
 {
   "effective_score_weights": {
-    "cos_mean": 0.45,
-    "mahalanobis": 0.0,
+    "cos_mean": 0.3888888888888889,
+    "mahalanobis": 0.22222222222222227,
     "ocsvm": 0.0,
-    "topk": 0.55
+    "topk": 0.3888888888888889
   },
   "embedding_dim": 512,
-  "mahalanobis_regularization": 0.2,
-  "num_profile_embeddings": 16,
+  "mahalanobis_regularization": 0.05,
+  "num_profile_embeddings": 750,
   "score_weights": {
-    "cos_mean": 0.45,
-    "mahalanobis": 0.0,
-    "ocsvm": 0.0,
-    "topk": 0.55
+    "cos_mean": 0.35,
+    "mahalanobis": 0.2,
+    "ocsvm": 0.1,
+    "topk": 0.35
   },
   "top_k": 5,
   "use_ocsvm": false

@@ -33,6 +33,8 @@ resultado pode chegar a 100% por comparacao quase identica com a propria imagem.
 - Aplicativo local de similaridade por galeria com top-k candidatos, imagem da
   referencia mais proxima, COSIM, FMR estimado, avisos de qualidade e marcacao
   de imagem de referencia quase identica.
+- Score visual de galeria que combina melhor vizinho, top-k ponderado,
+  densidade de referencias semelhantes, percentil impostor e distinctividade.
 - Persistencia em `.pkl`, `.npy` e `.json`.
 
 ## Quick setup
@@ -56,7 +58,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
 .\.venv\Scripts\python.exe -m pip install -e ".[arcface]"
 .\.venv\Scripts\python.exe -c "import insightface, onnxruntime; print('InsightFace e ONNX Runtime instalados com sucesso')"
-.\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8766
+.\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_l --det-size 320 --port 8766
 ```
 
 O comando `python --version` deve mostrar Python 3.10, 3.11 ou 3.12. Se ele
@@ -73,11 +75,104 @@ Use estes comandos se o ambiente virtual e as dependencias ja foram instalados.
 
 ```powershell
 .\.venv\Scripts\python.exe -c "import insightface, onnxruntime; print('Dependencias OK')"
-.\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8766
+.\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_l --det-size 320 --port 8766
 ```
 
 Apos iniciar, acesse `http://127.0.0.1:8766` no navegador e permita o uso da
 camera.
+
+### Como o score da galeria e calculado
+
+O app local usa o ArcFace/InsightFace somente para extrair embeddings L2
+normalizados. A comparacao por galeria calcula cosine similarity com todas as
+referencias e retorna campos separados:
+
+- `best_cosine` e `best_match_similarity_percent`: similaridade da referencia
+  mais proxima.
+- `similarity_percent` / `overall_gallery_similarity_percent`: score visual
+  final de 0 a 100, combinando melhor match, top-k ponderado, densidade de
+  referencias acima dos limiares e percentil contra impostores.
+- `raw_scores`: cosines brutos de melhor match, media top-k e top-k ponderado.
+- `threshold_counts`: quantidade de referencias acima de `low`, `medium`,
+  `high`, `very_high` e `near_duplicate`, contada por grupos de duplicatas
+  proximas para nao inflar densidade com copias da mesma referencia.
+- `percentile_rank` e `estimated_false_match_rate`: estimativas relativas a
+  distribuicao impostora amostrada na propria galeria.
+- `distinctiveness_percent` / `uniqueness_percent`: quao pouco denso e o
+  entorno do rosto na galeria; rostos parecidos com muitas referencias tendem a
+  ter menor distinctividade.
+
+O score nao e prova de identidade nem probabilidade absoluta. Uma imagem quase
+identica a uma referencia local pode chegar perto de 100%, mas o retorno marca
+`reference_image_match=true` e inclui um aviso de possivel duplicata.
+
+### Arquitetura de matching consentido
+
+O fluxo operacional e:
+
+1. manter apenas imagens autorizadas no `manifest.csv`;
+2. carregar cada imagem com correcao de orientacao EXIF;
+3. detectar faces com InsightFace, rejeitando referencias com deteccao fraca,
+   rosto pequeno ou multiplas faces quando `--allow-multiple-faces` nao for usado;
+4. alinhar pela geometria facial do proprio InsightFace e extrair embedding
+   ArcFace L2-normalizado;
+5. calcular cosine similarity entre o upload e todos os embeddings locais;
+6. retornar somente similaridade contra referencias conhecidas, top-k
+   candidatos, percentil, FMR estimado e avisos de qualidade.
+
+O modelo padrao e `buffalo_l`, que usa detector SCRFD e reconhecimento ArcFace
+512-D. Ele e mais pesado que `buffalo_s`, mas e a escolha padrao para a galeria
+porque reduz variancia de deteccao/alinhamento e melhora robustez em imagens
+com pose, iluminacao e qualidade diferentes. O modelo nao e fine-tuned neste
+projeto.
+
+### Formula do score visual
+
+`similarity_percent` e uma escala interpretavel, nao uma probabilidade. Ela
+combina:
+
+- melhor cosine individual;
+- cosine medio do top-k e top-k ponderado;
+- densidade de referencias acima dos limiares configurados;
+- percentil contra a distribuicao impostora local, excluindo duplicatas quase
+  identicas quando possivel.
+
+Campos separados deixam claro o significado operacional:
+
+- `best_match_similarity_percent`: quao forte e o candidato mais proximo.
+- `overall_gallery_similarity_percent`: quao parecido o upload e com a galeria
+  como um todo.
+- `distinctiveness_percent`: quao pouco denso e o entorno facial na galeria.
+- `estimated_false_match_rate`: fracao de comparacoes impostoras de calibracao
+  com score igual ou maior que o melhor cosine.
+
+Os limiares de cosine podem ser ajustados no app:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\serve_similarity_app.py ^
+  --model-dir artifacts/model ^
+  --model-name buffalo_l ^
+  --det-size 320 ^
+  --similarity-thresholds low=0.30,medium=0.40,high=0.55,very_high=0.70,near_duplicate=0.985
+```
+
+### Limiares, privacidade e limitacoes
+
+Os limiares padrao foram escolhidos para separar baixa, media, alta,
+muito alta e quase duplicata em embeddings ArcFace normalizados. Ajuste esses
+valores com validacao local se a galeria mudar de dominio, camera, qualidade ou
+populacao. Lookalikes podem receber score moderado ou alto quando muitos
+candidatos ficam acima dos limiares, mas isso nao deve ser tratado como prova
+de identidade.
+
+Salvaguardas esperadas para uso real:
+
+- usar somente imagens coletadas com autorizacao e finalidade documentada;
+- manter a galeria local protegida e auditar quem adiciona/remove referencias;
+- nao enviar imagens ou embeddings para servicos externos durante o matching;
+- expor resultado como similaridade visual entre referencias conhecidas, nunca
+  como identificacao absoluta;
+- remover imagens/embeddings quando o consentimento expirar ou for revogado.
 
 ### Corrigindo erro do InsightFace
 
@@ -93,7 +188,7 @@ Corrija rodando:
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -e ".[arcface]"
 .\.venv\Scripts\python.exe -c "import insightface, onnxruntime; print('InsightFace e ONNX Runtime instalados com sucesso')"
-.\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_s --det-size 320 --port 8766
+.\.venv\Scripts\python.exe scripts\serve_similarity_app.py --model-dir artifacts/model --model-name buffalo_l --det-size 320 --port 8766
 ```
 
 Se o comando de instalacao falhar, confira primeiro a versao do Python com
@@ -146,8 +241,10 @@ face-profile extract ^
   --manifest manifest.csv ^
   --out-dir artifacts ^
   --save-aligned ^
-  --model-name buffalo_s ^
-  --det-size 320
+  --model-name buffalo_l ^
+  --det-size 320 ^
+  --min-det-score 0.50 ^
+  --min-face-area-ratio 0.01
 ```
 
 Treinar o perfil:

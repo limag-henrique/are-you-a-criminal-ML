@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import sys
+import warnings
 from pathlib import Path
 
 import cv2
@@ -32,7 +34,10 @@ def build_parser() -> argparse.ArgumentParser:
     extract.add_argument("--out-dir", default="artifacts")
     extract.add_argument("--model-name", default="buffalo_l")
     extract.add_argument("--ctx-id", type=int, default=-1)
-    extract.add_argument("--det-size", type=int, default=640)
+    extract.add_argument("--det-size", type=int, default=320)
+    extract.add_argument("--min-det-score", type=float, default=0.50)
+    extract.add_argument("--min-face-area-ratio", type=float, default=0.01)
+    extract.add_argument("--allow-multiple-faces", action="store_true")
     extract.add_argument("--save-aligned", action="store_true")
     extract.set_defaults(func=cmd_extract)
 
@@ -67,7 +72,7 @@ def build_parser() -> argparse.ArgumentParser:
     demo.add_argument("--frame-window", type=int, default=9)
     demo.add_argument("--model-name", default="buffalo_l")
     demo.add_argument("--ctx-id", type=int, default=-1)
-    demo.add_argument("--det-size", type=int, default=640)
+    demo.add_argument("--det-size", type=int, default=320)
     demo.set_defaults(func=cmd_demo)
     return parser
 
@@ -78,6 +83,7 @@ def add_feature_args(parser: argparse.ArgumentParser) -> None:
 
 
 def cmd_extract(args: argparse.Namespace) -> int:
+    warnings.filterwarnings("ignore", message="`estimate` is deprecated.*", category=FutureWarning)
     out_dir = ensure_dir(args.out_dir)
     aligned_dir = ensure_dir(out_dir / "aligned") if args.save_aligned else None
     manifest = read_manifest(args.manifest, root_dir=args.root_dir)
@@ -85,11 +91,15 @@ def cmd_extract(args: argparse.Namespace) -> int:
 
     embeddings: list[np.ndarray] = []
     rows: list[dict[str, object]] = []
-    for _, row in tqdm(manifest.iterrows(), total=len(manifest), desc="extract"):
+    for _, row in tqdm(manifest.iterrows(), total=len(manifest), desc="extract", disable=not sys.stderr.isatty()):
         record = row.to_dict()
         record["embedding_index"] = -1
         record["embedding_status"] = "not_attempted"
         record["det_score"] = np.nan
+        record["face_count"] = 0
+        record["face_area_ratio"] = np.nan
+        record["image_width"] = np.nan
+        record["image_height"] = np.nan
         record["bbox_x1"] = np.nan
         record["bbox_y1"] = np.nan
         record["bbox_x2"] = np.nan
@@ -99,9 +109,20 @@ def cmd_extract(args: argparse.Namespace) -> int:
             if not bool(row["exists"]):
                 raise FileNotFoundError(row["resolved_path"])
             result = embedder.extract_path(row["resolved_path"], return_aligned=args.save_aligned)
+            if result.det_score < float(args.min_det_score):
+                raise ValueError(f"Face detection score below threshold: {result.det_score:.4f}")
+            face_area_ratio = result.face_area_ratio
+            if face_area_ratio is not None and face_area_ratio < float(args.min_face_area_ratio):
+                raise ValueError(f"Face area ratio below threshold: {face_area_ratio:.6f}")
+            if result.face_count > 1 and not bool(args.allow_multiple_faces):
+                raise ValueError(f"Multiple faces detected: {result.face_count}")
             record["embedding_index"] = len(embeddings)
             record["embedding_status"] = "ok"
             record["det_score"] = result.det_score
+            record["face_count"] = result.face_count
+            record["face_area_ratio"] = np.nan if face_area_ratio is None else face_area_ratio
+            if result.image_shape is not None:
+                record["image_height"], record["image_width"] = result.image_shape
             record["bbox_x1"], record["bbox_y1"], record["bbox_x2"], record["bbox_y2"] = result.bbox
             if aligned_dir is not None and result.aligned_bgr is not None:
                 aligned_path = aligned_dir / f"{int(row['row_id']):06d}_{Path(row['resolved_path']).stem}.jpg"
@@ -115,7 +136,21 @@ def cmd_extract(args: argparse.Namespace) -> int:
     matrix = np.vstack(embeddings).astype(np.float32) if embeddings else np.empty((0, 0), dtype=np.float32)
     np.save(out_dir / "embeddings.npy", matrix)
     pd.DataFrame(rows).to_csv(out_dir / "embedding_manifest.csv", index=False)
-    write_json(out_dir / "extract_metadata.json", {"num_rows": len(rows), "num_embeddings": int(matrix.shape[0])})
+    write_json(
+        out_dir / "extract_metadata.json",
+        {
+            "num_rows": len(rows),
+            "num_embeddings": int(matrix.shape[0]),
+            "embedding_dim": int(matrix.shape[1]) if matrix.ndim == 2 and matrix.shape[0] else 0,
+            "model_name": args.model_name,
+            "ctx_id": args.ctx_id,
+            "det_size": args.det_size,
+            "min_det_score": args.min_det_score,
+            "min_face_area_ratio": args.min_face_area_ratio,
+            "allow_multiple_faces": bool(args.allow_multiple_faces),
+            "save_aligned": bool(args.save_aligned),
+        },
+    )
     return 0
 
 
@@ -253,4 +288,3 @@ def score_feature_table(model: FaceProfileModel, table: pd.DataFrame, embeddings
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

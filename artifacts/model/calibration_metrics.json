@@ -1,32 +1,30 @@
 {
-  "auc": 0.9999999999999999,
-  "eer": 0.0,
-  "eer_threshold": 0.9922968745231628,
-  "n": 4016,
-  "negatives": 4000,
+  "auc": 0.995916823117063,
+  "eer": 0.02724735343036827,
+  "eer_threshold": 0.4468581974506378,
+  "n": 2138,
+  "negatives": 1919,
   "operating_points": {
     "fmr<=0.001": {
-      "fmr": 0.0,
-      "fnmr": 0.0,
-      "threshold": 0.9922968745231628,
-      "tpr": 1.0
+      "fmr": 0.0005211047420531526,
+      "fnmr": 0.15981735159817356,
+      "threshold": 0.6665932536125183,
+      "tpr": 0.8401826484018264
     },
     "fmr<=0.01": {
-      "fmr": 0.0,
-      "fnmr": 0.0,
-      "threshold": 0.9922968745231628,
-      "tpr": 1.0
+      "fmr": 0.009900990099009901,
+      "fnmr": 0.07762557077625576,
+      "threshold": 0.5413984656333923,
+      "tpr": 0.9223744292237442
     },
     "fmr<=0.1": {
-      "fmr": 0.0,
-      "fnmr": 0.0,
-      "threshold": 0.9922968745231628,
-      "tpr": 1.0
+      "fmr": 0.07451797811360084,
+      "fnmr": 0.0091324200913242,
+      "threshold": 0.3764876127243042,
+      "tpr": 0.9908675799086758
     }
   },
-  "operational_threshold": 0.85,
-  "operational_threshold_reason": "Chosen after user-profile enrollment: 0 FMR on 4000 sampled dataset negatives and more tolerance than the EER threshold from 16 augmented positives.",
-  "positives": 16,
-  "roc_auc_trapezoid": 0.9999999999999999,
+  "positives": 219,
+  "roc_auc_trapezoid": 0.995916823117063,
   "status": "ok"
 }

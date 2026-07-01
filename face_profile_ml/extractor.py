@@ -3,9 +3,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+import warnings
 
 import cv2
 import numpy as np
+from PIL import Image, ImageOps
 
 from .utils import l2_normalize
 
@@ -17,6 +19,15 @@ class FaceEmbedding:
     det_score: float
     aligned_bgr: np.ndarray | None = None
     face_count: int = 1
+    image_shape: tuple[int, int] | None = None
+
+    @property
+    def face_area_ratio(self) -> float | None:
+        if self.image_shape is None:
+            return None
+        height, width = self.image_shape
+        image_area = max(1.0, float(height * width))
+        return _bbox_area(np.asarray(self.bbox, dtype=np.float32)) / image_area
 
 
 class ArcFaceEmbedder:
@@ -43,9 +54,11 @@ class ArcFaceEmbedder:
             ) from exc
 
         self._face_align = face_align
-        kwargs: dict[str, Any] = {"name": model_name, "allowed_modules": ["detection", "recognition"]}
-        if providers:
-            kwargs["providers"] = providers
+        kwargs: dict[str, Any] = {
+            "name": model_name,
+            "allowed_modules": ["detection", "recognition"],
+            "providers": select_available_providers(providers),
+        }
         self.app = FaceAnalysis(**kwargs)
         self.app.prepare(ctx_id=ctx_id, det_size=(det_size, det_size))
 
@@ -68,11 +81,20 @@ class ArcFaceEmbedder:
 
         aligned = None
         if return_aligned:
-            aligned = self._face_align.norm_crop(image_bgr, landmark=face.kps, image_size=112)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", FutureWarning)
+                aligned = self._face_align.norm_crop(image_bgr, landmark=face.kps, image_size=112)
 
         bbox = tuple(float(v) for v in face.bbox)
         score = float(getattr(face, "det_score", 0.0))
-        return FaceEmbedding(l2_normalize(np.asarray(embedding, dtype=np.float32)), bbox, score, aligned, len(faces))
+        return FaceEmbedding(
+            l2_normalize(np.asarray(embedding, dtype=np.float32)),
+            bbox,
+            score,
+            aligned,
+            len(faces),
+            image_bgr.shape[:2],
+        )
 
 
 def _bbox_area(bbox: np.ndarray) -> float:
@@ -80,12 +102,40 @@ def _bbox_area(bbox: np.ndarray) -> float:
     return max(0.0, x2 - x1) * max(0.0, y2 - y1)
 
 
-def read_bgr_image(image_path: str | Path) -> np.ndarray | None:
-    """Read an image from disk while preserving Windows Unicode paths."""
+def select_available_providers(requested: list[str] | None = None) -> list[str]:
     try:
-        data = np.fromfile(str(image_path), dtype=np.uint8)
-    except OSError:
-        return None
-    if data.size == 0:
-        return None
-    return cv2.imdecode(data, cv2.IMREAD_COLOR)
+        import onnxruntime as ort  # type: ignore
+    except Exception:
+        return requested or ["CPUExecutionProvider"]
+
+    available = set(ort.get_available_providers())
+    preferred = requested or ["CUDAExecutionProvider", "CPUExecutionProvider"]
+    selected = [provider for provider in preferred if provider in available]
+    if selected:
+        return selected
+    if "CPUExecutionProvider" in available:
+        if requested:
+            warnings.warn(
+                "None of the requested ONNX Runtime providers are available; using CPUExecutionProvider.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+        return ["CPUExecutionProvider"]
+    return list(available)
+
+
+def read_bgr_image(image_path: str | Path) -> np.ndarray | None:
+    """Read an image from disk while preserving Windows Unicode paths and EXIF orientation."""
+    try:
+        with Image.open(image_path) as image:
+            image = ImageOps.exif_transpose(image).convert("RGB")
+            rgb = np.asarray(image)
+        return cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
+    except Exception:
+        try:
+            data = np.fromfile(str(image_path), dtype=np.uint8)
+        except OSError:
+            return None
+        if data.size == 0:
+            return None
+        return cv2.imdecode(data, cv2.IMREAD_COLOR)

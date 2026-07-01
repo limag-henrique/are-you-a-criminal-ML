@@ -1,4 +1,12 @@
 {
-  "num_embeddings": 9472,
-  "num_rows": 9584
+  "allow_multiple_faces": false,
+  "ctx_id": -1,
+  "det_size": 320,
+  "embedding_dim": 512,
+  "min_det_score": 0.5,
+  "min_face_area_ratio": 0.01,
+  "model_name": "buffalo_l",
+  "num_embeddings": 9482,
+  "num_rows": 9584,
+  "save_aligned": true
 }

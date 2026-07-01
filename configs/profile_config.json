@@ -2,7 +2,7 @@
   "embedding": {
     "model_name": "buffalo_l",
     "ctx_id": -1,
-    "det_size": 640,
+    "det_size": 320,
     "save_aligned": true
   },
   "profile": {
@@ -25,4 +25,3 @@
     "test_negative": ["test_neg"]
   }
 }
-
