@@ -1,5 +1,7 @@
 # Face Profile ML
 
+![Apresentacao do projeto](docs/similaridade.png)
+
 Projeto Python para modelagem de perfil facial usando embeddings pre-treinados.
 Ele nao faz fine-tuning de rede neural: a rede e usada apenas como extrator de
 embeddings, e o perfil e modelado com metodos classicos.
