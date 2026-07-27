@@ -14,6 +14,7 @@ from .calibration import ScoreCalibrator
 from .extractor import ArcFaceEmbedder
 from .manifest import read_manifest, split_mask
 from .metrics import binary_metrics, metrics_by_quality
+from .fairness import audit_group_metrics
 from .profile import FaceProfileModel, ScoreWeights
 from .utils import ensure_dir, parse_csv_list, write_json
 
@@ -65,6 +66,18 @@ def build_parser() -> argparse.ArgumentParser:
     evaluate.add_argument("--negative-splits", default="test_neg")
     evaluate.add_argument("--out-dir", default="artifacts/eval")
     evaluate.set_defaults(func=cmd_evaluate)
+
+    fairness = sub.add_parser("audit-fairness", help="Audit verification performance by documented cohorts.")
+    fairness.add_argument("--scores", required=True, help="CSV with label, score and documented cohort columns.")
+    fairness.add_argument("--group-columns", required=True, help="Comma-separated documented cohort columns.")
+    fairness.add_argument("--score-column", default="score")
+    fairness.add_argument("--min-group-n", type=int, default=30)
+    fairness.add_argument("--bootstrap-rounds", type=int, default=1000)
+    fairness.add_argument("--seed", type=int, default=42)
+    fairness.add_argument("--threshold", type=float, default=None, help="Frozen decision threshold from calibration.")
+    fairness.add_argument("--no-intersections", action="store_true")
+    fairness.add_argument("--out-dir", default="artifacts/fairness")
+    fairness.set_defaults(func=cmd_audit_fairness)
 
     demo = sub.add_parser("demo", help="Run realtime OpenCV demo with median score over multiple frames.")
     demo.add_argument("--model-dir", required=True)
@@ -220,6 +233,24 @@ def cmd_evaluate(args: argparse.Namespace) -> int:
         raise ValueError("No evaluation rows found.")
     eval_frame.to_csv(out_dir / "eval_scores.csv", index=False)
     write_json(out_dir / "metrics.json", metrics_by_quality(eval_frame.rename(columns={score_column: "score"}), "score"))
+    return 0
+
+
+def cmd_audit_fairness(args: argparse.Namespace) -> int:
+    out_dir = ensure_dir(args.out_dir)
+    scores = pd.read_csv(args.scores)
+    summary, rows = audit_group_metrics(
+        scores,
+        score_column=args.score_column,
+        group_columns=parse_csv_list(args.group_columns),
+        min_group_n=args.min_group_n,
+        bootstrap_rounds=args.bootstrap_rounds,
+        seed=args.seed,
+        include_intersections=not args.no_intersections,
+        threshold=args.threshold,
+    )
+    rows.to_csv(out_dir / "group_metrics.csv", index=False)
+    write_json(out_dir / "fairness_summary.json", summary)
     return 0
 
 

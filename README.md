@@ -31,6 +31,8 @@ resultado pode chegar a 100% por comparacao quase identica com a propria imagem.
 - Calibracao de score com exemplos positivos e negativos.
 - ROC, AUC, EER, FMR e FNMR.
 - Avaliacao separada por qualidade `high`, `mid` e `low`.
+- Auditoria de FMR/FNMR por coortes documentadas, com supressao de grupos
+  pequenos, intervalos bootstrap e estratos interseccionais.
 - Demo em tempo real com OpenCV usando mediana de multiplos frames.
 - Aplicativo local de similaridade por galeria com top-k candidatos, imagem da
   referencia mais proxima, COSIM, FMR estimado, avisos de qualidade e marcacao
@@ -231,6 +233,33 @@ Uma convencao simples de splits:
 
 Como o dataset tem uma imagem por pessoa, o projeto modela um perfil agregado
 de um conjunto positivo, nao faz treino supervisionado de identidade.
+
+## Auditoria de equidade
+
+O projeto nao infere raca, etnia ou tom de pele a partir de imagens, nomes ou
+origem. Para avaliar disparidades de erro, use apenas coortes voluntarias ou
+documentadas, em dados autorizados e pseudonimizados. O esquema de entrada e o
+protocolo completo estao em `tests/fixtures/fairness/` e
+`docs/fairness_evaluation_protocol.md`.
+
+```powershell
+.\.venv\Scripts\face-profile.exe audit-fairness `
+  --scores caminho\cohort_scores.csv `
+  --group-columns skin_tone_protocol,ethnicity_self_described,quality `
+  --min-group-n 30 `
+  --bootstrap-rounds 2000 `
+  --threshold 0.73 `
+  --out-dir artifacts\fairness
+```
+
+Essa auditoria mede erros de verificacao, nao criminalidade. Listas de pessoas
+procuradas refletem politicas, cobertura e praticas institucionais; elas nao sao
+uma medida de incidencia criminal em grupos demograficos.
+
+Para um conjunto externo de pesquisa, reproduzivel e separado das imagens do
+projeto, consulte `docs/external_benchmark_inventory.md`. Ele documenta a
+aquisição integral, hashes e validacao de FairFace e BFW em `datasets/` (que nao
+e versionado nem deve ser redistribuido).
 
 ## 🧠 Treinamento e Avaliação (Avançado)
 

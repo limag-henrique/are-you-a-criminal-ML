@@ -1,0 +1,3 @@
+comparison_id,label,score,skin_tone_protocol,ethnicity_self_described,sex_or_gender_self_described,age_band,quality,capture_condition,source_jurisdiction
+example_0001,1,0.91,III-IV,prefer_not_to_say,prefer_not_to_say,30_44,high,controlled,example_source
+example_0002,0,0.24,V-VI,prefer_not_to_say,prefer_not_to_say,45_59,low,uncontrolled,example_source
