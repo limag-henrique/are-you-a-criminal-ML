@@ -1,5 +1,7 @@
 # Face Profile ML
 
+[![DOI](https://zenodo.org/badge/1279582157.svg)](https://doi.org/10.5281/zenodo.21536403)
+
 ![Apresentacao do projeto](docs/similaridade.png)
 
 Projeto Python para modelagem de perfil facial usando embeddings pre-treinados.
@@ -362,7 +364,7 @@ Metricas:
 
 ## Observacoes
 
-A rede neural base (extrator de features) não é treinada neste pipeline (são utilizados modelos pré-treinados, como o ArcFace). O treinamento realizado pelo projeto diz respeito apenas ao modelo de perfil facial (One-Class SVM, métricas de distância) e ao modelo calibrador, que aprendem a partir dos embeddings extraídos. Trocar ArcFace por AdaFace ou MagFace pode ser feito criando outro extrator que respeite a interface de embeddings L2 normalizados. O restante do pipeline continua igual.
+A rede neural base (extrator de features) não é treinada neste pipeline (são utilizados modelos pré-treinados, como o ArcFace). O treinamento realizado pelo projeto diz respeito apenas ao mod[...]
 
 Os splits atuais foram derivados da geometria dos embeddings, nao de anotacao
 humana. Portanto, as metricas medem a separacao desse perfil semantico
