@@ -1,0 +1,5 @@
+control,expected,observed_ari,pass
+isotropic_random_embeddings,no external ground truth or claim,,True
+known_separated_clusters,high ARI,1.0,True
+controlled_exact_duplicates,duplicates present,20.0,True
+permuted_cluster_labels,partition metric invariant,1.0,True

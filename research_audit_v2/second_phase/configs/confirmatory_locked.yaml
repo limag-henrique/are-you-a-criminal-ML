@@ -1,0 +1,15 @@
+{
+  "status": "locked_before_second_phase_results",
+  "random_seed": 20260727,
+  "outer_folds": 5,
+  "k": 64,
+  "cluster_algorithm": "MiniBatchKMeans",
+  "batch_size": 1024,
+  "max_iter": 8,
+  "n_init": 1,
+  "target_rule": "largest_cluster",
+  "representation": "l2_normalized_float32",
+  "group_split": "probable_duplicate_group_id",
+  "metrics": ["roc_auc", "pr_auc", "balanced_accuracy", "precision", "recall", "f1", "brier"],
+  "interpretation": "internal recovery of a reconstructed synthetic label only"
+}

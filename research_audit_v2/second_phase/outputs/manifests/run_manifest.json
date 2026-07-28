@@ -1,0 +1,6 @@
+{
+  "config_sha256": "3f59da1f86e36ecd96f3887ab4c9f79c76786d65898baa710bab8f292410d44a",
+  "input_manifest_sha256": "77805dfeb2bf4091b8a573ac3912360fb54db8eed419aabe31db8160b08c9d1b",
+  "input_embeddings_sha256": "d4e00b6b39d39aef047651bb9c875dcbcd96ed3dcd7c0eb1031e3c0a5f250a96",
+  "completion_status": "complete"
+}

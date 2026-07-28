@@ -1,0 +1,12 @@
+name: scientific-validation
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install numpy pandas scipy scikit-learn matplotlib pyarrow pytest
+      - run: python -m pytest -q research_audit_v2/tests research_audit_v2/second_phase/tests
+      - run: python -c "from research_audit_v2.second_phase.src.controls import negative_controls; from pathlib import Path; p=Path('/tmp/audit'); (p/'tables').mkdir(parents=True); (p/'reports').mkdir(); assert negative_controls(1,p/'tables',p/'reports')['pass'].all()"

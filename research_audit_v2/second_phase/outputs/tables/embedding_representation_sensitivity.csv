@@ -1,0 +1,5 @@
+representation,dimensions,ari_vs_l2_baseline,nmi_vs_l2_baseline,target_jaccard,target_size,inertia,runtime_seconds,status
+original_float32,512,1.0,1.0,1.0,429,8786.6953125,1.913472100000945,sensitivity_only
+l2_normalized,512,1.0,1.0,1.0,429,8786.6953125,15.14431709999917,sensitivity_only
+centered,512,1.0,1.0,1.0,429,8786.6953125,16.15761709999788,sensitivity_only
+pca_64,64,0.10934714012360636,0.27881153193082264,0.0,448,3095.393798828125,0.3584709999995539,sensitivity_only

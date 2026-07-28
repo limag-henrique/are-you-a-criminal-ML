@@ -1,0 +1,262 @@
+{
+  "file": "C:\\Users\\Henrique Lima\\Desktop\\Repositórios\\ia-uspJailer\\docs\\Artigo Similaridade Facial.docx",
+  "counts": {
+    "high": 0,
+    "medium": 0,
+    "low": 28
+  },
+  "findings": [
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://orcid.org/0009-0003-5884-2489"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://aclanthology.org/Q18-1041/"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://proceedings.mlr.press/v81/buolamwini18a.html"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://bibliotecadigital.cnj.jus.br/handle/123456789/939"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://openaccess.thecvf.com/content_CVPR_2019/html/Deng_ArcFace_Additive_Angular_Margin_Loss_for_Deep_Face_Recognition"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1146/annurev-soc-071913-043455"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://proceedings.mlr.press/v81/ensign18a.html"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1016/j.patrec.2005.10.010"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1145/3458723"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.6028/NIST.IR.8280"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://pubmed.ncbi.nlm.nih.gov/15308962/"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1007/BF01908075"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://www.interpol.int/en/How-we-work/Notices/Red-Notices"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://www.interpol.int/en/How-we-work/Notices/Red-Notices/View-Red-Notices"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://www.iso.org/standard/73515.html"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://www.iso.org/standard/81223.html"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1145/3442188.3445901"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://openaccess.thecvf.com/content/WACV2021/html/Karkkainen_FairFace_Face_Attribute_Dataset_for_Balanced_Race_Gender_"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1145/2382577.2382579"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1002/nav.3800020109"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1145/3287560.3287596"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://www.jmlr.org/papers/v12/pedregosa11a.html"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1145/3351095.3372873"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1371/journal.pcbi.1003285"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1162/089976601750264965"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://www.gov.br/senappen/pt-br/servicos/sisdepen/relatorios/relatorios-de-informacoes-penitenciarias/relotario-2o-sem"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://doi.org/10.1145/3465416.3483305"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://jmlr.csail.mit.edu/papers/v11/vinh10a.html"
+      }
+    }
+  ]
+}

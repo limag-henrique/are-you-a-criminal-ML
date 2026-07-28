@@ -1,0 +1,44 @@
+{
+  "git_commit": "8eefdacd064c3fb3c0284d87769ebf37b5cfd4be",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.3",
+  "inputs": {
+    "manifest": {
+      "path": "artifacts\\embedding_manifest.csv",
+      "sha256": "77805dfeb2bf4091b8a573ac3912360fb54db8eed419aabe31db8160b08c9d1b",
+      "rows": 9584,
+      "columns": [
+        "row_id",
+        "path",
+        "subject_id",
+        "quality",
+        "split",
+        "weight",
+        "resolved_path",
+        "exists",
+        "embedding_index",
+        "embedding_status",
+        "det_score",
+        "face_count",
+        "face_area_ratio",
+        "image_width",
+        "image_height",
+        "bbox_x1",
+        "bbox_y1",
+        "bbox_x2",
+        "bbox_y2",
+        "aligned_path"
+      ]
+    },
+    "embeddings": {
+      "path": "artifacts\\embeddings.npy",
+      "sha256": "d4e00b6b39d39aef047651bb9c875dcbcd96ed3dcd7c0eb1031e3c0a5f250a96",
+      "shape": [
+        9482,
+        512
+      ],
+      "dtype": "float32"
+    }
+  },
+  "privacy": "No manifest values, paths, names, URLs or embeddings are included in this inventory."
+}

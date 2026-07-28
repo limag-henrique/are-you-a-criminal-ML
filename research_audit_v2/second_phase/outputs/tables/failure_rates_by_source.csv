@@ -1,0 +1,4 @@
+source,quality,inputs,successful,failures,failure_proportion
+unresolved,high,2065,2065,0,0.0
+unresolved,low,3783,3720,63,0.016653449643140365
+unresolved,mid,3736,3697,39,0.0104389721627409

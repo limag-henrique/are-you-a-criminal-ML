@@ -1,0 +1,20 @@
+{
+  "mode": "final",
+  "random_seed": 20260727,
+  "seeds": 100,
+  "k_values": [32, 48, 64, 80, 96, 128],
+  "manifest_path": "artifacts/embedding_manifest.csv",
+  "embeddings_path": "artifacts/embeddings.npy",
+  "aligned_root": "artifacts/aligned",
+  "output_root": "research_audit_v2/outputs",
+  "cluster_algorithm": "minibatch",
+  "cluster_max_iter": 100,
+  "cluster_batch_size": 1024,
+  "n_init": 3,
+  "dedup": {"exact": true, "visual": true, "embedding_thresholds": [0.99, 0.995, 0.999]},
+  "permutations": 1000,
+  "bootstrap_iterations": 2000,
+  "max_silhouette_sample": 5000,
+  "target_rule": "largest_cluster",
+  "public_id_salt": "audit-v2-public-pseudonym-v1"
+}

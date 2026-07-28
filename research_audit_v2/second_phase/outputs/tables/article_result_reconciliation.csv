@@ -1,0 +1,5 @@
+result,published_value,reproduced_value,post_correction_value,absolute_difference,relative_difference,likely_cause,article_update_required,importance
+raw records,11724.0,,,,,raw collection artifact unavailable,cannot assess,high
+manifest rows,9584.0,9584.0,9584.0,0.0,0.0,direct local count,no,high
+valid embeddings,9482.0,9482.0,9482.0,0.0,0.0,direct matrix count,no,high
+historical ARI/NMI/Jaccard,,,,,,historical clustering state unavailable,yes,high

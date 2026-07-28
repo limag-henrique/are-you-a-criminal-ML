@@ -6,3 +6,10 @@ __pycache__/
 photos/
 mostwanted.zip
 datasets/
+research_audit_v2/outputs/
+research_audit_v2/.sensitive/
+*.local.yaml
+photos/
+artifacts/aligned/
+artifacts/embeddings.npy
+research_audit_v2/.sensitive/

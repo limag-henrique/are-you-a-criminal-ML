@@ -1,0 +1,4 @@
+analysis_id,description,question,primary_parameter,primary_result,defined_before_observation,classification,post_hoc_risk,supports_main_claim,notes
+A01,All-record internal centroid diagnostic,Can a synthetic label be recovered from its own geometry?,all records,internal metrics,False,post-hoc,high,False,Circularity diagnostic only.
+A02,Grouped cross-fitting,What remains when test records do not fit target geometry?,locked config SHA-256,foldwise metrics,True,confirmatory,low,False,Still synthetic-label recovery.
+A03,Negative synthetic controls,Do metrics satisfy known mathematical expectations?,fixed synthetic seed,control pass/fail,True,confirmatory,low,False,Software-validity control.

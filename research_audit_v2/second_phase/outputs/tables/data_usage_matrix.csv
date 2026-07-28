@@ -1,0 +1,6 @@
+stage,artifact,train,validation,test,uses_global_information,possible_leakage,severity,correction_applied
+embedding representation,l2 normalization,not fit; per-vector deterministic,none,applied,False,False,none,No fitted global transform.
+clustering,MiniBatchKMeans,fit,none,predict only,False,False,none,Separate fit in each outer fold.
+target selection,largest cluster,selected,none,not used,False,False,none,Target selected only from training labels.
+centroid score,target centroid,fit,none,scored,False,False,none,Centroid uses training target only.
+internal original diagnostic,all-record target centroid,all,all,all,True,True,high,Retained only as internal synthetic-label recovery comparator.
