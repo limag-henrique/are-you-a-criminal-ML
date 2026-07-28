@@ -1,0 +1,5 @@
+claim_id,seção,parágrafo,alegação,tipo,valor numérico,denominador,arquivo de evidência,"linha, chave ou registro da evidência",run_id,config_hash,classificação da análise,limitação,status de verificação
+CL01,Resultados,fluxo,Manifesto e embeddings disponíveis,numérica,9584; 9482,manifesto,article_result_reconciliation.csv,manifest rows; valid embeddings,local,,reprodução,artefato bruto não completo,verificada
+CL02,Resultados,cross-fitting,Recuperação sintética cross-fitted,numérica,0.929; 0.479; 0.477; 0.185,5 dobras,cross_fitted_metrics.csv,mean,grouped_cross_fitted,3f59da...,confirmatória,rótulo sintético,verificada
+CL03,Resultados,sensibilidades,Instabilidade condicional,numérica,ARI 0.072-0.113; Jaccard 0,cenários,minibatch_*; embedding_representation_sensitivity.csv,rows,local,3f59da...,sensibilidade,não populacional,verificada
+CL04,Discussão,fonte,Influência por fonte não identificável,factual,,n/a,source_influence_report.md,conclusão,local,,não executada,campo ausente,verificada
