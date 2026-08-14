@@ -1,80 +1,180 @@
-"""Run the executable, non-sensitive-safe core of second-phase validation."""
+"""Run the tested, privacy-preserving scientific audit pipeline."""
 from __future__ import annotations
 
 import argparse
 import json
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd
 
-from research_audit_v2.src.common import read_config, sha256_file, write_csv
+from research_audit_v2.src.common import stable_id, write_csv
 from research_audit_v2.src.deduplication import assign_groups
-from research_audit_v2.src.provenance import load_audited_records
 
-from .controls import negative_controls
+from .controls import synthetic_geometry_control
 from .cross_fitting import run_cross_fitting
-from .data_contracts import validate_embeddings, validate_groups, validate_manifest
-from .privacy_scan import scan_public_tree
-from .final_reporting import determinism, failure_summary, final_reports
-from .sensitivity import clustering_sensitivity
+from .data_contracts import validate_audit_inputs
+from .data_lineage import DEFAULT_CLAIMED_COUNTS, audit_data_lineage
+from .group_audit import safe_threshold_review_sample, summarize_probable_duplicate_groups
+from .io import atomic_write_json
+from .privacy_scan import scan_public_tree, write_privacy_report
+from .report_generator import generate_public_reports
+from .run_manifest import RunManifest
+from .stability import run_stability_analysis
 
 
-def paths(root: Path) -> dict[str, Path]:
+class PrivacyGateError(RuntimeError):
+    """Raised when a public artifact fails the disclosure scanner."""
+
+
+def _folders(root: Path) -> dict[str, Path]:
     result = {name: root / name for name in ("tables", "figures", "reports", "logs", "manifests")}
     for folder in result.values():
         folder.mkdir(parents=True, exist_ok=True)
     return result
 
 
-def static_reports(out: dict[str, Path], cfg_hash: str) -> None:
-    write_csv(pd.DataFrame([
-        {"analysis_id": "A01", "description": "All-record internal centroid diagnostic", "question": "Can a synthetic label be recovered from its own geometry?", "primary_parameter": "all records", "primary_result": "internal metrics", "defined_before_observation": False, "classification": "post-hoc", "post_hoc_risk": "high", "supports_main_claim": False, "notes": "Circularity diagnostic only."},
-        {"analysis_id": "A02", "description": "Grouped cross-fitting", "question": "What remains when test records do not fit target geometry?", "primary_parameter": "locked config SHA-256", "primary_result": "foldwise metrics", "defined_before_observation": True, "classification": "confirmatory", "post_hoc_risk": "low", "supports_main_claim": False, "notes": "Still synthetic-label recovery."},
-        {"analysis_id": "A03", "description": "Negative synthetic controls", "question": "Do metrics satisfy known mathematical expectations?", "primary_parameter": "fixed synthetic seed", "primary_result": "control pass/fail", "defined_before_observation": True, "classification": "confirmatory", "post_hoc_risk": "low", "supports_main_claim": False, "notes": "Software-validity control."},
-    ]), out["tables"] / "analysis_classification.csv")
-    write_csv(pd.DataFrame([
-        {"result": "raw records", "published_value": 11724, "reproduced_value": np.nan, "post_correction_value": np.nan, "absolute_difference": np.nan, "relative_difference": np.nan, "likely_cause": "raw collection artifact unavailable", "article_update_required": "cannot assess", "importance": "high"},
-        {"result": "manifest rows", "published_value": 9584, "reproduced_value": 9584, "post_correction_value": 9584, "absolute_difference": 0, "relative_difference": 0, "likely_cause": "direct local count", "article_update_required": "no", "importance": "high"},
-        {"result": "valid embeddings", "published_value": 9482, "reproduced_value": 9482, "post_correction_value": 9482, "absolute_difference": 0, "relative_difference": 0, "likely_cause": "direct matrix count", "article_update_required": "no", "importance": "high"},
-        {"result": "historical ARI/NMI/Jaccard", "published_value": np.nan, "reproduced_value": np.nan, "post_correction_value": np.nan, "absolute_difference": np.nan, "relative_difference": np.nan, "likely_cause": "historical clustering state unavailable", "article_update_required": "yes", "importance": "high"},
-    ]), out["tables"] / "article_result_reconciliation.csv")
-    out["reports"].joinpath("deviation_log.md").write_text(f"# Deviation log\n\nLocked configuration SHA-256: `{cfg_hash}`.\n\nNo deviations recorded before the initial execution.\n", encoding="utf-8")
-    out["reports"].joinpath("face_preprocessing_specification.md").write_text("# Face preprocessing specification\n\nThe repository scripts document reading, EXIF correction, InsightFace detection/alignment, extraction and L2 normalization. The exact historical detector thresholds, crop perturbations, batch order and preserved ONNX weights for the article's clustering analysis are not locally documented. Re-extraction sensitivity is therefore not run under Python 3.14; the repository README identifies Python 3.10–3.12 as the supported interval for InsightFace.\n", encoding="utf-8")
-    out["reports"].joinpath("preprocessing_sensitivity_report.md").write_text("# Preprocessing sensitivity\n\nNot executed: reproducible historical preprocessing settings and a supported extractor environment are unavailable. Numerical representation sensitivity remains a separate executable task.\n", encoding="utf-8")
-    out["reports"].joinpath("program_corrections.md").write_text("# Program corrections\n\n- Added explicit contracts before analysis, preventing mismatched manifest/embedding rows and invalid numerical arrays.\n- Added grouped cross-fitting, preventing test observations from fitting clusters, selecting the target or defining the centroid.\n- Added public-output privacy scanning and atomic table writes.\n- Reduced development clustering iterations from 30 to 8 only for integration feasibility; the locked second-phase design records this and does not treat development output as final.\n", encoding="utf-8")
+def _public_records(manifest: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
+    records = manifest[["embedding_index", "quality"]].copy()
+    records["record_id"] = [
+        stable_id(f"embedding:{int(index)}", config["public_id_salt"])
+        for index in records["embedding_index"]
+    ]
+    records["source"] = "unresolved"
+    records["quality"] = records["quality"].fillna("unknown").astype(str)
+    return records[["record_id", "source", "quality", "embedding_index"]]
+
+
+def _record_outputs(manifest: RunManifest, output_root: Path) -> None:
+    for artifact in sorted(output_root.rglob("*")):
+        if not artifact.is_file() or artifact == manifest.path:
+            continue
+        manifest.record_output(artifact, logical_name=artifact.relative_to(output_root).as_posix())
+
+
+def run_audit(config_path: str | Path, *, resume: bool = False) -> dict[str, object]:
+    config_file = Path(config_path)
+    config = json.loads(config_file.read_text(encoding="utf-8"))
+    output_root = Path(config["output_root"])
+    out = _folders(output_root)
+    manifest_path = out["manifests"] / "run_manifest.json"
+    input_files = {
+        "manifest": Path(config["manifest_path"]),
+        "embedding_matrix": Path(config["embeddings_path"]),
+        "configuration": config_file,
+    }
+    if resume and manifest_path.exists():
+        manifest = RunManifest.resume(manifest_path, config=config, input_files=input_files)
+        if manifest.payload.get("status") == "complete":
+            return {"status": "complete", "output_root": str(output_root), "resumed": True}
+        manifest.payload["status"] = "running"
+        manifest.payload["completion_status"] = "running"
+        manifest.payload.pop("failure", None)
+        manifest._save()
+    else:
+        manifest = RunManifest.start(
+            manifest_path,
+            config_name=str(config["mode"]),
+            config=config,
+            seeds=config["seeds"],
+            input_files=input_files,
+            parameters={
+                "k_values": config["k_values"],
+                "batch_sizes": config["batch_sizes"],
+                "orderings": config["orderings"],
+                "representations": config["representations"],
+                "max_records": config.get("max_records"),
+            },
+        )
+
+    try:
+        raw_manifest = pd.read_csv(config["manifest_path"])
+        raw_vectors = np.load(config["embeddings_path"])
+        aligned = validate_audit_inputs(raw_manifest, raw_vectors)
+        records = _public_records(aligned.manifest, config)
+        vectors = aligned.embeddings
+        max_records = config.get("max_records")
+        if max_records is not None:
+            limit = min(int(max_records), len(records))
+            records = records.iloc[:limit].reset_index(drop=True)
+            vectors = vectors[:limit]
+
+        records = assign_groups(records, vectors, config, out["tables"])
+        threshold = float(config["dedup"].get("primary_threshold", max(config["dedup"]["embedding_thresholds"])))
+        group_stats, group_distribution = summarize_probable_duplicate_groups(
+            records["group_id"], metric=str(config["dedup"].get("method", "cosine_similarity")), threshold=threshold
+        )
+        group_stats["scope_records"] = int(len(records))
+        group_stats["completion_scope"] = "development_subset" if max_records is not None else "full_available_embeddings"
+        atomic_write_json(out["tables"] / "group_id_statistics.json", group_stats)
+        write_csv(group_distribution, out["tables"] / "group_size_distribution.csv")
+        review = safe_threshold_review_sample(
+            records,
+            vectors,
+            threshold=threshold,
+            window=float(config.get("threshold_review_window", 0.0005)),
+            max_pairs=int(config.get("threshold_review_max_pairs", 100)),
+            salt=config["public_id_salt"],
+        )
+        write_csv(review, out["tables"] / "threshold_review_sample.csv")
+
+        lineage = audit_data_lineage(
+            config["manifest_path"],
+            config["embeddings_path"],
+            claimed_counts=config.get("claimed_counts", DEFAULT_CLAIMED_COUNTS),
+            historical_evidence=config.get("historical_evidence", {}),
+            disputed_pair=tuple(config.get("disputed_pair", [9546, 9584]))
+            if config.get("disputed_pair", [9546, 9584]) is not None
+            else None,
+        )
+        write_csv(lineage, out["tables"] / "data_lineage.csv")
+        synthetic_geometry_control(int(config["random_seed"]), out["tables"] / "synthetic_geometry_control.csv")
+        run_cross_fitting(records, vectors, config, out["tables"], out["reports"])
+        checkpoint_root = Path(
+            config.get(
+                "checkpoint_root",
+                output_root.parent / ".checkpoints" / str(config["mode"]),
+            )
+        )
+        run_stability_analysis(
+            vectors,
+            config,
+            out["tables"],
+            checkpoint_root=checkpoint_root,
+            resume=resume,
+        )
+        generate_public_reports(
+            output_root,
+            config,
+            config.get("report_destination", "research_audit_v2"),
+        )
+
+        findings = write_privacy_report(output_root, out["reports"] / "privacy_scan.json")
+        if findings:
+            manifest.fail("privacy_gate_failed")
+            raise PrivacyGateError("Public output privacy gate failed; see privacy_scan.json.")
+        _record_outputs(manifest, output_root)
+        manifest.complete()
+        final_findings = scan_public_tree(output_root)
+        if final_findings:
+            write_privacy_report(output_root, out["reports"] / "privacy_scan.json")
+            manifest.fail("final_privacy_gate_failed")
+            raise PrivacyGateError("Final public output privacy gate failed; see privacy_scan.json.")
+        return {"status": "complete", "output_root": str(output_root), "resumed": False}
+    except Exception as error:
+        if manifest.payload.get("status") != "failed":
+            manifest.fail(type(error).__name__)
+        raise
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(); parser.add_argument("--config", default="research_audit_v2/second_phase/configs/confirmatory_locked.yaml"); args = parser.parse_args(argv)
-    cfg = json.loads(Path(args.config).read_text(encoding="utf-8"))
-    cfg_hash = sha256_file(args.config)
-    out = paths(Path("research_audit_v2/second_phase/outputs"))
-    status_path = out["manifests"] / "completion_status.json"
-    status_path.write_text(json.dumps({"completion_status": "running", "config_sha256": cfg_hash}, indent=2) + "\n", encoding="utf-8")
-    raw_manifest = pd.read_csv("artifacts/embedding_manifest.csv")
-    raw_vectors = np.load("artifacts/embeddings.npy")
-    validate_embeddings(raw_vectors)
-    validate_manifest(raw_manifest, len(raw_vectors))
-    primary_cfg = read_config("research_audit_v2/configs/development.yaml")
-    records, vectors = load_audited_records(primary_cfg)
-    records = assign_groups(records, vectors, primary_cfg, out["tables"])
-    validate_groups(records["group_id"])
-    negative_controls(cfg["random_seed"], out["tables"], out["reports"])
-    run_cross_fitting(records, vectors, cfg, out["tables"], out["reports"])
-    clustering_sensitivity(vectors, cfg, out["tables"], out["figures"], out["reports"])
-    static_reports(out, cfg_hash)
-    determinism(cfg["random_seed"], out["tables"], out["reports"])
-    failure_summary(out["tables"], out["reports"])
-    final_reports(out)
-    findings = scan_public_tree(Path("research_audit_v2/second_phase/outputs"))
-    out["reports"].joinpath("privacy_scan_report.md").write_text("# Privacy scan\n\n" + ("No prohibited public-output pattern found.\n" if not findings else "\n".join(f"- {value}" for value in findings) + "\n"), encoding="utf-8")
-    if findings:
-        status_path.write_text(json.dumps({"completion_status": "failed_privacy_scan", "config_sha256": cfg_hash, "findings": findings}, indent=2) + "\n", encoding="utf-8")
-        raise RuntimeError("Second-phase privacy scan found prohibited patterns.")
-    out["manifests"].joinpath("run_manifest.json").write_text(json.dumps({"config_sha256": cfg_hash, "input_manifest_sha256": sha256_file("artifacts/embedding_manifest.csv"), "input_embeddings_sha256": sha256_file("artifacts/embeddings.npy"), "completion_status": "complete"}, indent=2) + "\n", encoding="utf-8")
-    status_path.write_text(json.dumps({"completion_status": "complete", "config_sha256": cfg_hash}, indent=2) + "\n", encoding="utf-8")
-    print("second-phase core complete")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", required=True)
+    parser.add_argument("--resume", action="store_true")
+    args = parser.parse_args(argv)
+    result = run_audit(args.config, resume=args.resume)
+    print(json.dumps(result, sort_keys=True))
     return 0
 
 

@@ -38,11 +38,9 @@ def stable_id(value: object, salt: str, prefix: str = "rec") -> str:
 
 def write_csv(frame: pd.DataFrame, path: str | Path) -> None:
     """Write only approved public fields with a stable order and atomic replacement."""
-    destination = Path(path)
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    temporary = destination.with_suffix(destination.suffix + ".tmp")
-    frame.to_csv(temporary, index=False)
-    temporary.replace(destination)
+    from research_audit_v2.second_phase.src.io import atomic_write_csv
+
+    atomic_write_csv(path, frame)
 
 
 def l2_normalize(values: np.ndarray) -> np.ndarray:

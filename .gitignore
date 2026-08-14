@@ -8,6 +8,7 @@ mostwanted.zip
 datasets/
 research_audit_v2/outputs/
 research_audit_v2/.sensitive/
+research_audit_v2/.checkpoints/
 *.local.yaml
 photos/
 artifacts/aligned/
