@@ -1,0 +1,29 @@
+{
+  "random_seed": 20260815,
+  "sample_size": 36456,
+  "group_column": "source_race_label",
+  "perturbed_group": "Middle Eastern",
+  "catalog_path": "datasets/manifests/fairface_catalog.csv",
+  "image_root": "datasets/external/fairface/extracted",
+  "private_root": "research_audit_v2/.sensitive/demographic_composition",
+  "output_root": "research_audit_v2/outputs/demographic_composition",
+  "model_name": "buffalo_l",
+  "ctx_id": -1,
+  "det_size": 640,
+  "preprocessing_mode": "upstream_dlib_aligned_crop_direct_arcface",
+  "embedding_batch_size": 128,
+  "seeds": [20260815, 20260816, 20260817, 20260818, 20260819, 20260820, 20260821, 20260822, 20260823, 20260824],
+  "k_values": [32, 48, 64, 80, 96, 128],
+  "primary_k": 64,
+  "batch_size": 1024,
+  "max_iter": 100,
+  "n_init": 3,
+  "outer_folds": 5,
+  "target_rule": "largest_cluster",
+  "relevance_thresholds": {
+    "ari": 0.90,
+    "target_jaccard": 0.80,
+    "target_prevalence_delta": 0.02,
+    "auc_delta": 0.03
+  }
+}
