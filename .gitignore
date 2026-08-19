@@ -1,16 +1,110 @@
-.venv/
-*.egg-info/
+# ==============================================================================
+# Python & Bytecode Caches
+# ==============================================================================
 __pycache__/
 *.py[cod]
+*$py.class
+*.egg-info/
+.installed.cfg
+*.egg
+build/
+dist/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+
+# ==============================================================================
+# Environments & Pytest
+# ==============================================================================
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
 .pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.cache/
+
+# ==============================================================================
+# Datasets & Raw / Crop Images (Non-code reproduction assets)
+# ==============================================================================
 photos/
+!photos/.gitkeep
 mostwanted.zip
 datasets/
-research_audit_v2/outputs/
+artifacts/aligned/
+!artifacts/aligned/.gitkeep
+*.jpg
+*.jpeg
+*.png
+!docs/*.png
+!docs/**/*.png
+!research_audit_v2/**/*.svg
+
+# ==============================================================================
+# Heavy Binary Artifacts & Ephemeral Runs
+# ==============================================================================
+artifacts/*.npy
+artifacts/embeddings*.npy
+artifacts/audit/
+artifacts/audit_*/
+artifacts/live_analysis/
+artifacts/model_semantic_backup_*/
+artifacts/model_strict026/
+
+# ==============================================================================
+# Logs, Processes & Temporary Runtime Files
+# ==============================================================================
+*.log
+*.pid
+*.err
+*.out
+*.tmp
+artifacts/logs/
+!artifacts/logs/.gitkeep
+
+# ==============================================================================
+# Office & Editor Temporary / Lock Files
+# ==============================================================================
+~$*.docx
+~$*.doc
+~$*.xlsx
+~$*.pptx
+*.backup.csv
+*.bak
+
+# ==============================================================================
+# Local Scratch & Review Workspaces
+# ==============================================================================
+.docx_review/
+.firecrawl/
+.qa_docx_render/
+docx_render/
+tools/
 research_audit_v2/.sensitive/
 research_audit_v2/.checkpoints/
+research_audit_v2/outputs/
 *.local.yaml
-photos/
-artifacts/aligned/
-artifacts/embeddings.npy
-research_audit_v2/.sensitive/
+
+# ==============================================================================
+# OS Generated Files
+# ==============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini

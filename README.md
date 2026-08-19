@@ -43,6 +43,35 @@ resultado pode chegar a 100% por comparacao quase identica com a propria imagem.
   densidade de referencias semelhantes, percentil impostor e distinctividade.
 - Persistencia em `.pkl`, `.npy` e `.json`.
 
+## Estrutura do Repositório
+
+```text
+├── .github/workflows/          # Automação de CI e validação científica
+├── analisis_report/            # Relatórios históricos de curadoria e auditoria
+├── artifacts/                  # Modelos canônicos de demo e métricas de avaliação
+│   ├── model/                  # Pesos e calibradores treinados para uso imediato
+│   ├── eval/                   # Tabelas de scores e métricas de avaliação
+│   └── user_enrollment/        # Relatórios de cadastro de usuários
+├── configs/                    # Configurações de perfil e hiperparâmetros
+├── datasets/                   # Armazenamento local de datasets externos (ignorado no git)
+├── docs/                       # Documentação técnica, científica e manuscritos
+│   ├── manuscript/             # Versões do artigo acadêmico (.docx)
+│   ├── protocols/              # Protocolos de avaliação de equidade e relatórios
+│   └── superpowers/            # Especificações e planos de experimentação
+├── face_profile_ml/            # Pacote Python principal da biblioteca
+├── photos/                     # Fotos brutas locais para treino/teste (ignorado no git)
+├── research_audit_v2/          # Framework de reprodutibilidade e auditoria científica
+│   ├── demographic_composition/# Experimento de composição demográfica
+│   ├── second_phase/           # Bateria de robustez, estabilidade e não-vazamento
+│   └── tests/                  # Testes automatizados de reprodutibilidade
+├── scripts/                    # Scripts de raspagem, pré-processamento e servidor web
+├── tests/                      # Testes unitários do pacote face_profile_ml
+├── DEMOGRAPHIC_COMPOSITION_EXPERIMENT.md  # Relatório executivo do experimento demográfico
+├── manifest.csv                # Manifesto canônico do conjunto de imagens
+├── pyproject.toml              # Especificação de dependências do projeto
+└── requirements.txt            # Dependências em formato pip
+```
+
 ## Quick setup
 
 Use Python 3.10, 3.11 ou 3.12. O backend `insightface` ainda costuma ter
