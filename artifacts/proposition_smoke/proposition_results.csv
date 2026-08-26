@@ -1,0 +1,2 @@
+d,n,k,seed,auc_internal,auc_vs_null,jaccard_rerun,calibration_brier
+16,80,2,0,1.0,0.49684343434343436,0.7547169811320755,0.024577242250586488

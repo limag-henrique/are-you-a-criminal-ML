@@ -1,0 +1,7 @@
+backend_a,backend_b,seed,jaccard
+minibatch,kmeans,0,0.6792452830188679
+minibatch,gmm,0,0.5614035087719298
+minibatch,agglomerative,0,0.5344827586206896
+kmeans,gmm,0,0.5666666666666667
+kmeans,agglomerative,0,0.6491228070175439
+gmm,agglomerative,0,0.7090909090909091

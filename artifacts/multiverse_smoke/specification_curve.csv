@@ -1,0 +1,5 @@
+pipeline_id,embedding,pca,k,seed,target_rule,groupid_threshold,auc,pr_auc,prevalence,median_pairwise_jaccard
+pipeline_00004,pca64,True,2,0,central,0.995,0.9425,0.9775138567615302,0.75,
+pipeline_00003,pca64,True,2,0,largest,0.995,0.9425,0.9775138567615302,0.75,1.0
+pipeline_00002,original,False,2,0,central,0.995,0.6997549019607843,0.9358869390982838,0.85,
+pipeline_00001,original,False,2,0,largest,0.995,0.6997549019607843,0.9358869390982838,0.85,

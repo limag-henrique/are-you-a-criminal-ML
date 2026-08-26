@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import sys
 import warnings
 from pathlib import Path
@@ -11,6 +12,8 @@ import pandas as pd
 from tqdm import tqdm
 
 from .calibration import ScoreCalibrator
+from .bootstrap_ci import bootstrap_metric
+from .cross_validation import run_grouped_cluster_cv
 from .extractor import ArcFaceEmbedder
 from .manifest import read_manifest, split_mask
 from .metrics import binary_metrics, metrics_by_quality
@@ -51,6 +54,20 @@ def build_parser() -> argparse.ArgumentParser:
     fit.add_argument("--use-ocsvm", action="store_true")
     fit.add_argument("--ocsvm-nu", type=float, default=0.05)
     fit.set_defaults(func=cmd_fit)
+
+    cv_fit = sub.add_parser("cv-fit", help="Run grouped OOF evaluation of an endogenous cluster target.")
+    add_feature_args(cv_fit)
+    cv_fit.add_argument("--out-dir", default="artifacts/cv")
+    cv_fit.add_argument("--n-splits", type=int, default=5)
+    cv_fit.add_argument("--k", type=int, default=64)
+    cv_fit.add_argument("--seed", type=int, default=42)
+    cv_fit.add_argument(
+        "--target-rule",
+        choices=["largest", "compact", "separated", "random", "central", "outlier"],
+        default="largest",
+    )
+    cv_fit.add_argument("--bootstrap-rounds", type=int, default=2000)
+    cv_fit.set_defaults(func=cmd_cv_fit)
 
     calibrate = sub.add_parser("calibrate", help="Calibrate score_raw using positive and negative splits.")
     add_feature_args(calibrate)
@@ -184,6 +201,54 @@ def cmd_fit(args: argparse.Namespace) -> int:
         ocsvm_nu=args.ocsvm_nu,
     ).fit(embeddings[idx], weights)
     model.save(args.out_dir)
+    return 0
+
+
+def cmd_cv_fit(args: argparse.Namespace) -> int:
+    out_dir = ensure_dir(args.out_dir)
+    table, embeddings = load_features(args.features, args.embeddings)
+    valid = table.loc[valid_embedding_mask(table)].copy()
+    indices = valid["embedding_index"].astype(int).to_numpy()
+    if "sample_id" not in valid:
+        valid["sample_id"] = valid.index.astype(str)
+    if "group_id" not in valid:
+        valid["group_id"] = valid["sample_id"]
+    oof, metrics = run_grouped_cluster_cv(
+        valid[["sample_id", "group_id"]].reset_index(drop=True),
+        embeddings[indices],
+        n_splits=args.n_splits,
+        k=args.k,
+        seed=args.seed,
+        target_rule=args.target_rule,
+    )
+    output_path = out_dir / "oof_predictions.csv"
+    oof.to_csv(output_path, index=False)
+    bootstrap = {
+        name: bootstrap_metric(
+            oof["y_true"].to_numpy(),
+            oof["prob_calibrated"].to_numpy(),
+            metric=name,
+            n_bootstrap=args.bootstrap_rounds,
+            seed=args.seed,
+        ).as_dict()
+        for name in ["auc", "pr_auc", "brier", "balanced_accuracy"]
+    }
+    write_json(out_dir / "bootstrap_metrics.json", {"metrics": bootstrap})
+    write_json(
+        out_dir / "run_manifest.json",
+        {
+            "oof_predictions": str(output_path),
+            "oof_sha256": hashlib.sha256(output_path.read_bytes()).hexdigest(),
+            "metrics": metrics,
+            "parameters": {
+                "n_splits": args.n_splits,
+                "k": args.k,
+                "seed": args.seed,
+                "target_rule": args.target_rule,
+                "bootstrap_rounds": args.bootstrap_rounds,
+            },
+        },
+    )
     return 0
 
 

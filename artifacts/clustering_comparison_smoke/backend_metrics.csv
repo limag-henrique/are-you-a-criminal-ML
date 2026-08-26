@@ -1,0 +1,5 @@
+backend,seed,k,auc,target_size
+minibatch,0,2,1.0,42
+kmeans,0,2,1.0,47
+gmm,0,2,1.0,47
+agglomerative,0,2,1.0,47

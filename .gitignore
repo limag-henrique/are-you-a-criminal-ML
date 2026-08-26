@@ -71,6 +71,13 @@ artifacts/model_strict026/
 *.err
 *.out
 *.tmp
+*.aux
+*.bbl
+*.blg
+*.lof
+*.loq
+*.lot
+*.toc
 artifacts/logs/
 !artifacts/logs/.gitkeep
 

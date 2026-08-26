@@ -1,0 +1,12 @@
+{
+  "catalog": "research_audit_v2/.sensitive/demographic_composition/final_selection.csv",
+  "embedding_cache": "research_audit_v2/.sensitive/demographic_composition/embedding_cache.npz",
+  "n_replications": 1,
+  "seeds_per_rep": 1,
+  "k_values": "2",
+  "scenarios": "A,B,C,D",
+  "sample_size": 84,
+  "core_fraction": 0.7,
+  "folds": 2,
+  "out_dir": "artifacts/fairface_replicated_smoke"
+}

@@ -1,5 +1,11 @@
 # ia-usp-jailer
 
+## Experimentos para a submissão FAccT
+
+Os executores de separabilidade endógena, FairFace pareado, ablação de alvo, OOF/bootstrap, sensibilidade, backends e multiverse estão inventariados em `docs/implementation/2026-08-25-facct-improvements.md`. Esse documento também lista todos os outputs, dependências e comandos de verificação.
+
+Os parâmetros padrão correspondem às grades confirmatórias do plano. Para validar instalação e formatos, reduza explicitamente seeds, k, replicações e amostras e grave em um diretório com sufixo `_smoke`. Resultados de smoke não devem ser citados como evidência científica.
+
 ## Padronizacao de faces
 
 O script `scripts/standardize_faces.py` prepara as imagens de `data_curated` para uso em modelos de similaridade facial. Ele cria novas imagens padronizadas e nunca altera nem sobrescreve os arquivos originais.

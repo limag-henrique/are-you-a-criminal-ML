@@ -1,0 +1,4 @@
+target_embedding,scoring_embedding,seed,k,auc,target_size
+arcface,pca_proxy,0,2,0.8865248226950354,47
+pca_proxy,arcface,0,2,1.0,50
+arcface,arcface,0,2,1.0,47

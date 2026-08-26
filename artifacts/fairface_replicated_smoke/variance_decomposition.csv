@@ -1,0 +1,16 @@
+outcome,factor,sum_squares,fraction_explained,n_observations
+auc,scenario,0.016908110208307885,1.0,4
+auc,replication,0.0,0.0,4
+auc,seed,0.0,0.0,4
+auc,k,0.0,0.0,4
+auc,residual,2.588449845256445e-31,1.5308924612903203e-29,4
+jaccard,scenario,0.133769322235434,1.0,4
+jaccard,replication,0.0,0.0,4
+jaccard,seed,0.0,0.0,4
+jaccard,k,0.0,0.0,4
+jaccard,residual,2.588449845256445e-31,1.9350100620983737e-30,4
+target_size,scenario,486.0,1.0,4
+target_size,replication,0.0,0.0,4
+target_size,seed,0.0,0.0,4
+target_size,k,0.0,0.0,4
+target_size,residual,5.2506581851510546e-27,1.0803823426236738e-29,4

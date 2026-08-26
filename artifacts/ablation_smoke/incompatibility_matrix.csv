@@ -1,0 +1,16 @@
+rule_a,rule_b,jaccard
+central,outlier,0.0
+compact,central,1.0
+compact,outlier,0.0
+compact,random,0.0
+compact,separated,0.0
+largest,central,1.0
+largest,compact,1.0
+largest,outlier,0.0
+largest,random,0.0
+largest,separated,0.0
+random,central,0.0
+random,outlier,1.0
+separated,central,0.0
+separated,outlier,1.0
+separated,random,1.0
