@@ -1,0 +1,3 @@
+# Configuracao explicita para Overleaf/latexmk.
+$pdf_mode = 1;        # pdfLaTeX
+$bibtex_use = 2;      # executa BibTeX quando necessario

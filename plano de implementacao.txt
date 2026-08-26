@@ -1,0 +1,289 @@
+# Plano de Implementação — Melhorias para Submissão do Artigo
+
+## Contexto
+
+O artigo atual (`artigo/conteudo.tex`, tag `paper-v1.1-final`) já possui uma base sólida:
+validação cruzada agrupada com GroupKFold, auditoria de leakage (25 eventos, 0 overlaps), 611 execuções de estabilidade (60.045 comparações pareadas), experimento FairFace com 4 cenários e controle sintético (AUC = 1,000; Jaccard = 0,000). 
+
+O objetivo agora é transformar esse caso em uma **contribuição metodológica geral**, posicionada para FAccT, e preencher as lacunas experimentais e conceituais apontadas pelos revisores.
+
+---
+
+## Mudança de Framing (Textual — sem código)
+
+O enquadramento central deve migrar de:
+> "AUC alta não significa criminalidade."
+
+para:
+> **Correct out-of-sample evaluation does not establish construct validity when the target itself is endogenously generated from the representation being evaluated.**
+
+Essa mudança vale para qualquer domínio (risco, personalidade, empregabilidade, emoção, confiança), tornando a contribuição geral, não apenas crítica a um experimento específico.
+
+---
+
+## Entrega 1 — Formalização Matemática da Separabilidade Endógena
+
+**Localização:** `artigo/conteudo.tex` — Seção 2.2 (Framework) + novo módulo teórico
+
+### O que falta hoje
+- As Eqs. (2.1)–(2.2) existem mas são declarações informais.
+- Não há proposição/teorema com construção explícita.
+- O artigo afirma `Sep(s,Y) ⇏ Valid(Y,C)` mas não demonstra por construção que isso vale **mesmo com train/test corretos, sem leakage e com boa calibração**.
+
+### Tarefas de código
+- [ ] **Criar `face_profile_ml/endogenous_target.py`** com:
+  - Função `construct_endogenous_pipeline(X, f, h, g, seed)` que implementa explicitamente o cenário Z=f(X), Y=h(Z), s=g(Z).
+  - Função `measure_separability_vs_validity(Y, C_external, s, X_test)` retornando AUC interna e correlação com critério externo.
+  - Classe `EndogenousProposition` que gera um exemplo construtivo parametrizável (dimensão d, n amostras, k clusters, seed) e retorna: AUC_internal, AUC_vs_external, Jaccard entre rodadas.
+
+- [ ] **Criar `scripts/run_proposition_demo.py`** que:
+  - Executa a construção para d=512 (ArcFace-like), n=500, k∈{2,4,8}, seed∈{0..9}.
+  - Salva em `artifacts/proposition/` uma tabela CSV `proposition_results.csv` com colunas: `d, n, k, seed, auc_internal, auc_vs_null, jaccard_rerun, calibration_brier`.
+  - Demonstra que AUC_internal → 1.0 enquanto AUC_vs_null permanece próximo de 0.5 (acaso).
+
+### Tarefas de texto (LaTeX)
+- [ ] Adicionar **Proposição 1** na Seção 2.2 com:
+  - Enunciado formal: ∀ε>0, ∃ pipeline (f,h,g) tal que AUC(s,Y)>1−ε e para qualquer C externo independente de Z, AUC(s,C) = 0.5.
+  - Prova por construção referenciando `run_proposition_demo.py`.
+  - Corolário explicitando que o resultado é válido mesmo com GroupKFold correto, sem leakage e com calibração logística.
+
+---
+
+## Entrega 2 — FairFace Pareado, Replicado e com Decomposição de Variância
+
+**Localização:** `scripts/`, `face_profile_ml/`, `artigo/conteudo.tex` — Seção 2.6 + Resultados
+
+### O que falta hoje
+- O desenho atual tem 4 cenários com 1 seed cada — não decompõe composição vs. amostragem vs. seed vs. k.
+- O texto já admite isso como limitação (Seção 5): *"Uma extensão adequada exige 50–100 replicações independentes ou um desenho pareado."*
+
+### Tarefas de código
+
+#### 2a. Novo script de amostragem pareada
+- [ ] **Criar `scripts/run_fairface_replicated.py`** com:
+  - Parâmetros: `--n-replications 50 --seeds-per-rep 5 --k-values 32,64,128 --scenarios A,B,C,D`.
+  - Lógica: para cada replicação `r`, sortear um **núcleo fixo** de imagens compartilhado entre todos os cenários (~70% do N) e complementar com sorteio independente por cenário para atingir as quotas. Isso isola parcialmente efeito de composição do efeito de amostragem.
+  - Salvar por execução: `sample_id`, `scenario`, `replication`, `seed`, `k`, `cluster_label`, `is_target`, `score`, `prob_calibrated`, `distance_to_centroid`, `fairface_category`.
+  - Output: `artifacts/fairface_replicated/oof_predictions.parquet` + `variance_decomposition.csv`.
+
+#### 2b. Decomposição de variância (ANOVA/bootstrap)
+- [ ] **Criar `face_profile_ml/variance_decomposition.py`** com:
+  - Função `decompose_variance(df, outcome_col, factors)` usando ANOVA de efeitos fixos ou bootstrap permutacional.
+  - Fatores: `scenario` (composição), `replication` (amostragem), `seed` (inicialização), `k` (hiperparâmetro).
+  - Retorna `VarianceDecompositionResult` com frações explicadas por cada fator para AUC, Jaccard e tamanho do alvo.
+
+### Tarefas de texto (LaTeX)
+- [ ] Substituir Seção 2.6 e Tabela 4 pelos novos resultados com:
+  - Tabela de decomposição de variância (composição % vs. amostragem % vs. seed % vs. k %).
+  - Figura substituindo image3.png: curva de estabilidade do Jaccard entre cenários, por número de replicações (convergência).
+  - Texto enfatizando que, no novo desenho, é possível separar o efeito de composição do efeito de amostragem.
+
+---
+
+## Entrega 3 — Ablação das Definições do Cluster-Alvo (Target Rule Ablation)
+
+**Localização:** `face_profile_ml/`, `scripts/`, `artigo/conteudo.tex`
+
+### O que falta hoje
+- O pipeline usa exclusivamente `largest_cluster` (regra hardcoded em `cli.py` linha 201 e Apêndice A.2).
+- O artigo menciona ablação como trabalho futuro (Seção 5): *"ablar a regra do alvo"*, mas não a executa.
+
+### Tarefas de código
+
+#### 3a. Módulo de regras de seleção de alvo
+- [ ] **Criar `face_profile_ml/target_rules.py`** com as seguintes funções:
+  ```python
+  def largest_cluster(labels, centroids, X) -> int
+  def most_compact_cluster(labels, centroids, X) -> int   # menor intra-cluster variance
+  def most_separated_cluster(labels, centroids, X) -> int # maior distância ao centroide global
+  def random_cluster(labels, centroids, X, rng) -> int    # controle nulo
+  def central_cluster(labels, centroids, X) -> int        # mais próximo ao centroide global
+  def outlier_cluster(labels, centroids, X) -> int        # mais distante ao centroide global
+  ```
+  - Cada função retorna o índice do cluster selecionado.
+
+#### 3b. Script de ablação sistemática
+- [ ] **Criar `scripts/run_target_ablation.py`** com:
+  - Para cada regra × seed (50) × k (32, 64, 128): executar GroupKFold completo e salvar métricas OOF.
+  - Output principal: `artifacts/ablation/ablation_results.csv` com colunas `rule, seed, k, fold, auc, pr_auc, jaccard_vs_largest, jaccard_pairwise, prevalence`.
+  - Output secundário: `artifacts/ablation/incompatibility_matrix.csv` — para cada par de regras, o Jaccard mediano dos conjuntos-alvo resultantes.
+
+#### 3c. Integrar ablação no pipeline principal
+- [ ] Adicionar argumento `--target-rule {largest,compact,separated,random,central,outlier}` ao subcomando `fit` em `face_profile_ml/cli.py`.
+
+### Tarefas de texto (LaTeX)
+- [ ] Adicionar subseção "Ablação da Definição do Alvo" em Resultados com:
+  - Tabela: regra × AUC mediana × Jaccard-vs-largest mediano × Jaccard-pairwise (entre diferentes regras).
+  - Resultado-chave a reportar: quantas definições mutuamente incompatíveis (Jaccard < 0.1 entre si) atingem AUC > 0.85?
+  - Boxplot por regra (nova figura para substituir/complementar image2.png).
+
+---
+
+## Entrega 4 — Paradoxo Performance × Estabilidade como Resultado Central
+
+**Localização:** `artigo/conteudo.tex` — Seção 4.4 + nova figura
+
+### O que falta hoje
+- O resultado AUC ≈ 0.896 com Jaccard mediano ≈ 0.004 já existe, mas está disperso entre Seções 4.3 e 4.4.
+- Não há figura dedicada mostrando a co-ocorrência em scatter plot ou figura conjunta AUC vs. Jaccard.
+- Não está formalizado como resultado central com nome/número de proposição ou resultado empírico explícito.
+
+### Tarefas de código
+- [ ] **Criar `scripts/plot_performance_stability_paradox.py`** que:
+  - Lê `stability_summary.csv` e `cross_fitted_metrics.csv` existentes.
+  - Gera figura de 2 painéis: (a) scatter AUC × Jaccard por seed/k; (b) linha temporal do AUC com banda de estabilidade Jaccard sobreposta.
+  - Salva em `artigo/figuras/paradox_performance_stability.png` (substituindo image2.png ou gerando nova figura).
+
+### Tarefas de texto (LaTeX)
+- [ ] Criar **Resultado Empírico 1** (caixa destacada) na Seção 4.4:
+  > *"ROC-AUC = 0,896 (±0,011 entre dobras) coexiste com Jaccard mediano do alvo = 0,004 (IQR 0,000–0,047) entre seeds. Um sistema pode exibir desempenho preditivo aparentemente excelente enquanto muda radicalmente quem constitui o fenômeno aprendido."*
+- [ ] Reestruturar Seção 4.4 para ser o resultado central do artigo, não um resultado secundário.
+- [ ] Atualizar Seção 1 (boxtext) para referenciar explicitamente esse resultado empírico pelo número.
+
+---
+
+## Entrega 5 — OOF Completo + Bootstrap/ICs + Pipeline Reproduzível
+
+**Localização:** `face_profile_ml/`, `scripts/`
+
+### O que falta hoje
+- O artigo admite explicitamente na Seção 5: *"ausência de predições OOF por observação nos outputs preservados"*.
+- Não há ICs bootstrap sobre AUC, PR-AUC ou Brier.
+- O SHA-256 do modelo `w600k_r50.onnx` não foi registrado no manifesto FairFace.
+
+### Tarefas de código
+
+#### 5a. Salvar predições OOF por observação
+- [ ] **Modificar `face_profile_ml/cli.py`** (subcomando `fit` ou novo subcomando `cv-fit`) para salvar, após GroupKFold:
+  - `artifacts/cv/oof_predictions.csv` com colunas: `sample_id, group_id, fold, y_true, score_raw, prob_calibrated, cluster_label, distance_to_centroid, seed, k, target_rule, threshold`.
+  - Hash SHA-256 do arquivo no manifesto principal.
+
+#### 5b. Bootstrap sobre OOF
+- [ ] **Criar `face_profile_ml/bootstrap_ci.py`** com:
+  - `bootstrap_auc(y_true, scores, n_bootstrap=2000, seed=42, alpha=0.05)` → `BootstrapResult(point, lower, upper)`.
+  - Métricas suportadas: AUC, PR-AUC, Brier, Jaccard (target set), balanced accuracy.
+  - Salvar em `artifacts/cv/bootstrap_metrics.json`.
+
+#### 5c. Registrar hash do modelo de embedding
+- [ ] **Criar `scripts/register_model_hash.py`** que localiza `w600k_r50.onnx` no ambiente InsightFace, calcula SHA-256 e salva em `artifacts/model_hashes.json`.
+- [ ] Integrar esse hash ao manifesto da corrida FairFace.
+
+### Tarefas de texto (LaTeX)
+- [ ] Substituir a frase de limitação sobre OOF por resultados concretos: ICs bootstrap por dobra e globais.
+- [ ] Atualizar Apêndice A.2 com coluna de SHA-256 do modelo de embedding e caminho de `oof_predictions.csv`.
+
+---
+
+## Entrega 6 — Generalização: Outros Clusterings, Embeddings e Limiares de Identidade
+
+**Localização:** `face_profile_ml/`, `scripts/`
+
+> [!NOTE]
+> Esta entrega aumenta principalmente resistência a objeções de revisores. Para FAccT, é desejável mas pode ser parcialmente substituída pelas Entregas 1–4 se o tempo for limitado.
+
+### 6a. Outros algoritmos de clustering
+- [ ] **Criar `face_profile_ml/clustering_backends.py`** com interface uniforme:
+  ```python
+  class ClusteringBackend(Protocol):
+      def fit_predict(self, X: np.ndarray, seed: int) -> np.ndarray: ...
+  ```
+  - Implementações: `MiniBatchKMeansBackend`, `KMeansBackend`, `GMMBackend` (GaussianMixture), `AgglomerativeBackend`.
+- [ ] **Criar `scripts/run_clustering_comparison.py`** que executa todos os backends com k=64, seeds 0–19, e compara AUC, Jaccard entre backends e Jaccard cross-backend (incompatibilidade).
+
+### 6b. Análise de sensibilidade do `group_id`
+- [ ] **Criar `scripts/run_groupid_sensitivity.py`** que:
+  - Reconstrói `group_id` para limiares: 0.995, 0.997, 0.999, 0.9995.
+  - Para cada limiar, recalcula: número de grupos, % de duplicatas, AUC, PR-AUC, Jaccard, ARI, tamanho do alvo.
+  - Salva curva em `artifacts/groupid_sensitivity/sensitivity_curve.csv`.
+- [ ] Adicionar figura de curva ao artigo (Seção 5 ou Apêndice B).
+
+### 6c. Experimento de desacoplamento embedding–target
+- [ ] **Criar `scripts/run_embedding_decoupling.py`** que:
+  - Cria Y usando embedding A (ArcFace buffalo_l) e tenta predizê-lo com embedding B (ex: PCA-64 de buffalo_l como proxy de embedding alternativo, ou features HOG como baseline degradado).
+  - Inverte: cria Y com B, prediz com A.
+  - Mede quanto do desempenho decorre do fato de label e score compartilharem a mesma geometria.
+
+---
+
+## Entrega 7 (Opcional/Alta Novidade) — Multiverse / Specification-Curve Analysis
+
+> [!IMPORTANT]
+> Este é o experimento de maior potencial de impacto para FAccT. Requer as Entregas 3 e 6 implementadas primeiro.
+
+- [ ] **Criar `scripts/run_multiverse.py`** que executa combinações de:
+  - embedding × PCA (sim/não) × k (32,64,128) × seed (50) × target_rule (6) × groupid_threshold (4)
+  - Filtra pipelines com AUC > 0.85 e calcula Jaccard pairwise entre todos os conjuntos-alvo resultantes.
+  - Responde: **quantas pipelines distintas atingem AUC > 0.85 enquanto identificam conjuntos de pessoas quase incompatíveis (Jaccard < 0.1)?**
+  - Salva: `artifacts/multiverse/specification_curve.csv` + figura de specification curve (eixo x = pipelines ordenadas por AUC; eixo y superior = AUC; eixo y inferior = Jaccard pairwise).
+
+- [ ] Adicionar seção "Specification-Curve Analysis" em Resultados com a figura.
+
+---
+
+## Reestruturação do Artigo (Reorganização Textual)
+
+### Seção de Ameaças à Validade
+- [ ] Reorganizar Capítulo 5 (Limitações) em quatro tipos explícitos:
+  1. **Validade de construto** — endogeneidade do alvo, ablação das regras.
+  2. **Validade interna** — leakage (já resolvido), group_id (análise de sensibilidade).
+  3. **Validade externa** — FairFace pareado e replicado, datasets adicionais.
+  4. **Validade de conclusão** — ausência de OOF/ICs (a resolver com Entrega 5).
+
+### Contribuições (Seção 1.1)
+- [ ] Atualizar C1–C5 para refletir os novos resultados:
+  - C1: acrescentar Proposição 1 (formalização).
+  - C3: atualizar contagem de execuções (adicionar multiverse se implementado).
+  - C4: atualizar FairFace com novo desenho pareado e decomposição de variância.
+  - Adicionar C6: *"Ablação de definições de alvo mostra que X definições mutuamente incompatíveis atingem AUC > 0.85."*
+
+---
+
+## Priorização para Submissão FAccT
+
+| Prioridade | Entrega | Justificativa |
+|---|---|---|
+| 🔴 Obrigatória | **E1** — Proposição formal | Fundação teórica; diferencia de crítica informal |
+| 🔴 Obrigatória | **E2** — FairFace pareado | Elimina confusão composição/amostragem apontada por revisores |
+| 🔴 Obrigatória | **E3** — Ablação target rules | Demonstra arbitrariedade; quantifica incompatibilidade |
+| 🔴 Obrigatória | **E4** — Paradoxo AUC×Jaccard como resultado central | Reformulação do framing; resultado mais forte |
+| 🟡 Importante | **E5** — OOF + Bootstrap/ICs | Remove limitação documental explícita; aumenta credibilidade |
+| 🟡 Importante | **E6b** — Sensibilidade do group_id | Ataca ameaça à validade interna identificada |
+| 🟢 Desejável | **E6a** — Outros clusterings | Generaliza além do MiniBatchKMeans |
+| 🟢 Desejável | **E7** — Multiverse | Maior novidade empírica; ideal mas requer tempo |
+
+---
+
+## Arquivos Novos a Criar
+
+| Arquivo | Tipo | Entrega |
+|---|---|---|
+| `face_profile_ml/endogenous_target.py` | Python | E1 |
+| `face_profile_ml/target_rules.py` | Python | E3 |
+| `face_profile_ml/variance_decomposition.py` | Python | E2 |
+| `face_profile_ml/bootstrap_ci.py` | Python | E5 |
+| `face_profile_ml/clustering_backends.py` | Python | E6a |
+| `scripts/run_proposition_demo.py` | Python | E1 |
+| `scripts/run_fairface_replicated.py` | Python | E2 |
+| `scripts/run_target_ablation.py` | Python | E3 |
+| `scripts/plot_performance_stability_paradox.py` | Python | E4 |
+| `scripts/run_groupid_sensitivity.py` | Python | E6b |
+| `scripts/register_model_hash.py` | Python | E5 |
+| `scripts/run_clustering_comparison.py` | Python | E6a |
+| `scripts/run_embedding_decoupling.py` | Python | E6c |
+| `scripts/run_multiverse.py` | Python | E7 |
+
+## Arquivos Existentes a Modificar
+
+| Arquivo | Modificação | Entrega |
+|---|---|---|
+| [`face_profile_ml/cli.py`](file:///c:/Users/Henrique%20Lima/Desktop/Repositórios/ia-uspJailer/face_profile_ml/cli.py) | Arg `--target-rule`; salvar OOF | E3, E5 |
+| [`artigo/conteudo.tex`](file:///c:/Users/Henrique%20Lima/Desktop/Repositórios/ia-uspJailer/artigo/conteudo.tex) | Proposição, ablação, paradoxo, FairFace, ameaças | E1–E5 |
+| `artigo/figuras/image2.png` | Substituir por figura paradoxo AUC×Jaccard | E4 |
+| `artigo/figuras/image3.png` | Substituir por figura FairFace com replicações | E2 |
+
+## Verificação Final
+
+- [ ] Compilar `artigo/main.tex` sem erros após todas as mudanças textuais.
+- [ ] Rodar `pytest tests/` para garantir que novos módulos têm cobertura mínima.
+- [ ] Confirmar que `artifacts/proposition/`, `artifacts/ablation/`, `artifacts/fairface_replicated/`, `artifacts/cv/oof_predictions.csv` e `artifacts/multiverse/` existem e têm outputs verificáveis.
+- [ ] Atualizar tag Git (`paper-v2.0-facct` ou similar) após validação.

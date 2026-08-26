@@ -1,0 +1,39 @@
+## O que precisa ser feito — Visão Geral
+
+### 🔴 Prioridade máxima (obrigatórias antes da submissão)
+
+**E1 — Formalização matemática da separabilidade endógena**
+- Criar `face_profile_ml/endogenous_target.py` com construção explícita do cenário Z=f(X), Y=h(Z), s=g(Z)
+- Script `scripts/run_proposition_demo.py` que demonstra empiricamente: AUC_internal → 1.0 enquanto AUC_vs_external ≈ 0.5
+- Adicionar **Proposição 1** no LaTeX (Seção 2.2) com prova por construção, incluindo corolário de que vale mesmo sem leakage
+
+**E2 — FairFace pareado e replicado (50+ replicações)**
+- Criar `scripts/run_fairface_replicated.py` com núcleo fixo de imagens compartilhado entre cenários + sorteio independente para complementar quotas
+- Criar `face_profile_ml/variance_decomposition.py` para decompor: quanto da variação em AUC/Jaccard vem de *composição* vs. *amostragem* vs. *seed* vs. *k*
+- Substituir Tabela 4 no artigo pela tabela de decomposição de variância
+
+**E3 — Ablação das 6 definições de cluster-alvo**
+- Criar `face_profile_ml/target_rules.py` com: `largest`, `most_compact`, `most_separated`, `random`, `central`, `outlier`
+- Criar `scripts/run_target_ablation.py` que para cada regra × seed × k calcula AUC + Jaccard pairwise entre regras
+- Resultado-chave a reportar: **quantas definições mutuamente incompatíveis (Jaccard < 0.1) atingem AUC > 0.85?**
+
+**E4 — Paradoxo AUC × Jaccard como resultado central**
+- Criar `scripts/plot_performance_stability_paradox.py` gerando scatter AUC vs. Jaccard por seed/k
+- Formalizar como **Resultado Empírico 1** no artigo: *ROC-AUC = 0,896 coexistindo com Jaccard mediano = 0,004*
+- Reestruturar Seção 4.4 para ser o resultado central, não secundário
+
+### 🟡 Importantes (aumentam credibilidade e removem limitações documentais)
+
+**E5 — OOF completo + Bootstrap/ICs**
+- Modificar `cli.py` para salvar `oof_predictions.csv` com sample_id, fold, score, prob_calibrada, cluster, distâncias
+- Criar `face_profile_ml/bootstrap_ci.py` com ICs sobre AUC, PR-AUC, Brier, Jaccard
+- Registrar SHA-256 do `w600k_r50.onnx` no manifesto FairFace
+
+**E6b — Sensibilidade do `group_id`**
+- Criar `scripts/run_groupid_sensitivity.py` para limiares 0.995, 0.997, 0.999, 0.9995
+- Gerar curva: limiar → número de grupos, AUC, Jaccard, tamanho do alvo
+
+### 🟢 Desejáveis (alta novidade, resistência a revisores)
+
+**E6a — Outros algoritmos de clustering** — comparar MiniBatchKMeans, KMeans, GMM e Agglomerative  
+**E7 — Multiverse/Specification-curve analysis** — executar ∼todas combinações plausíveis e responder: quantas pipelines distintas com AUC > 0.85 identificam conjuntos quase incompatíveis (Jaccard < 0.1)?

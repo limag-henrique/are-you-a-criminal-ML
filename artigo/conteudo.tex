@@ -1,0 +1,690 @@
+\chapter{INTRODUÇÃO}
+
+A ideia original deste projeto foi simples e deliberadamente provocativa: reunir fotografias publicadas em listas de procurados e induzir um algoritmo a procurar nelas um suposto padrão de ``criminalidade facial''. A intenção nunca foi defender que esse padrão exista. Foi construir, em ambiente controlado, uma máquina capaz de produzir uma resposta aparentemente convincente e então auditar por que essa resposta pode ser circular, preconceituosa e cientificamente vazia. Em termos práticos, o experimento pergunta: se o próprio sistema transforma rostos em uma regra, cria um alvo a partir dessa regra e depois é avaliado por reconhecê-lo, até que ponto uma boa métrica descreve o mundo --- e até que ponto apenas descreve o próprio algoritmo?
+
+As listas públicas de procurados foram escolhidas justamente porque parecem, à primeira vista, um banco de ``criminosos'', mas não são isso em sentido estatístico. Elas registram pessoas que determinadas instituições decidiram localizar e divulgar em certo momento. Não são levantamentos probabilísticos de delitos, de autores de crimes ou da população. Na Interpol, por exemplo, a Red Notice é um pedido de localização e prisão provisória; apenas parte dos avisos se torna pública, e o que pode ser coletado depende de jurisdição, política de divulgação, vigência, disponibilidade de fotografia e capacidade de coleta (Interpol, 2026a, 2026b). Portanto, antes de qualquer linha de código, já existe uma cadeia de seleção que define quem pode aparecer no corpus.
+
+A questão racial foi uma das motivações centrais do trabalho. A observação exploratória das listas despertou a impressão de que a composição visual do corpus não acompanhava de modo óbvio as desigualdades raciais documentadas no sistema penal. Essa impressão não é tratada como medição: o estudo não ``adivinha'' raça pela fotografia e não afirma que pessoas negras estejam mais ou menos presentes nas listas sem metadados válidos. Ela é transformada em pergunta científica. No Brasil, 55,5\% da população se autodeclarou preta ou parda no Censo 2022; a SENAPPEN informou, para dezembro de 2024, 64\% de pessoas negras entre as pessoas presas em celas físicas; e a Resolução CNJ nº 484/2022 registra levantamento nacional no qual 83\% das pessoas apontadas em reconhecimentos fotográficos equivocados eram negras (IBGE, 2022; Secretaria Nacional de Políticas Penais, 2025; Conselho Nacional de Justiça, 2022). Esses números não são denominadores intercambiáveis e não calculam a composição das listas. Eles mostram por que o risco de transformar seleção institucional e aparência em ``verdade matemática'' tem relevância racial concreta.
+
+O mecanismo computacional é menos complexo do que a linguagem técnica pode sugerir. O pipeline deriva um alvo Y da própria representação facial Z = f(X) e depois avalia um escore g(Z) contra esse alvo. Se o alvo nasceu da geometria facial e o escore também nasce dela, uma AUC alta pode significar apenas que o sistema consegue recuperar a regra que ajudou a criar. Chamamos de falácia da separabilidade endógena a passagem indevida desse sucesso interno para uma afirmação externa --- por exemplo, concluir que o padrão representa criminalidade, periculosidade, raça ou caráter. A métrica pode estar matematicamente correta e a interpretação, ainda assim, estar errada.
+
+A monografia audita o estado preservado e a reconstrução final do repositório are-you-a-criminal-ML. A análise combina linhagem de dados, controle de vazamento, validação cruzada agrupada com ajuste estritamente no treino, estabilidade sob sementes e hiperparâmetros, controles negativos e um braço externo com FairFace. O objetivo não é construir um detector de criminalidade. É demonstrar, com código, números e rastreabilidade, como um sistema pode fabricar um padrão interno, como esse padrão varia sob perturbações de composição e configuração da base e por que nenhum desses resultados autoriza transformar similaridade facial em julgamento sobre pessoas.
+
+\begin{boxtext}RESULTADO CENTRAL, EM LINGUAGEM DIRETA --- Se o algoritmo cria o próprio alvo a partir das faces e depois é premiado por reconhecer esse alvo, uma métrica alta prova que ele aprendeu a regra que recebeu; não prova que aprendeu criminalidade. Nas perturbações de composição e amostragem examinadas, o ``padrão'' encontrado variou mesmo quando a AUC mudou pouco. Assim, números corretos podem dar aparência de neutralidade a uma conclusão que não tem validade fora do próprio pipeline.\end{boxtext}
+
+As perguntas de pesquisa são: RQ1 --- quem entra no corpus, quem fica de fora e por que uma lista de procurados não representa criminalidade populacional? RQ2 --- quão bem o alvo criado pelo próprio pipeline pode ser recuperado? RQ3 --- esse alvo permanece o mesmo quando mudam semente, k, ordem, \texttt{batch\_size} e representação? RQ4 --- o que os dados permitem ou impedem afirmar sobre criminalidade, raça e grupos humanos? RQ5 --- em um domínio externo com categorias demográficas documentadas, a composição da base está associada a mudanças no padrão que o algoritmo encontra mesmo quando as métricas agregadas parecem semelhantes?
+
+\section{Contribuições}
+
+\begin{contribution}C1 --- demonstração por construção. Mostra, com um caso executável, como um sistema pode fabricar um alvo de ``criminalidade facial'' a partir da própria geometria e depois produzir métricas altas ao recuperar essa regra.\end{contribution}
+
+\begin{contribution}C2 --- contribuição metodológica. Separa quatro perguntas que frequentemente são confundidas: o alvo é separável? é estável? mede o construto nomeado? pode ser generalizado para pessoas ou populações?\end{contribution}
+
+\begin{contribution}C3 --- contribuição computacional. Integra linhagem, auditoria de vazamento, validação cruzada agrupada com ajuste estritamente no treino, controles negativos e 611 configurações de estabilidade para tornar a crítica verificável, e não apenas conceitual.\end{contribution}
+
+\begin{contribution}C4 --- contribuição empírica sobre composição. O braço FairFace mostra que perturbações de composição e amostragem estiveram associadas a mudanças substanciais nas partições e na identidade do alvo enquanto ROC-AUC e prevalência variaram pouco, evidenciando que desempenho agregado não garante neutralidade estrutural.\end{contribution}
+
+\begin{contribution}C5 --- contribuição sociotécnica e ética. Recoloca seleção institucional e desigualdade racial dentro da análise do sistema, sem inferir raça pela face e sem converter uma demonstração de viés em ferramenta de classificação de pessoas.\end{contribution}
+
+\section{Trabalhos relacionados e fundamentação}
+
+O enquadramento articula validade de construto e mensuração, rótulos-proxy, subespecificação, indeterminação de rótulos, viés de seleção, auditoria de datasets e modelos, reconhecimento facial e crítica à fisiognomia algorítmica. A taxonomia de fontes de dano ao longo do ciclo de aprendizagem de máquina de Suresh e Guttag (2021) reforça a necessidade de localizar em qual etapa cada distorção é introduzida. Bowyer et al. (2020) demonstram a fragilidade da suposta ``criminalidade pela face''; Jacobs e Wallach (2021) mostram que mensuração e fairness dependem da validade do construto; e Raji et al. (2020, 2022) situam auditoria e alegações de funcionalidade ao longo do ciclo de vida do sistema. A documentação sistemática de datasets e modelos proposta por Gebru et al. (2021) e Mitchell et al. (2019), bem como a análise de viés de seleção de Roberts et al. (2017), reforça que origem, escopo e condições de uso pertencem à evidência científica.
+
+Rótulos observáveis podem ser proxies frágeis para fenômenos latentes; Guerdan et al. (2023) descrevem fontes de viés do alvo e as hipóteses necessárias para tratar proxies como evidência. D\textquotesingle Amour et al. (2022) mostram que \emph{pipeline}s subespecificados podem manter desempenho semelhante e variar em comportamentos relevantes. Schoeffer, De-Arteaga e Elmer (2025) demonstram que escolhas não verificáveis na construção de rótulos podem produzir modelos divergentes, enquanto Coston (2026) propõe falsificar a validade discriminante quando um algoritmo pode prever melhor proxies impermissíveis que o resultado pretendido. Essas literaturas situam a contribuição desta monografia sem transformar a expressão ``falácia da separabilidade endógena'' em reivindicação de prioridade terminológica.
+
+O problema permanece atual em modelos multimodais. Birhane et al. (2024) avaliaram 14 modelos visiolinguísticos e observaram associações racializadas com a classe ``criminal'', cujo comportamento mudou com a escala do modelo e do conjunto de treinamento. O resultado não equivale ao experimento desta monografia, mas reforça que rótulos morais podem emergir de escolhas de dados, classes e representação, exigindo auditoria de sua proveniência e significado.
+
+Na biometria, a avaliação contínua do NIST destaca que diferenças demográficas de erro dependem do algoritmo, da tarefa e da qualidade da imagem (NIST, 2026). Resultados clássicos como os de Buolamwini e Gebru (2018) também mostram que desempenho agregado pode ocultar disparidades entre grupos. FairFace foi criado para estudar desequilíbrios de atributos em um domínio próprio e fornece categorias históricas de anotação, não uma ontologia biológica nem autoidentificação irrestrita (Kärkkäinen; Joo, 2021). Por isso, o braço externo é tratado como análise de sensibilidade de composição, sem transferência de rótulos ao corpus principal.
+
+
+A novidade reivindicada por esta monografia não é a constatação isolada de que um rótulo derivado das próprias \emph{features} pode produzir circularidade. Esse risco já é compatível com a literatura de validade de construto, proxies, vazamento, subespecificação e indeterminação de rótulos. A contribuição está em combinar, num mesmo estudo executável e auditável, \textbf{linhagem sociotécnica, identificabilidade, alvo endógeno, validação cruzada agrupada com ajuste estritamente no treino, estabilidade de agrupamento, controle sintético, perturbação de composição e limites raciais explícitos}. O Quadro~1 situa essa integração em relação aos eixos de trabalho anterior mobilizados no texto.
+
+\quadcaption{1}{Trabalho anterior e contribuição integrada desta monografia}
+
+\begingroup\SingleSpacing\fontsize{9.2}{10.7}\selectfont\setlength{\tabcolsep}{3.5pt}\renewcommand{\arraystretch}{1.2}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1900}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3650}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4450}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\textbf{Eixo} & \textbf{Trabalho anterior mobilizado} & \textbf{Contribuição desta monografia} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Validade de construto e proxies & A literatura distingue desempenho sobre um proxy de validade do construto pretendido (Jacobs; Wallach, 2021; Guerdan et al., 2023; Coston, 2026). & Formaliza o alvo endógeno e separa recuperabilidade interna, validade de construto e limites inferenciais externos. \\
+Linhagem, seleção e auditoria & Proveniência, seleção e documentação condicionam o significado dos resultados (Roberts et al., 2017; Raji et al., 2020, 2022; Gebru et al., 2021). & Reconstrói a linhagem sociotécnica das listas de procurados e explicita o que é ou não identificável em cada estágio. \\
+Subespecificação e rótulos & Configurações ou escolhas de rotulagem podem produzir comportamentos divergentes apesar de métricas semelhantes (D\textquotesingle Amour et al., 2022; Schoeffer; De-Arteaga; Elmer, 2025). & Mede estabilidade sob sementes, $k$, ordem, minilote e representação, com 611 execuções e comparações pareadas. \\
+Separação entre ajuste e avaliação & \emph{Sample splitting} e \emph{cross-fitting} separam etapas de ajuste e avaliação em amostras complementares (Chernozhukov et al., 2018). & Usa validação cruzada agrupada com ajuste estritamente no treino e auditoria explícita de cada operação ajustável. \\
+Circularidade demonstrável & A crítica à fisiognomia algorítmica e à ``criminalidade pela face'' mostra que separabilidade não basta para sustentar um construto moral (Bowyer et al., 2020; Birhane et al., 2024). & Acrescenta um controle sintético em que um alvo sem construto social externo atinge ROC-AUC = 1,000, isolando a possibilidade de separabilidade puramente endógena. \\
+Composição e limites raciais & Auditorias biométricas mostram dependência de dados, tarefa e composição, e FairFace fornece categorias históricas para estudos de desequilíbrio (NIST, 2026; Kärkkäinen; Joo, 2021). & Perturba composição e amostragem em domínio externo, sem inferir raça no corpus principal, e explicita limites raciais e causais da interpretação. \\
+\end{longtable}\endgroup
+
+\sourcecaption{Fonte: elaboração própria a partir da literatura discutida nesta seção. A originalidade reivindicada é a integração do protocolo e da evidência, não a prioridade terminológica da expressão ``falácia da separabilidade endógena''.}
+
+\chapter{MATERIAIS E MÉTODOS}
+
+\section{Unidade de análise e estado preservado}
+
+A unidade observada é um registro público coletado, não uma ocorrência criminal nem, necessariamente, uma pessoa única. Foram considerados manifestos, imagens alinhadas, embeddings ArcFace de 512 dimensões, relatórios de pré-processamento, código e saídas da auditoria. O estado de código e documentação desta edição foram congelados na tag  \texttt{paper-v1.1-final}, commit \texttt{6b81953}. A tag fornece um ponto canônico para a edição definitiva, sem reescrever retroativamente a proveniência da corrida anterior nem provar equivalência byte a byte com sua árvore de trabalho modificada.
+
+A documentação contemporânea foi usada para localizar implementação e artefatos da auditoria final, sem imputar retroativamente seus parâmetros ao \emph{pipeline} histórico. Essa separação é essencial: agrupamento-alvo, validação cruzada agrupada com ajuste estritamente no treino, PCA-64 especificada, calibração, limiares, auditoria de \texttt{group\_id} e desenho ampliado de estabilidade pertencem à reconstrução atual; regras históricas ausentes permanecem não recuperadas (Gusmão, 2026).
+
+\section{Framework de auditoria da separabilidade endógena}
+
+Seja X o dado observado, Z uma representação, Y um alvo produzido ou selecionado pelo \emph{pipeline}, s um escore avaliado contra Y e C o construto externo alegado. As relações internas do \emph{pipeline} são:
+
+\begin{equation}\label{eq:pipeline} Z=f(X),\quad Y=h(Z),\quad s=g(Z) \end{equation}
+
+\begin{equation}\label{eq:validade} \operatorname{Sep}(s,Y)\not\Rightarrow\operatorname{Valid}(Y,C) \end{equation}
+
+Na equação (2.2), Sep(s, Y) representa a separabilidade interna do escore em relação ao alvo endógeno; Valid(Y, C) representa a validade do alvo como medida do construto externo. ROC-AUC e PR-AUC respondem à primeira relação, mas não demonstram a segunda (Saito; Rehmsmeier, 2015). O framework também separa estabilidade computacional, validade de construto e validade externa, cada qual com evidência e bloqueios inferenciais próprios.
+
+O protocolo operacional consiste em localizar a origem de Y; separar ajuste, seleção e avaliação; executar controles que rompam a relação geométrica; perturbar sementes, hiperparâmetros, ordem e representação; e classificar como não identificável toda alegação externa sem variável, comparador ou denominador observável. O caso de `criminalidade facial' funciona como demonstração construtiva dessa falha, mas o protocolo também se aplica a inferências de personalidade, empregabilidade, periculosidade, emoção ou orientação política.
+
+\section{Classes de identificabilidade}
+
+Cada alegação foi classificada antes da interpretação. ``Identificável'' designa uma grandeza para a qual unidade, variável e denominador são observáveis no estado preservado. ``Diagnosticável'' designa uma propriedade interna que pode ser testada sem representar o construto social de interesse. ``Não identificável'' designa um estimando para o qual faltam variáveis, comparadores, denominadores ou contrafactuais essenciais. ``Parcialmente verificável'' foi reservado a resultados existentes cujos números podem ser localizados, mas cujo procedimento completo não pode ser reconstruído independentemente.
+
+\quadcaption{2}{Matriz de auditoria, evidência e identificabilidade}
+
+\begingroup\SingleSpacing\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1955}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2632}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3533}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1880}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Alegação}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Unidade/denominador}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Evidência disponível}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Classe}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Fluxo técnico atual & Linha/estágio do manifesto & Manifesto final, hashes e relatórios & Identificável \\
+Cobertura de extração & Embedding por registro & 9.584 registros; 9.482 vetores válidos & Identificável \\
+Relação 9.546$\leftrightarrow$9.584 & Estados históricos distintos & Sem elo documental recuperado & Não identificável \\
+Estabilidade computacional atual & Execuções/pares sob perturbação & 611 execuções; comparações pareadas de ARI/Jaccard & Diagnosticável \\
+Recuperação agrupada atual & Dobra por \texttt{group\_id} provável & 5 dobras; métricas e auditoria de ajuste & Diagnosticável \\
+ROC/PR históricos & Dobra do estado preservado & 0,930/0,479 reportados; protocolo histórico incompleto & Parcialmente verificável \\
+Influência por fonte & Fonte e denominadores institucionais & Fonte analítica não recuperada & Não identificável \\
+Composição/\linebreak seletividade racial do corpus & Raça/cor documentada e denominadores comparáveis & Rótulos raciais validados e denominadores ausentes & Não identificável \\
+Equidade biométrica por grupo & Pares genuínos/impostores, grupos e protocolo & Identidade confirmada e protocolo biométrico ausentes & Não identificável \\
+\end{longtable}\endgroup
+
+\sourcecaption{Fonte: elaboração própria. ``Diagnosticável'' descreve a operação interna do pipeline, não sua validade externa.}
+
+\section{Cadeia sociotécnica de seleção e status da evidência}
+
+A inclusão final foi representada como condicionamento em S = 1. O símbolo resume, para fins analíticos, transições distintas: decisão institucional de localizar e divulgar, permanência na página, disponibilidade de fotografia, coleta, padronização, detecção facial e extração válida. O modelo não estima efeitos causais; ele organiza mecanismos de seleção que limitam o universo observável (Elwert; Winship, 2014; Hernán; Hernández-Díaz; Robins, 2004).
+
+\figcaption{1}{Cadeia sociotécnica, endogeneidade do alvo e limites inferenciais.}
+
+\par\noindent\makebox[\linewidth][c]{\includegraphics[width=6.1in,height=2.66474in]{figuras/image1.png}}\par
+
+\sourcecaption{Fonte: elaboração própria. O diagrama distingue seleção/observabilidade, geometria interna e o vínculo externo que precisaria ser demonstrado.}
+
+\quadcaption{3}{Transições de seleção e observabilidade no estado auditado}
+
+\begingroup\SingleSpacing\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1880}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3233}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3233}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1654}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Transição}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Mecanismo de inclusão/exclusão}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Evidência por registro}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Status}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Decisão institucional & Investigação, jurisdição, pedido e prioridade & Não disponível & Não observável por registro \\
+Publicidade e vigência & Publicação, permanência, retirada ou localização & Datas e motivo não confiáveis & \begin{minipage}[t]{\linewidth}\raggedright
+Não identificável\\
+temporalmente\strut
+\end{minipage} \\
+Coleta & Página acessível e captura técnica & Contagem agregada herdada & Reconciliação documental \\
+Padronização & Formato, download e processamento & Contagens agregadas herdadas & Reconciliação documental \\
+Manifesto analítico & Registro admitido no conjunto final & 9.584 linhas reproduzidas & \begin{minipage}[t]{\linewidth}\raggedright
+Reproduzido/\\
+verificado\strut
+\end{minipage} \\
+Extração de embedding & Face detectável e vetor válido & 9.482 vetores; 102 falhas & \begin{minipage}[t]{\linewidth}\raggedright
+Reproduzido/\\
+verificado\strut
+\end{minipage} \\
+\end{longtable}\endgroup
+
+\sourcecaption{Fonte: elaboração própria a partir dos artefatos e das limitações de proveniência declaradas no estado preservado.}
+
+\section{Proveniência de fonte e análises excluídas}
+
+A variável de fonte permanece não recuperada no manifesto analítico que sustenta a avaliação final. Assim, enriquecimento por fonte, previsibilidade de fonte, balanceamento, leave-one-source-out, efeito causal de fonte e composição temporal não são estimados. A auditoria também não reconstrói datas institucionais de inclusão/remoção. Essas ausências são preservadas como limites de proveniência, e não preenchidas por nomes de arquivos ou inferência ad hoc.
+
+Os resultados são classificados pela sua relação com a evidência. As contagens 11.724, 9.764 e 9.546 são histórico preservado documentado; 9.584 e 9.482 foram reproduzidas no estado atual; a ligação histórica entre 9.546 e 9.584 permanece não recuperada. As métricas ROC-AUC 0,930 e PR-AUC 0,479 da edição anterior continuam apenas como resultados históricos reportados. Já a validação cruzada agrupada com ajuste estritamente no treino, os limiares/calibração, PCA-64, \texttt{group\_id} e a estabilidade ampliada são reconstruções ou análises novas da auditoria final, sem atribuição retroativa ao \emph{pipeline} histórico.
+
+\section{Análise de estabilidade computacional}
+
+A auditoria final separa três tipos de instabilidade: estocástica, operacional e de representação. O desenho estocástico combina 100 sementes explícitas com k = 32, 48, 64, 80, 96 e 128, totalizando 600 execuções com ordem original, representação L2 e \texttt{batch\_size} primário. A instabilidade operacional é examinada por quatro ordens (original, reversa, embaralhamento com semente e índice ordenado por hash) e por cinco \texttt{batch\_size} (256, 512, 1.024, 2.048 e 4.096). A instabilidade de representação compara \texttt{original\_l2} e PCA-64. O desenho completo contém 611 execuções e foi concluído integralmente. A leitura da estabilidade de agrupamentos segue a tradição de Ben-Hur, Elisseeff e Guyon (2002), Hubert e Arabie (1985) e von Luxburg (2010).
+
+O agrupamento reconstruído usa \texttt{MiniBatchKMeans} (Pedregosa et al., 2011). A configuração primária fixa k = 64, \texttt{batch\_size} = 1.024, \texttt{max\_iter} = 100 e \texttt{n\_init} = 3; o primeiro valor da lista explícita de sementes atua como semente primária nas análises operacionais e de representação. O agrupamento-alvo é o maior agrupamento. Para a partição completa usa-se ARI; para o conjunto-alvo, Jaccard. A análise final calcula também tamanho e prevalência do alvo. Em vez de comparar todas as soluções contra uma única referência, as partições de cada grupo comparável são avaliadas em pares e resumidas por distribuição; a execução produziu 60.045 comparações pareadas, evitando que a conclusão dependa de uma referência arbitrária.
+
+ARI é interpretado como concordância de partições corrigida pelo acaso e Jaccard como sobreposição do conjunto-alvo, $J(A,B)=\lvert A\cap B\rvert/\lvert A\cup B\rvert$ (Hubert; Arabie, 1985; von Luxburg, 2010). Essas métricas diagnosticam dependência computacional dentro da região de configurações examinada; não validam uma partição substantiva, identidade, categoria social ou propriedade jurídica. A edição anterior continha oito contrastes contra uma referência com ARI de 0,072 a 0,113 e Jaccard de 0 a 0,124; esses valores são mantidos apenas como subconjunto documentado da reconstrução anterior, não como resumo estatístico da corrida final ampliada.
+
+PCA-64 é uma reconstrução atual explicitamente especificada, não uma configuração histórica recuperada: 64 componentes, solver \texttt{randomized}, \texttt{random\_state} = 20260727, \texttt{centering} = true, \texttt{whitening} = false, normalização L2 antes e depois da transformação. Na avaliação por dobra, a PCA --- quando utilizada --- é ajustada exclusivamente no treino e aplicada ao teste; na análise de sensibilidade de representação sobre todos os registros, seu escopo é declarado separadamente. A especificação e a variância explicada são registradas em \path{pca_specification.json}. Nenhum desses parâmetros é atribuído ao procedimento histórico ausente.
+
+\section{Validação cruzada agrupada e contrato de reprodução}
+
+A avaliação principal é descrita neste trabalho como \textbf{validação cruzada agrupada com ajuste estritamente no treino}. A reconstrução final usa \texttt{GroupKFold} com cinco dobras definidas por \texttt{group\_id} de duplicidade provável. Em cada dobra, a representação ajustável, o \texttt{MiniBatchKMeans}, a escolha do agrupamento-alvo, o centroide, a calibração logística e o limiar são ajustados exclusivamente no treino. O conjunto de teste é transformado sem reajuste; o modelo de agrupamento treinado prediz o rótulo de agrupamento do teste e o alvo binário é definido por pertencimento ao agrupamento-alvo escolhido no treino. O escore bruto é a similaridade com o centroide-alvo; quando há duas classes no treino, uma regressão logística treinada apenas no treino produz o escore probabilístico. O procedimento compartilha com o \emph{cross-fitting} o princípio de \emph{sample splitting} --- ajuste em amostras complementares e avaliação fora da amostra usada no ajuste --- discutido por Chernozhukov et al. (2018), mas o termo \emph{cross-fitting} não é usado aqui como denominação principal nem implica inferência semiparamétrica ou conclusões causais.
+
+\begin{boxtext}
+\textbf{Algoritmo 1 --- Protocolo executado de validação cruzada agrupada com ajuste estritamente no treino}\par
+\begin{enumerate}
+\setlength{\itemsep}{1pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+\item Particionar os registros com \texttt{GroupKFold} por \texttt{group\_id} provável, sem grupo compartilhado entre treino e teste.
+\item Ajustar qualquer representação aprendida somente no treino e apenas transformar o teste.
+\item Ajustar \texttt{MiniBatchKMeans} somente no treino.
+\item Selecionar, somente no treino, o maior agrupamento como alvo e construir \texttt{y\_train}.
+\item Calcular o centroide do alvo no treino e pontuar treino e teste por similaridade com esse centroide.
+\item Produzir \texttt{y\_test} por \texttt{model.predict(test)} e pertencimento ao rótulo do agrupamento-alvo selecionado no treino.
+\item Ajustar a calibração logística somente no treino quando houver duas classes.
+\item Selecionar o limiar somente no treino pelo máximo F1 da curva precisão--revocação.
+\item Avaliar o teste uma única vez e registrar prevalência, grupos, limiar, calibração, métricas e hash do estado de treino.
+\item Auditar cada etapa ajustada e falhar se houver índice de teste ou registro fora do treino.
+\end{enumerate}
+\end{boxtext}
+
+A auditoria de ajuste registrou 25 eventos em cinco dobras e encontrou zero sobreposição com o teste e zero ajustes fora do treino, em linha com o princípio de prevenção de vazamento entre ajuste e avaliação discutido por Kaufman et al. (2012). Isso fortalece a validade interna da reconstrução atual contra vazamento direto treino/teste. Não elimina, porém, a endogeneidade conceitual: y\_train e y\_test são definidos pelo próprio agrupamento treinado e projetado no espaço de embeddings, portanto as métricas medem recuperação de um alvo sintético reconstruído, não correspondência com um critério externo.
+
+Limiar e calibração estão agora metodologicamente especificados para a reconstrução atual. A ROC-AUC é lida como medida de ordenação e não como validação de construto, interpretação compatível com a discussão de Fawcett (2006). A calibração é logística e ajustada somente no treino; por isso o Brier pode ser interpretado como erro quadrático probabilístico em relação ao alvo sintético desta reconstrução. Essa interpretação não é transferível para probabilidade de criminalidade, culpa, identidade ou qualquer atributo humano. Os números históricos antigos continuam separados: o protocolo que produziu ROC-AUC 0,930 e PR-AUC 0,479 não foi integralmente recuperado e não deve ser presumido idêntico ao protocolo atual.
+
+\subsection{Construção e limites do \texttt{group\_id}}
+
+Na reconstrução atual, \texttt{group\_id} é um agrupamento conservador de duplicidade provável baseado em embeddings L2-normalizados e similaridade cosseno. Pares com similaridade pelo menos 0,999 são conectados e componentes são formados por \emph{union-find}; identificadores públicos dos grupos são pseudonimizados. Foram obtidos 9.422 grupos prováveis entre 9.482 registros, dos quais 59 são não unitários; 1,255\% dos registros pertencem a grupos com mais de um registro. O limiar primário 0,999 é uma escolha metodológica da auditoria atual, não uma identidade biométrica validada nem um parâmetro histórico recuperado.
+
+A separação agrupada garante que nenhum \texttt{group\_id} provável atravesse treino e teste. Isso controla duplicidades conforme a heurística construída, mas não prova que a mesma pessoa não possa ocorrer em grupos diferentes. A amostra pseudonimizada de pares próximos ao limiar foi submetida à revisão humana e nenhum erro de agrupamento foi identificado nos pares revisados. Essa verificação sustenta a adequação operacional da heurística no material inspecionado, mas não converte os grupos em identidades biométricas confirmadas nem demonstra que uma mesma pessoa não possa ocorrer em grupos diferentes.
+
+\section{Níveis de verificabilidade computacional}
+
+\quadcaption{4}{Escada de verificabilidade computacional}
+
+\begingroup\SingleSpacing\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2126}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4409}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3465}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Nível}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Critério}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Situação neste estudo}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Rastreabilidade & Localizar código, entradas, configuração e outputs & Alta para a auditoria final: manifesto, hashes, run\_id e 20 outputs registrados; histórica incompleta \\
+Reexecução & Executar o protocolo atual no ambiente declarado & Realizada na configuração final; 611/611 execuções de estabilidade e 5 dobras agrupadas \\
+Reprodução numérica atual & Obter novamente resultados do protocolo reconstruído & 9.584 e 9.482 reproduzidos; métricas atuais e outputs estruturados registrados \\
+Reprodução histórica & Reconstituir integralmente o procedimento antigo & Parcial: ROC/PR antigos e regras históricas centrais permanecem apenas preservados/não recuperados \\
+Replicação independente & Nova equipe/dados/protocolo externo & Não realizada \\
+\end{longtable}\endgroup
+
+\sourcecaption{Fonte: elaboração própria. A escada separa localização de artefatos, reexecução, reprodução numérica e replicação externa.}
+
+\section{Experimento externo de composição demográfica}
+
+Como o corpus principal não possui raça/cor documentada nem vínculo verificável com bases demográficas externas, a sensibilidade à composição foi examinada em braço independente com FairFace (Kärkkäinen; Joo, 2021). Foram usadas apenas as sete categorias fornecidas pela base; nenhuma categoria foi inferida visualmente ou transferida ao \emph{pipeline} de procurados. Cada cenário contém 36.456 registros sem reposição. As proporções foram controladas, mas a identidade específica das imagens também varia entre cenários; portanto, o desenho não isola o efeito da proporção demográfica do efeito da amostragem de registros. A composição de entrada dos quatro cenários é apresentada no Quadro~5.
+
+\quadcaption{5}{Composição demográfica de entrada dos cenários A a D (FairFace)}
+
+\begingroup\SingleSpacing\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2200}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1950}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1950}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1950}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1950}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Categoria}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{A (proporcional)}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{B (balanceado)}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{C (ME reduzido)}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{D (ME aumentado)}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Black & 5.145 (14,1\%) & 5.208 (14,3\%) & 5.642 (15,5\%) & 4.340 (11,9\%) \\
+East Asian & 5.163 (14,2\%) & 5.208 (14,3\%) & 5.642 (15,5\%) & 4.340 (11,9\%) \\
+Indian & 5.163 (14,2\%) & 5.208 (14,3\%) & 5.642 (15,5\%) & 4.340 (11,9\%) \\
+Latino\_Hispanic & 5.594 (15,3\%) & 5.208 (14,3\%) & 5.642 (15,5\%) & 4.340 (11,9\%) \\
+Middle Eastern & 3.890 (10,7\%) & 5.208 (14,3\%) & 2.604 (7,1\%) & 10.416 (28,6\%) \\
+Southeast Asian & 4.556 (12,5\%) & 5.208 (14,3\%) & 5.642 (15,5\%) & 4.340 (11,9\%) \\
+White & 6.945 (19,1\%) & 5.208 (14,3\%) & 5.642 (15,5\%) & 4.340 (11,9\%) \\
+\textbf{Total} & \textbf{36.456} & \textbf{36.456} & \textbf{36.456} & \textbf{36.456} \\
+\end{longtable}\endgroup
+
+\sourcecaption{Fonte: quotas calculadas pela rotina \texttt{scenario\_quotas} sobre o catálogo FairFace. A = alocação proporcional ao catálogo; B = equipartição entre as sete categorias; C = Middle Eastern reduzido a metade da equipartição, restantes redistribuídos; D = Middle Eastern duplicado em relação à equipartição, restantes redistribuídos. ME = Middle Eastern. Categorias são rótulos históricos fornecidos pelo FairFace, não autoidentificação.}
+
+A liberação margin025, recortada e alinhada upstream com dlib.get\_face\_chip(), foi fornecida diretamente ao reconhecedor do pacote InsightFace buffalo\_l. A implementação usa InsightFace 1.0.1, ONNX Runtime 1.18.1, leitura RGB com conversão para BGR, normalização de pixels e redimensionamento executados pelo reconhecedor, embedding de 512 dimensões e normalização L2 posterior. O arquivo de reconhecimento disponível no ambiente é \path{w600k_r50.onnx}, mas seu hash não foi incorporado ao manifesto da corrida FairFace; por isso, o SHA-256 observado posteriormente não é atribuído retroativamente à execução. \texttt{MiniBatchKMeans}, \texttt{n\_init} = 3, \texttt{batch\_size} = 1.024, \texttt{max\_iter} = 100, regra do maior agrupamento, escore cosseno e avaliação foram mantidos constantes.
+
+As comparações entre cenários usam apenas a interseção dos identificadores presentes em ambos. Os limites ARI \textless{} 0,90, Jaccard \textless{} 0,80, \textbar $\Delta$ prevalência\textbar{} $\geq$ 0,02 e \textbar $\Delta$ AUC\textbar{} $\geq$ 0,03 foram pré-declarados como heurísticas descritivas para organizar a leitura, não como limiares de significância ou relevância substantiva validados externamente. A inferência principal usa distribuições e tamanhos de efeito contínuos.
+
+\chapter{RESULTADOS}
+
+\section{Fluxo de registros e cobertura técnica}
+
+A corrida final reproduz 9.584 linhas no manifesto analítico e 9.482 embeddings válidos de 512 dimensões. As contagens 11.724, 9.764 e 9.546 foram preservadas como artefatos históricos documentados, mas não reclassificadas como reproduzidas. A relação entre o estado histórico de 9.546 e o manifesto de 9.584 continua sem elo documental recuperado; por isso não se calcula taxa de retenção entre esses estados nem se força uma única coorte retrospectiva.
+
+\tabcaption{1}{Quantidades por estágio e status da evidência}
+
+\begingroup\SingleSpacing\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2676}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1260}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6063}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Estágio/contagem}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{n}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Status da evidência}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Coleta bruta histórica & 11.724 & Histórico preservado/documentado \\
+Entrada na padronização histórica & 9.764 & Histórico preservado/documentado \\
+Processamento bem-sucedido histórico & 9.546 & Histórico preservado/documentado \\
+Manifesto analítico atual & 9.584 & Reproduzido/verificado no artefato atual \\
+Embeddings válidos atuais & 9.482 & Reproduzido/verificado no artefato atual \\
+\end{longtable}\endgroup
+
+\sourcecaption{Fonte: auditoria de linhagem da execução final. As cinco contagens pertencem a estados de evidência distintos; a relação 9.546$\leftrightarrow$9.584 permanece não recuperada e não é usada para calcular retenção.}
+
+\section{Lacunas de proveniência e estado histórico}
+
+A proveniência por fonte e por tempo permanece não identificável. O manifesto público da auditoria final usa source = unresolved para os registros pseudonimizados; não há denominadores institucionais nem painel confiável de entradas/remoções. Consequentemente, a execução final não estima influência institucional, enriquecimento por fonte, composição temporal ou seletividade racial. A impressão visual de maior ou menor presença de qualquer grupo nas páginas coletadas não é tratada como dado racial: sem raça/cor documentada por registro, transformá-la em porcentagem exigiria uma classificação visual que o próprio estudo considera metodologicamente inadequada e eticamente arriscada.
+
+A principal melhora de linhagem é classificatória, não retrospectiva: a auditoria passa a registrar explicitamente o que é histórico preservado, reproduzido, reconstruído, novo ou não recuperado. Essa distinção impede que números localizados em relatórios antigos sejam tratados como se tivessem sido reobtidos pelo protocolo atual.
+
+\section{Estabilidade computacional da partição}
+
+\tabcaption{2}{Estabilidade estocástica por k: medianas, IQR e intervalos P05--P95.}
+
+\begingroup\SingleSpacing\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1176}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1838}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1544}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1985}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1544}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1914}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{k}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{ARI mediana (IQR)}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{ARI P05--P95}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Jaccard mediana (IQR)}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Jaccard P05--P95}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Prevalência mediana (IQR)}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+32 & 0.113 (0.104--0.123) & 0.095--0.142 & 0.001 (0.000--0.020) & 0.000--0.437 & 0.052 (0.049--0.055) \\
+48 & 0.091 (0.084--0.099) & 0.077--0.112 & 0.001 (0.000--0.051) & 0.000--0.166 & 0.044 (0.041--0.047) \\
+64 & 0.085 (0.078--0.092) & 0.071--0.104 & 0.004 (0.000--0.047) & 0.000--0.126 & 0.041 (0.038--0.044) \\
+80 & 0.077 (0.072--0.083) & 0.066--0.094 & 0.038 (0.004--0.066) & 0.000--0.110 & 0.042 (0.038--0.047) \\
+96 & 0.073 (0.069--0.079) & 0.063--0.089 & 0.042 (0.013--0.073) & 0.000--0.123 & 0.043 (0.040--0.048) \\
+128 & 0.070 (0.065--0.075) & 0.060--0.085 & 0.051 (0.027--0.079) & 0.000--0.123 & 0.047 (0.041--0.051) \\
+\end{longtable}\endgroup
+
+\sourcecaption{Fonte: \path{stability_summary.csv}. Para ARI e Jaccard, n = 4.950 pares distintos por k; para prevalência, n = 100 execuções por k. IQR = Q1--Q3.}
+
+A corrida final torna visível o resultado das 60.045 comparações. Entre sementes, a mediana do ARI diminuiu de 0,113 em k = 32 para 0,070 em k = 128. A mediana do Jaccard do conjunto-alvo permaneceu entre 0,001 e 0,051; em k = 64 foi 0,004 (IQR 0,000--0,047; P05--P95 0,000--0,126). Esses valores mostram baixa concordância tanto da partição completa quanto da identidade do maior agrupamento na região examinada.
+
+A sensibilidade não se restringiu à semente. Em k = 64, mudanças de ordem produziram ARI mediano 0,100 e Jaccard 0,000; mudanças de \texttt{batch\_size}, ARI 0,085 e Jaccard 0,003; o contraste original L2 × PCA-64 resultou em ARI 0,090 e Jaccard 0,000. A prevalência do alvo também variou: entre \texttt{batch\_size}, a mediana foi 0,040 e o intervalo observado 0,028--0,125. Como o desenho cobre uma grade finita, os resultados sustentam instabilidade condicionada às perturbações executadas, não uma afirmação universal sobre todo algoritmo de agrupamento.
+
+\section{Validação cruzada agrupada: histórico preservado e reconstrução atual}
+
+Dois conjuntos de resultados devem ser mantidos separados. O estado histórico preserva ROC-AUC média de 0,930 e PR-AUC de 0,479 em cinco dobras, mas sua regra histórica completa de geração do alvo, prevalências, limiares e calibração não foi recuperada; esses números permanecem parcialmente verificáveis. A auditoria final executou um protocolo novo e explícito de validação cruzada agrupada com ajuste estritamente no treino, com cinco dobras, \texttt{group\_id} provável, calibração logística e limiar selecionado no treino. As métricas atuais medem exclusivamente recuperação interna do alvo sintético reconstruído.
+
+\tabcaption{3}{Resultados históricos preservados e reconstrução agrupada atual}
+
+\begingroup\SingleSpacing\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1968}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4330}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3702}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Métrica}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Histórico preservado}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Reconstrução atual final}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ROC-AUC & 0,930 (média reportada; protocolo histórico incompleto) & 0,896 \\
+PR-AUC & 0,479 (média reportada; baseline histórica não auditável) & 0,348 \\
+Baseline PR-AUC & Não recuperada & 0,054 \\
+Brier & Não interpretado por calibração histórica não recuperada & 0,043 \\
+Balanced accuracy & Não usada como evidência principal & 0,650 \\
+F1 & Não usada como evidência principal & 0,338 \\
+Precisão & Não usada como evidência principal & 0,370 \\
+Revocação & Não usada como evidência principal & 0,333 \\
+\end{longtable}\endgroup
+
+\sourcecaption{Fonte: histórico preservado na edição anterior e \path{FINAL_REPRODUCTION_REPORT/cross_fitted_metrics.csv} para a reconstrução final. Os resultados atuais não são apresentados como reprodução do procedimento histórico.}
+
+Na reconstrução atual, a ROC-AUC média foi 0,896, com variação entre dobras de 0,882 a 0,904. A PR-AUC média foi 0,348 (0,211--0,448), frente a baseline média 0,054, e o Brier médio foi 0,043 (0,034--0,049). Os arquivos finais preservam métricas agregadas por cinco dobras, mas não predições por observação; por isso, não se apresenta um intervalo bootstrap que não possa ser reconstruído de modo verificável. Esses números quantificam recuperabilidade interna do alvo sintético, não desempenho para criminalidade, culpa, raça/cor ou outro atributo externo.
+
+A auditoria registrou 25 eventos de ajuste em cinco dobras, todos com \texttt{test\_overlap} = 0 e \texttt{outside\_train} = 0; \texttt{group\_id} também não atravessou as divisões. Essa evidência sustenta a ausência de vazamento direto conforme a unidade de bloqueio construída. Como \texttt{group\_id} representa apenas duplicidade provável, não se afirma ausência absoluta de uma mesma pessoa em grupos diferentes.
+
+\section{Controle sintético e paradoxo separabilidade--estabilidade}
+
+O controle sintético passou nas três demonstrações pré-definidas e resume o argumento da monografia em seu caso mais simples. Um agrupamento gerou um alvo sem qualquer variável social externa; um escore derivado da mesma geometria recuperou esse alvo com ROC-AUC = 1,000; e mudar k = 3 para k = 4 trocou completamente o conjunto-alvo (Jaccard = 0,000). Em linguagem direta: foi possível obter ``desempenho perfeito'' sobre um rótulo que não significava nada fora do próprio experimento. O controle não representa pessoas e não prova um efeito no corpus principal; ele demonstra que separabilidade, por si só, não é validade.
+
+\figcaption{2}{Paradoxo separabilidade--estabilidade na reconstrução final.}
+
+\par\noindent\makebox[\linewidth][c]{\includegraphics[width=6.1in,height=4.23789in]{figuras/image2.png}}\par
+
+\sourcecaption{Fonte: elaboração própria a partir de \path{cross_fitted_metrics.csv} e \path{stability_summary.csv}. As métricas do painel A avaliam o alvo endógeno; os demais painéis resumem perturbações de semente e k.}
+
+\section{Experimento externo: composição demográfica e estrutura do \emph{pipeline}}
+
+O braço externo acrescenta uma resposta importante à questão étnico-demográfica: perturbações de composição e amostragem estiveram associadas a mudanças substanciais no padrão que o algoritmo encontra. Em k = 64, os cenários B, C e D apresentaram, contra A, ARI mediano de 0,182, 0,199 e 0,189 e Jaccard mediano do alvo próximo de 0,001. Isso significa que as partições e, sobretudo, a identidade do maior agrupamento apresentaram diferenças materiais em relação ao cenário A. O experimento, porém, também muda quais imagens foram amostradas e ocorre sobre forte instabilidade entre sementes; portanto, ele não isola um efeito causal de raça ou etnia.
+
+\tabcaption{4}{Resultados do experimento externo de composição demográfica em k = 64}
+
+\begingroup\SingleSpacing\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1328}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1953}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1563}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2031}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1563}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1563}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Cenário}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Prevalência do alvo}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{ARI vs. A}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Jaccard do alvo vs. A}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{ROC-AUC}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{PR-AUC}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A & 0,025 & --- & --- & 0,908 & 0,448 \\
+B & 0,026 & 0,182 & 0,001 & 0,903 & 0,440 \\
+C & 0,027 & 0,199 & 0,001 & 0,893 & 0,400 \\
+D & 0,025 & 0,189 & 0,001 & 0,910 & 0,466 \\
+\end{longtable}\endgroup
+
+\sourcecaption{Fonte: DEMOGRAPHIC\_COMPOSITION\_EXPERIMENT e tabelas estruturadas da execução. Categorias demográficas permanecem restritas ao FairFace e não são transferidas ao corpus principal.}
+
+O resultado mais relevante é o contraste entre ``desempenho'' e ``quem compõe o alvo''. A prevalência mediana do maior agrupamento ficou entre 0,025 e 0,027 e a ROC-AUC entre 0,893 e 0,910 --- variações pequenas --- enquanto a estrutura interna mudou fortemente. A PR-AUC apresentou mudança relevante apenas no cenário C, caindo de 0,448 para 0,400 ($\Delta$ = $-$0,048). Assim, o sistema pode conservar uma aparência de desempenho estável e, ao mesmo tempo, estar chamando de ``alvo'' um conjunto substancialmente diferente. Para uma auditoria de viés, essa distinção é crucial: uma métrica agregada semelhante não significa que o modelo esteja tratando a mesma população da mesma forma.
+
+Há, contudo, um segundo efeito que impede conclusões simplistas: o próprio agrupamento é muito sensível à semente. Em k = 64, o ARI mediano entre sementes variou de 0,186 a 0,198 e o Jaccard mediano do alvo de 0,000 a 0,015 nos quatro cenários. Portanto, não é correto dizer que ``a composição demográfica causou'' toda a mudança observada. O resultado defensável é mais preciso: perturbações de composição, amostragem e configuração do algoritmo estiveram associadas a diferenças no padrão encontrado, enquanto algumas métricas de recuperação interna continuaram altas. É exatamente esse tipo de contingência que torna perigoso transformar um cluster em uma categoria humana substantiva.
+
+\par\noindent\makebox[\linewidth][c]{\includegraphics[width=6.2in,height=3.85778in]{figuras/image3.png}}\par
+
+\figcaption{3}{Composição média do agrupamento-alvo por categoria fornecida pelo FairFace nos cenários A a D.}
+
+\sourcecaption{Fonte: elaboração própria a partir das tabelas estruturadas da execução. As proporções descrevem somente o agrupamento sintético deste benchmark; não representam criminalidade, risco ou propensão de qualquer grupo.}
+
+A Figura 3 reforça que não existe, neste experimento, um ``perfil étnico criminal'' descoberto pela máquina. A composição do agrupamento-alvo variou entre os cenários de amostragem e entre execuções, em associação com um alvo que também apresentou baixa estabilidade. A categoria ``Middle Eastern'', por exemplo, representou em média 14,4\% do alvo em A, 24,7\% em B, 12,6\% em C e 31,8\% em D. Esses valores não são taxas de crime, risco, culpa nem erro biométrico; são proporções condicionadas a um agrupamento sintético e instável. Na grade de k, a prevalência mediana do maior agrupamento variou aproximadamente de 0,017 a 0,048 em todos os cenários. No desenho executado, essas diferenças estiveram associadas às perturbações de composição, amostragem e configuração, sem identificar um efeito causal demográfico.
+
+\par\noindent\makebox[\linewidth][c]{\includegraphics[width=6.2in,height=3.85778in]{figuras/image4.png}}\par
+
+\figcaption{4}{Estabilidade entre sementes no experimento externo, em k = 64.}
+
+\sourcecaption{Fonte: elaboração própria a partir de \path{seed_stability.csv}. ARI resume a concordância da partição; Jaccard do alvo, a sobreposição do maior agrupamento entre execuções.}
+
+Os rótulos do FairFace são categorias históricas fornecidas pelo próprio dataset, não autoidentificação nem verdade biológica. Nenhuma delas é transferida para as pessoas das listas de procurados. O experimento também não estabelece que um grupo seja mais ou menos ``criminoso''. Sua função é mostrar uma dependência empírica: a estrutura apresentada pelo algoritmo como padrão variou conforme a composição e a amostragem observadas no desenho executado, sem que isso identifique um efeito causal demográfico. Quando essa estrutura recebe um nome moral --- ``criminoso'', ``perigoso'', ``confiável'' --- a matemática pode ocultar, em vez de eliminar, o viés de seleção que veio antes dela.
+
+\chapter{DISCUSSÃO}
+
+\section{Uma AUC alta não mede ``criminalidade''}
+
+A ROC-AUC média de 0,896 é um resultado computacional forte, mas responde a uma pergunta estreita: o pipeline consegue recuperar, fora da dobra de treino, o alvo sintético construído a partir da própria geometria? Sim. Isso não equivale a perguntar se o rosto contém informação sobre criminalidade. Para essa segunda pergunta, o estudo não possui sequer uma variável observada de ``criminalidade facial'' contra a qual validar o modelo.
+
+Esse ponto é central para a leitura leiga e técnica. Separabilidade mede se a regra construída pode ser reconhecida; estabilidade mede se essa regra continua parecida quando o pipeline é perturbado; validade de construto exige evidência independente de que o rótulo representa o conceito que recebe seu nome; validade externa exige uma população e um processo de seleção definidos. Confundir essas etapas transforma ``o algoritmo reconhece seu próprio padrão'' em ``o algoritmo descobriu algo sobre pessoas''.
+
+\section{Como um viés ganha aparência matemática: a falácia da separabilidade endógena}
+
+A falácia da separabilidade endógena ocorre quando um sistema cria Y a partir da mesma representação que depois usa para prever Y e o pesquisador interpreta esse sucesso como evidência de um fenômeno externo C. Neste estudo, agrupamento, escolha do maior cluster, centroide, escore, calibração e rótulo de teste permanecem ligados à mesma geometria facial. O controle de vazamento é necessário e foi fortalecido, mas ele resolve apenas um problema técnico: não cria, por si só, a ponte entre distância facial e criminalidade, caráter, raça ou periculosidade. A crítica se conecta à literatura de validade de construto, rótulos-proxy, subespecificação, indeterminação de rótulos e validade discriminante (Guerdan et al., 2023; D\textquotesingle Amour et al., 2022; Schoeffer; De-Arteaga; Elmer, 2025; Coston, 2026).
+
+Por isso, os resultados históricos e atuais devem permanecer separados. O antigo ROC-AUC 0,930 e PR-AUC 0,479 pertencem a uma execução cujo contrato completo não foi recuperado. Os atuais 0,896 e 0,348 pertencem a um protocolo reconstruído, auditável e mais restritivo quanto ao vazamento. A diferença entre esses números não revela uma propriedade do rosto; revela que regras computacionais diferentes produzem métricas diferentes.
+
+\section{Criminalidade não é atributo facial: validade de construto e fisiognomia algorítmica}
+
+Aparência facial, identidade, raça/cor, condição jurídica e criminalidade são grandezas diferentes. ArcFace foi desenvolvido para discriminação de identidade em protocolos biométricos; transformar seus vetores em clusters não converte distância facial em caráter, culpa ou propensão criminal (Deng et al., 2019; Jacobs; Wallach, 2021). Estudos críticos sobre ``criminality from face'' mostram que classificadores aparentemente eficazes podem explorar composição da base, condições de captura, estilo fotográfico e outros atalhos experimentais. Quando um sistema dá nome moral a esses atalhos, aproxima-se da fisiognomia algorítmica: números rigorosamente calculados aplicados a um construto que não foi validado (Bowyer et al., 2020).
+
+A expressão ``criminalidade facial'' é mantida, portanto, como provocação crítica e não como hipótese substantiva. A saída observável do pipeline é similaridade em relação a um corpus selecionado e a um alvo construído. Não existe base nesta monografia para converter essa proximidade em probabilidade de crime, ``tendência criminal'', periculosidade ou pertencimento racial. O experimento é relevante justamente porque mostra como uma interpretação preconceituosa pode adquirir aparência quantitativa sem ganhar validade científica.
+
+\section{Estabilidade computacional}
+
+As distribuições completas tornam a instabilidade um resultado, e não apenas um item de protocolo. ARI e Jaccard baixos aparecem em sementes, ordem, \texttt{batch\_size} e representação, enquanto a prevalência varia de modo diferente. A escolha de k também altera a prevalência do maior agrupamento e a concordância das partições. Logo, semente, k, ordem, minilote, representação e regra de seleção do alvo devem ser tratados como componentes da evidência, não detalhes neutros de implementação (von Luxburg, 2010).
+
+Os resultados permanecem condicionados à grade executada e ao MiniBatchKMeans. Eles não identificam uma partição verdadeira, mas rejeitam a apresentação de uma única solução como estrutura inevitável dos dados. Uma auditoria completa deve reportar distribuições, tamanho e prevalência do alvo, além das métricas de separabilidade.
+
+\section{Raça e seleção: o que o experimento mostra --- e o que não mostra}
+
+A dimensão racial não é um apêndice deste problema. Ela está na própria pergunta sobre quem entra na base e quais decisões institucionais antecedem o algoritmo. Investigação, prioridade policial, jurisdição, decisão de divulgação, permanência da página, disponibilidade de fotografia, coleta e processamento filtram o corpus antes que o modelo veja qualquer rosto. Em um sistema penal no qual desigualdades raciais são documentadas, tratar essa seleção como se fosse uma amostra neutra seria um erro metodológico e social.
+
+Ao mesmo tempo, a motivação racial precisa de um limite metodológico claro. A impressão visual de que pessoas percebidas como negras, brancas ou pertencentes a outras categorias aparecem em maior ou menor número nas listas pode gerar uma hipótese, mas não é uma estatística. O corpus principal não possui raça/cor declarada por registro, proveniência de fonte suficientemente recuperada nem denominadores comparáveis. Portanto, esta monografia não afirma que pessoas negras sejam mais ou menos representadas nas listas e não usa um classificador para ``descobrir'' raça pela face. Fazer isso repetiria o mesmo erro que o trabalho critica: transformar aparência em atributo social supostamente objetivo.
+
+O braço FairFace foi incluído para responder a uma pergunta diferente e mais controlável: perturbações de composição e amostragem demográfica estão associadas a mudanças no padrão interno do pipeline mesmo quando a métrica agregada parece estável? Os resultados dizem que sim para o desenho executado: as partições e a identidade do alvo apresentaram mudanças materiais, enquanto prevalência e ROC-AUC variaram pouco. Isso não prova racismo nas listas de procurados e não identifica um efeito causal de raça. Demonstra, porém, uma dependência matemática relevante para a interpretação: no desenho executado, o padrão produzido pelo algoritmo não se mostrou invariável à composição e à amostragem do conjunto de dados. Em outras palavras, a matemática não ``corrige'' automaticamente um banco enviesado; ela pode formalizar o viés de seleção e apresentá-lo como padrão.
+
+\section{Reproduzir o viés para estudá-lo não autoriza usá-lo contra pessoas}
+
+O experimento só é eticamente defensável porque a lógica preconceituosa é reproduzida como objeto de auditoria, não como ferramenta de decisão. No Brasil, origem racial ou étnica e dado biométrico vinculado a uma pessoa natural são dados pessoais sensíveis na LGPD; o fato de uma fotografia já ter sido publicada não elimina os riscos do tratamento. A Recomendação da UNESCO sobre Ética da Inteligência Artificial enfatiza não discriminação, avaliação de impacto, privacidade, rastreabilidade e prevenção da reprodução de estereótipos. O AI Act europeu, por sua vez, restringe usos de avaliação de risco criminal baseada exclusivamente em perfil ou características pessoais e a categorização biométrica destinada a inferir raça (Brasil, 2018; UNESCO, 2022; União Europeia, 2024).
+
+Por isso, este estudo não deve gerar ``escore de criminalidade'' individual, não deve inferir raça/cor das imagens e não deve ser transformado em endpoint policial, empregatício, securitário ou reputacional. O resultado científico está no diagnóstico da falha: demonstrar que um pipeline pode produzir um número convincente sem possuir fundamento para julgar a pessoa. A reprodução de viés deve permanecer agregada, auditável, minimizada e protegida contra reidentificação (Grother; Ngan; Hanaoka, 2019; ISO, 2021, 2024).
+
+A separação entre o corpus de procurados e o FairFace é parte dessa salvaguarda. No braço externo, os rótulos têm proveniência explícita e ficam restritos à base em que foram fornecidos; no corpus principal, a ausência de raça/cor continua sendo ausência. Não há transferência por nearest neighbor, embeddings, agrupamento ou classificador. Essa escolha evita que uma lacuna documental seja ``preenchida'' pela própria tecnologia que está sob crítica.
+
+\section{Contribuição científica e social}
+
+A contribuição desta monografia não é encontrar um rosto criminoso; é mostrar por que esse tipo de descoberta pode ser fabricado. A auditoria torna rastreáveis os pontos em que seleção institucional, representação facial, regra de agrupamento, escolha do alvo, hiperparâmetros e avaliação entram na produção do resultado. Ao separar o que é identificável do que não é, o trabalho impede que uma lacuna de dados seja convertida em certeza algorítmica.
+
+A contribuição metodológica é reutilizável além deste caso. Qualquer sistema que atribua a pessoas conceitos como risco, personalidade, empregabilidade, periculosidade, emoção ou orientação política pode sofrer do mesmo problema quando o rótulo é um proxy frágil, endógeno ou socialmente selecionado. O protocolo --- origem do rótulo, identificabilidade, controle de vazamento, controles negativos, estabilidade e validade externa --- oferece uma forma objetiva de perguntar se o modelo descobriu algo sobre o mundo ou apenas aprendeu a reproduzir sua própria construção.
+
+O resultado social mais importante é também o mais simples: uma saída matemática não é automaticamente neutra. No braço FairFace, métricas agregadas semelhantes coexistiram com partições diferentes e forte variação entre sementes. Isso não autoriza afirmar discriminação racial no corpus principal, mas mostra por que composição e seleção devem ser auditadas antes de atribuir significado moral ou social a um padrão facial.
+
+\chapter{LIMITAÇÕES E AGENDA DE REPRODUÇÃO}
+
+Validade de construto, externa e racial. O alvo é sintético e endógeno à geometria facial; não mede criminalidade, culpa, raça/cor, identidade ou equidade. O corpus decorre de seleção institucional, divulgação, permanência pública, disponibilidade de fotografia, coleta e processamento, sem amostragem probabilística. A percepção visual que motivou a questão racial permanece uma hipótese, não um resultado: sem raça/cor validada por registro, fonte recuperada e denominadores comparáveis, a monografia não pode estimar quantas pessoas negras, brancas ou de qualquer outro grupo aparecem nas listas nem calcular seletividade racial. Essa ausência não deve ser preenchida por inferência visual ou por classificação automática de raça.
+
+Braço demográfico externo. Os rótulos do FairFace são categorias históricas do dataset, não autoidentificação irrestrita nem categorias biológicas. Como cada cenário altera proporções e registros, e a estabilidade entre sementes é baixa, não se estima efeito causal demográfico. Uma extensão adequada exige 50--100 replicações independentes ou um desenho pareado que maximize um núcleo comum, permitindo decompor composição, amostragem, k, semente e interações.
+
+Validade interna e de conclusão. O \texttt{group\_id} bloqueia duplicidades prováveis no limiar 0,999. A revisão humana dos pares próximos ao limiar foi concluída sem erros identificados no material revisado, fortalecendo a adequação operacional dessa regra, mas sem garantir identidade única nem excluir duplicidades abaixo do limiar. Uma análise de sensibilidade futura pode repetir a construção em 0,995, 0,997, 0,999 e 0,9995 e recalcular as métricas por limiar. Também deve ablar a regra do alvo --- maior agrupamento, agrupamento aleatório, mais compacto e mais separado --- para quantificar a influência dessa convenção. Os limiares de relevância atuais permanecem heurísticos; distribuições contínuas sustentam a inferência principal.
+
+Reprodutibilidade e limites remanescentes. Em consonância com boas práticas de pesquisa computacional reprodutível (Sandve et al., 2013), a edição definitiva do código e da documentação está congelada na tag limpa \texttt{paper-v1.1-final}, commit \texttt{6b81953}, eliminando a ambiguidade sobre qual estado do repositório corresponde à versão final do artigo. A proveniência da corrida científica anterior continua registrada como \texttt{worktree\_dirty=true} e não é reescrita retroativamente. Permanecem como limitações documentadas o fato de o SHA-256 de \path{w600k_r50.onnx} não ter sido registrado no manifesto da execução FairFace, a ausência de predições OOF por observação nos outputs preservados e a ausência de replicação independente. Ambiente congelado, hashes de pesos, manifesto completo, preservação de predições OOF e depósito estruturado com DOI devem integrar qualquer nova corrida destinada a ampliar ou replicar os resultados; esses itens não são apresentados como se tivessem sido reconstruídos retroativamente.
+
+\chapter{CONCLUSÃO}
+
+Esta monografia começou com uma provocação: construir uma máquina capaz de parecer reconhecer ``criminalidade'' em rostos de listas de procurados. O resultado final mostra por que essa aparência é enganosa. O pipeline consegue produzir padrões, escores e métricas internamente coerentes; isso não transforma criminalidade em atributo facial.
+
+Primeiro, o banco de procurados não é uma amostra da criminalidade. Ele é o produto de decisões de investigação, localização, divulgação, jurisdição, vigência, disponibilidade de fotografia e coleta. Logo, qualquer padrão aprendido já nasce condicionado por quem foi selecionado para aparecer. Tratar essa seleção como se fosse uma característica natural das pessoas é o primeiro erro.
+
+Segundo, o desempenho não resolve esse problema. Em 9.482 embeddings, a validação cruzada agrupada com ajuste estritamente no treino alcançou ROC-AUC média de 0,896: o alvo sintético é recuperável. No controle sintético, a ROC-AUC chegou a 1,000 mesmo sem existir qualquer construto social externo. Esses números demonstram que uma regra criada pela própria geometria pode ser aprendida com grande eficiência. Não demonstram criminalidade, culpa, periculosidade ou caráter.
+
+Terceiro, o próprio ``padrão'' é pouco estável. Em k = 64, as medianas entre sementes foram 0,085 para ARI e 0,004 para Jaccard do alvo; perturbações de ordem, \texttt{batch\_size}, representação e k também estiveram associadas a mudanças na estrutura. Um sistema que muda substancialmente quem pertence ao alvo enquanto continua exibindo métricas altas oferece um alerta direto contra a tentação de reificar clusters como categorias humanas reais.
+
+Quarto, a dimensão racial torna esse alerta socialmente relevante, mas exige precisão. Esta edição não prova que pessoas negras apareçam mais ou menos nas listas de procurados, porque o corpus não possui raça/cor validada e denominadores compatíveis. O braço externo com FairFace mostra algo diferente: perturbações de composição e amostragem demográfica estiveram associadas a mudanças materiais na partição e na identidade do alvo enquanto ROC-AUC e prevalência variaram pouco. O desenho atual não identifica efeito causal demográfico; ele mostra que o padrão do algoritmo variou em associação com quem compôs a base nos cenários executados.
+
+A conclusão, portanto, é direta: não há fundamento matemático neste trabalho para uma ``criminalidade facial''. Há, sim, uma demonstração matemática de como um preconceito pode ganhar aparência de objetividade quando seleção institucional, composição da base e rótulos produzidos pelo próprio sistema são confundidos com fatos sobre pessoas. A matemática do pipeline é real; a passagem dessa matemática para ``quem parece criminoso'' é inválida. O uso responsável desses resultados é auditar bases e modelos, documentar desigualdades com metadados legítimos e impedir que desempenho algorítmico seja usado para justificar fisiognomia, inferência racial pela face ou pontuação individual de risco.
+
+\manualchapter{DECLARAÇÕES}\begin{declarations}
+
+\textbf{Disponibilidade de código e artefatos.} A implementação, os testes, os relatórios e os outputs agregados estão no \uline{repositório público no GitHub}. A edição definitiva está congelada na tag \texttt{paper-v1.1-final}, commit \texttt{6b81953}; o estado histórico e o manifesto da corrida permanecem diferenciados no texto e no Apêndice A.
+
+\textbf{Disponibilidade de dados e imagens.} O arquivo usado na reconstrução contém 9.584 imagens organizadas por qualidade e está disponível como \uline{conjunto de imagens no Kaggle} (versão 1, licença CC0 1.0). O depósito preserva registros oriundos de listas públicas do FBI, da Interpol e de polícias brasileiras; não constitui amostra probabilística de pessoas que cometeram crimes, não fornece um rótulo de criminalidade e não altera os limites éticos e inferenciais desta monografia.
+
+\textbf{Estado de reprodução.} O estado canônico desta edição foi congelado na tag limpa \texttt{paper-v1.1-final}, commit \texttt{6b81953}. O manifesto registra hashes das entradas e de 20 outputs, e o braço demográfico permanece isolado em \path{research_audit_v2/demographic_composition/}.
+
+Não houve financiamento.
+
+\textbf{Conflitos de interesse.} O autor desenvolveu o repositório auditado; esse conflito intelectual é declarado. Não foram informados conflitos financeiros adicionais nos documentos fornecidos.
+
+\textbf{Contribuições do autor (CRediT).} H. L. Gusmão: Conceitualização; Metodologia; Software; Curadoria de dados; Análise formal; Visualização; Redação --- rascunho original; Redação --- revisão e edição.
+
+Ética, raça e proteção de dados. Não houve recrutamento, intervenção ou contato com participantes. A auditoria secundária trabalha com artefatos computacionais derivados de fotografias previamente publicadas, mas dados públicos não são automaticamente isentos de risco. No Brasil, origem racial ou étnica e dado biométrico vinculado a pessoa natural integram categorias de dados pessoais sensíveis previstas na LGPD. Os outputs públicos deste estudo são agregados ou pseudonimizados; nomes, URLs, caminhos pessoais, imagens e embeddings individuais são bloqueados pelo scanner fail-closed. Não foram inferidas categorias raciais a partir da aparência, não foram produzidas alegações individuais e não se recomenda uso operacional, reidentificação, decisão automatizada sobre pessoas nem redistribuição desnecessária dos dados faciais. No braço FairFace, foram utilizadas somente as categorias fornecidas pela própria base, mantidas estritamente no domínio externo, sem associação ou transferência para indivíduos do corpus principal. Qualquer extensão racial futura sobre as listas deve usar apenas metadados documentados, justificar finalidade e necessidade, minimizar dados, preservar categorias e incertezas de origem e divulgar somente resultados agregados com proteção contra reidentificação.
+
+\end{declarations}
+
+% Referências gerenciadas por BibTeX/abntex2cite.
+% \nocite{*} preserva no documento todas as 40 referências que já constavam
+% da versão Word, inclusive as que são apenas bibliografia de apoio.
+\nocite{*}
+\begingroup
+\setSpacing{1.42}
+\fontsize{10.5}{12.5}\selectfont
+\setlength{\parindent}{0pt}
+\RaggedRight
+\bibliography{referencias}
+\endgroup
+
+\manualchapter{APÊNDICE A --- RASTREABILIDADE E CONTRATO DE REPRODUÇÃO}
+
+Este apêndice distingue o que a auditoria final efetivamente preencheu do que permanece histórico ou não recuperado. A classificação evita transformar documentação posterior em procedimento histórico e registra os elementos necessários para replicação independente.
+
+\quadcaption{A.1}{Status do pacote de reprodução após a corrida final}
+
+\begingroup\SingleSpacing\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2361}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4724}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2914}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Componente}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Situação final}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Classe/status}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Validação cruzada agrupada & Ajuste estritamente no treino; \texttt{model.predict(test)} e alvo escolhido no treino & Reconstruído/novo \\
+Auditoria de leakage & 5 dobras; 25 eventos; zero \texttt{test\_overlap} e \texttt{outside\_train} & Novo/verificado \\
+\texttt{group\_id} & Similaridade cosseno; limiar 0,999; 9.422 grupos; 59 não unitários & Reconstruído; duplicidade provável \\
+Revisão humana do limiar & Pares próximos ao limiar revisados; nenhum erro identificado no material inspecionado & Verificado, sem equivaler a confirmação de identidade \\
+Métricas por dobra & \path{cross_fitted_metrics.csv} e \path{split_composition.csv} & Reconstruído/estruturado \\
+Calibração e limiar & Logística e limiar por F1; ambos train-only & Reconstruído \\
+PCA-64 & Especificação completa e variância explicada em JSON & Reconstruído; não histórico \\
+Estabilidade & 611 execuções; resumo e 60.045 comparações pareadas & Novo/reconstruído \\
+Linhagem & Cinco contagens classificadas; 9.546$\leftrightarrow$9.584 sem elo & Parcial/não recuperado \\
+Manifesto/\linebreak hashes/\linebreak privacidade & Manifesto completo, 20 outputs com SHA-256; gates de privacidade & Verificado para corrida atual \\
+\end{longtable}\endgroup
+
+\sourcecaption{Fonte: artefatos da execução final e implementação congelada na tag \texttt{paper-v1.1-final}, commit \texttt{6b81953}. ``Reconstruído'' não significa reprodução do protocolo histórico.}
+
+\quadcaption{A.2}{Especificação da configuração computacional da reconstrução final}
+
+Os parâmetros abaixo pertencem à reconstrução final. Onde o procedimento histórico não foi recuperado, isso é indicado explicitamente e nenhuma atribuição retroativa é feita.
+
+\begingroup\SingleSpacing\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2204}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4882}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2914}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Elemento}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Configuração final reconstruída}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Status histórico / observação}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Commit/estado de execução & Corrida: \texttt{git\_commit=f90298a\ldots}, \texttt{worktree\_dirty=true}; edição final: \texttt{paper-v1.1-final} em \texttt{6b81953} & A tag limpa identifica o estado canônico da edição; não altera retroativamente a proveniência da corrida \\
+Dados analíticos & 9.584 registros; 9.482 vetores ArcFace de 512 dimensões & Contagens atuais reproduzidas \\
+Algoritmo de agrupamento & MiniBatchKMeans & Reconstrução atual; regra histórica não recuperada \\
+k & Primário 64; grade 32, 48, 64, 80, 96, 128 & Grade final executada; k histórico não recuperado \\
+Sementes & 100 sementes explícitas; semente primária = primeira da lista & Reconstrução atual; sementes históricas não recuperadas \\
+\texttt{batch\_size} & Primário 1.024; grade 256, 512, 1.024, 2.048, 4.096 & Reconstrução atual \\
+\texttt{max\_iter} / \texttt{n\_init} & 100 / 3 & Reconstrução atual \\
+Ordens & \texttt{original}, \texttt{reversed}, \texttt{seeded\_shuffle}, \texttt{hashed\_index} & Sensibilidade operacional atual \\
+Regra do alvo & \texttt{largest\_cluster} & Reconstrução atual; histórica não recuperada \\
+\texttt{group\_id} & \emph{union-find} sobre pares de embeddings L2 com cosine similarity $\geq$ 0,999 & Duplicidade provável, nunca identidade confirmada \\
+PCA-64 & 64 comp.; randomized; \texttt{random\_state}=20260727; \texttt{centering=true}; \texttt{whiten=false}; L2 antes/depois & Reconstrução atual; configuração histórica não recuperada \\
+Validação cruzada agrupada & \texttt{GroupKFold}, 5 dobras; agrupamento/alvo/centroide/calibração/limiar ajustados somente no treino & Reconstrução atual \\
+Calibração & LogisticRegression (lbfgs), train-only & Reconstrução atual \\
+Limiar & Máximo F1 na curva precisão-revocação do treino & Reconstrução atual \\
+Ambiente & Windows 11; Python 3.14.3; NumPy 2.4.2; pandas 3.0.0; scikit-learn 1.9.0; SciPy 1.17.1 & Registrado na corrida final \\
+Outputs & 20 artefatos listados com SHA-256 & Reprodutibilidade atual; outputs não equivalem a histórico Git \\
+\end{longtable}\endgroup
+
+\quadcaption{A.3}{Escopo final da estabilidade e controle metodológico}
+
+A estabilidade final foi desenhada por fatores separados. As estatísticas completas de ARI, Jaccard, tamanho e prevalência do alvo são artefatos estruturados; o quadro registra somente quantidades e escopo confirmados na evidência recebida.
+
+\begingroup\SingleSpacing\fontsize{9.5}{11}\selectfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}\begin{longtable}[]{@{}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2126}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4882}}
+  >{\RaggedRight\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2993}}@{}}
+\toprule\noalign{}\rowcolor{tableheader}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Bloco}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Quantidade/configuração}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Interpretação}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Estocástico & 600 = 100 sementes × 6 valores de k & Distribuições condicionais por k \\
+Ordem & 4 execuções & Sensibilidade operacional à sequência \\
+\texttt{batch\_size} & 5 execuções & Sensibilidade operacional ao minilote \\
+Representação & 2 execuções & original\_l2 vs. PCA-64 reconstruída \\
+Total & 611/611 execuções & Desenho final completo \\
+Pareadas & 60.045 comparações & ARI/Jaccard sem referência arbitrária \\
+Controle sintético & 3/3 demonstrações passaram & Demonstração metodológica; não evidência sobre pessoas ou grupos humanos \\
+\end{longtable}\endgroup
+
+O controle sintético demonstra apenas que um alvo induzido pela própria geometria pode ser separável e, ao mesmo tempo, sensível a perturbações. Não fornece evidência empírica sobre pessoas procuradas, criminalidade, biometria ou grupos humanos. As análises de estabilidade tampouco identificam uma partição ``verdadeira''; medem dependência computacional dentro do desenho executado.

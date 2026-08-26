@@ -1,0 +1,235 @@
+\documentclass[12pt,oneside,a4paper,openany,brazil]{abntex2}
+
+% Projeto convertido do Word preservando a organização, imagens, tabelas e
+% a padronização ABNT já aplicada no documento de origem.
+% Fonte Arimo empacotada no TeX Live/Overleaf (métrica compatível com Arial).
+% Esta configuração funciona diretamente com pdfLaTeX, sem depender de fontes
+% instaladas no computador local.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[sfdefault]{arimo}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{longtable,booktabs,array,calc}
+\newcommand{\real}[1]{#1}
+\usepackage[table]{xcolor}
+\usepackage{setspace}
+\usepackage{amsmath,amssymb}
+\usepackage{url,xurl}
+\urlstyle{same}
+\usepackage{seqsplit}
+\usepackage[normalem]{ulem}
+\usepackage{etoolbox}
+\usepackage{ragged2e}
+\usepackage{needspace}
+\usepackage[alf,no-abnt-option-file]{abntex2cite}
+\usepackage{hyperref}
+\hypersetup{hidelinks,unicode=true,pdfauthor={Henrique Lima Gusmão},pdftitle={A falsa ideia de criminalidade facial}}
+
+% A4 / ABNT: 3 cm (superior e esquerda), 2 cm (inferior e direita).
+\setlrmarginsandblock{3cm}{2cm}{*}
+\setulmarginsandblock{3cm}{2cm}{*}
+\setlength{\headheight}{15pt}
+\setlength{\headsep}{12pt}
+\checkandfixthelayout
+% checkandfixthelayout rounds the typeblock; restore the exact 3 cm + 2 cm vertical margins.
+\setlength{\textheight}{\dimexpr\paperheight-5cm\relax}
+
+% Corpo do texto como no Word: Arimo 12, justificado, 1,5 e recuo de 1,25 cm.
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+\setSpacing{1.42}
+\frenchspacing
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\sloppy
+\setlength{\emergencystretch}{3em}
+
+% Títulos compactos, conforme o original.
+\renewcommand{\ABNTEXchapterfont}{\bfseries\normalsize}
+\renewcommand{\ABNTEXchapterfontsize}{\normalsize}
+\renewcommand{\ABNTEXsectionfont}{\bfseries\normalsize}
+\renewcommand{\ABNTEXsectionfontsize}{\normalsize}
+\renewcommand{\ABNTEXsubsectionfont}{\bfseries\normalsize}
+\renewcommand{\ABNTEXsubsectionfontsize}{\normalsize}
+\setlength{\beforechapskip}{0pt}
+\setlength{\afterchapskip}{10pt}
+\setbeforesecskip{12pt}
+\setaftersecskip{4pt}
+\setbeforesubsecskip{10pt}
+\setaftersubsecskip{4pt}
+\setsecnumdepth{subsection}
+\settocdepth{subsection}
+
+% Número da página no alto, à direita, a partir da parte textual.
+\makepagestyle{abntbody}
+\makeoddhead{abntbody}{}{}{\normalsize\thepage}
+\makeevenhead{abntbody}{}{}{\normalsize\thepage}
+\makeoddfoot{abntbody}{}{}{}
+\makeevenfoot{abntbody}{}{}{}
+\aliaspagestyle{chapter}{abntbody}
+
+% Elementos auxiliares.
+\definecolor{tableheader}{RGB}{232,238,242}
+\definecolor{tableline}{RGB}{205,210,214}
+\newcommand{\frontheading}[1]{\par\noindent\textbf{#1}\par\vspace{3pt}}
+\newcommand{\manualchapter}[1]{\clearpage\phantomsection\addcontentsline{toc}{chapter}{#1}\par\noindent\bfseries\normalsize #1\par\normalfont\vspace{10pt}}
+\newcommand{\sourcecaption}[1]{\par\begingroup\SingleSpacing\noindent\fontsize{9.5}{11}\selectfont\itshape #1\par\endgroup\vspace{7pt}}
+\newcommand{\figcaption}[2]{\par\begingroup\SingleSpacing\noindent\fontsize{10}{12}\selectfont\bfseries Figura #1 --- #2\par\endgroup\addcontentsline{lof}{figure}{Figura #1 --- #2}\vspace{3pt}}
+\newcommand{\tabcaption}[2]{\Needspace{8\baselineskip}\par\begingroup\SingleSpacing\noindent\fontsize{10}{12}\selectfont\bfseries Tabela #1 --- #2\par\endgroup\addcontentsline{lot}{table}{Tabela #1 --- #2}\vspace{3pt}}
+\makeatletter
+\newcommand{\quadcaption}[2]{\Needspace{8\baselineskip}\par\begingroup\SingleSpacing\noindent\fontsize{10}{12}\selectfont\bfseries Quadro #1 --- #2\par\endgroup\addcontentsline{loq}{quadro}{Quadro #1 --- #2}\vspace{3pt}}
+\newcommand*\l@quadro{\@dottedtocline{1}{0em}{0em}}
+\newcommand{\listadequadrosinterno}{\@starttoc{loq}}
+\newcommand{\listadefigurainterno}{\@starttoc{lof}}
+\newcommand{\listadetabelainterno}{\@starttoc{lot}}
+\makeatother
+\newenvironment{boxtext}{\par\begingroup\SingleSpacing\noindent\fontsize{8.5}{10.5}\selectfont}{\par\endgroup\vspace{4pt}}
+\newenvironment{contribution}{\par\begingroup\setSpacing{1.42}\leftskip=0.5cm\parindent=-0.5cm}{\par\endgroup}
+\newenvironment{declarations}{\begingroup\SingleSpacing\fontsize{10.5}{12.5}\selectfont\setlength{\parindent}{0pt}\RaggedRight}{\par\endgroup}
+\renewcommand{\arraystretch}{1.1}
+\renewcommand{\bibname}{REFERÊNCIAS}
+% Mantém a seção de referências visualmente próxima ao Word original:
+% título à esquerda, corpo em 10,5 pt, espaço simples e separação entre itens.
+\renewcommand{\bibsection}{%
+  \clearpage
+  \phantomsection
+  \addcontentsline{toc}{chapter}{REFERÊNCIAS}%
+  \par\noindent\bfseries\normalsize REFERÊNCIAS\par\normalfont\vspace{10pt}%
+}
+\apptocmd{\ABCIthebibliformat}{%
+  \setSpacing{1.42}
+  \fontsize{10.5}{12.5}\selectfont
+  \setlength{\itemsep}{5pt}%
+  \setlength{\parsep}{0pt}%
+  \RaggedRight
+}{}{}
+
+% Listas e sumário em 10,5 pt, espaço simples, como no Word.
+\renewcommand{\cftchapterfont}{\normalfont}
+\renewcommand{\cftchapterpagefont}{\normalfont}
+\renewcommand{\cftsectionfont}{\normalfont}
+\renewcommand{\cftsectionpagefont}{\normalfont}
+\renewcommand{\cftsubsectionfont}{\normalfont}
+\renewcommand{\cftsubsectionpagefont}{\normalfont}
+\setlength{\cftbeforechapterskip}{3pt}
+\setlength{\cftbeforesectionskip}{3pt}
+\setlength{\cftbeforesubsectionskip}{3pt}
+\renewcommand{\contentsname}{SUMÁRIO}
+
+\begin{document}
+\pretextual
+\pagestyle{empty}
+
+% CAPA - página 1
+\begin{center}
+{\bfseries\fontsize{13}{15}\selectfont HENRIQUE LIMA GUSMÃO\par}
+\vspace{5.4cm}
+{\bfseries\fontsize{18}{21}\selectfont A falsa ideia de ``criminalidade facial'': viés racial,\\
+listas públicas de procurados e os limites da\\
+similaridade facial\par}
+\vspace{0.65cm}
+{\itshape\fontsize{11.5}{13}\selectfont The false idea of ``facial criminality'': racial bias, public wanted-person lists, and the limits\\
+of face similarity\par}
+\vfill
+{\fontsize{12}{14}\selectfont Monografia técnico-científica independente --- 1\textsuperscript{a} edição\par}
+\vfill
+{\fontsize{12}{14}\selectfont BELO HORIZONTE\\
+2026\par}
+\end{center}
+\clearpage
+
+% EXPEDIENTE / FICHA - página 2
+\begingroup\SingleSpacing\setlength{\parindent}{0pt}\fontsize{10.7}{12.6}\selectfont
+\frontheading{EXPEDIENTE EDITORIAL}
+Publicação técnico-científica independente na área de Ciência da Computação.\par\vspace{6pt}
+\textbf{Título}: A falsa ideia de ``criminalidade facial'': viés racial, listas públicas de procurados e os limites da similaridade facial\par
+\textbf{Autor:} Henrique Lima Gusmão\par
+\textbf{Afiliação do autor:} Universidade Federal de Minas Gerais, Instituto de Ciências Exatas, Departamento de Ciência da Computação, Belo Horizonte, MG, Brasil.\par
+\textbf{Natureza da publicação:} monografia técnico-científica independente de pesquisa original, autoria individual, sem revisão por pares.\par
+\textbf{Área do conhecimento:} Ciência da Computação.\par
+Subáreas: inteligência artificial, aprendizagem de máquina, visão computacional, auditoria algorítmica, ética em IA, viés de seleção e avaliação de sistemas de similaridade facial.\par
+\textbf{Edição:} 1ª edição --- 19 ago. 2026\par
+
+\textbf{ISBN: 978-65-02-26124-8}\par
+\textbf{DOI:} \uline{10.5281/zenodo.21659240}\par\vspace{10pt}
+\textbf{© 2026 Henrique Lima Gusmão. Esta obra está licenciada sob a Creative Commons Attribution 4.0 International --- CC BY 4.0.}\par\vspace{10pt}
+\begin{center}\begin{minipage}{0.92\linewidth}\centering As opiniões e conclusões apresentadas são de responsabilidade exclusiva do autor e não representam necessariamente posicionamento institucional da UFMG.\end{minipage}\end{center}
+\vspace{7pt}
+\frontheading{FICHA CATALOGRÁFICA}
+\begingroup\fontsize{9.5}{10.8}\selectfont
+\setlength{\fboxsep}{8pt}\noindent\fbox{\parbox{0.960\linewidth}{
+\hspace{1.0cm}G984l Gusmão, Henrique Lima.\\
+A falsa ideia de ``criminalidade facial'': viés racial, listas públicas de procurados e os limites da similaridade facial / Henrique Lima Gusmão. -- 1. ed. -- Belo Horizonte: edição do autor, 2026.\\
+1 recurso online : il., quadros, tabelas.\\
+Inclui referências e material suplementar.\\
+ISBN: 978-65-02-26124-8\\
+DOI: 10.5281/zenodo.21659240\\
+1. Inteligência artificial. 2. Reconhecimento facial. 3. Auditoria algorítmica. 4. Viés racial. 5. Ética em inteligência artificial. 6. Viés de seleção. I. Título.\\
+CDD 006.3}}
+\endgroup
+\vspace{9pt}
+\frontheading{Como citar:}
+\fontsize{9.8}{11.5}\selectfont GUSMÃO, Henrique Lima. A falsa ideia de ``criminalidade facial'': viés racial, listas públicas de procurados e os limites da similaridade facial. Belo Horizonte: edição do autor, 2026. DOI: 10.5281/zenodo.21659240. ISBN: 978-65-02-26124-8.
+\endgroup
+\clearpage
+
+% RESUMO - página 3
+\begingroup\SingleSpacing\setlength{\parindent}{0pt}\fontsize{10.5}{13.2}\selectfont
+\frontheading{RESUMO}
+Este trabalho parte de uma pergunta deliberadamente provocativa: se uma máquina receber fotografias de listas públicas de procurados e for induzida a procurar nelas um suposto padrão de ``criminalidade facial'', ela poderá produzir uma classificação estatisticamente convincente? O experimento foi construído para mostrar por que a resposta computacional pode parecer positiva enquanto a resposta científica continua negativa. O pipeline transforma rostos em embeddings, agrupa similaridades, define um alvo sintético a partir da própria geometria e avalia quão bem esse alvo pode ser recuperado. Assim, a máquina pode parecer ter aprendido ``criminalidade'' quando, na realidade, reaprendeu uma regra produzida pelo próprio sistema. Listas de procurados, além disso, são produtos de seleção institucional e não amostras probabilísticas da criminalidade. Na reconstrução final, 9.482 embeddings válidos foram avaliados por validação cruzada agrupada com ajuste estritamente no treino e produziram ROC-AUC média de 0,896 e PR-AUC de 0,348. A estabilidade foi examinada em 611 configurações e 60.045 comparações pareadas; em k = 64, as medianas foram 0,085 para ARI e 0,004 para Jaccard do alvo, evidenciando forte dependência da configuração. Um controle sintético atingiu ROC-AUC = 1,000 sem qualquer construto social externo, demonstrando que separabilidade perfeita pode ser inteiramente circular. Em braço independente com FairFace, perturbações de composição e amostragem estiveram associadas a mudanças materiais nas partições e na identidade do alvo, embora prevalência e ROC-AUC variassem pouco; como a identidade das imagens e a inicialização também variaram, o resultado não identifica efeito causal demográfico. A dimensão racial é central para a interpretação, mas o corpus principal não possui raça/cor validada por registro nem denominadores compatíveis, de modo que a percepção visual de maior ou menor presença de um grupo não é tratada como resultado. A conclusão é direta: a matemática do pipeline é real; não existe, porém, fundamento matemático neste estudo para ligar aparência facial a criminalidade. O trabalho mostra como seleção de dados, composição demográfica e rotulagem endógena podem dar aparência de objetividade a uma inferência preconceituosa e cientificamente inválida.\par\vspace{4pt}
+Palavras-chave: listas públicas de procurados; viés racial; viés de seleção; ``criminalidade facial''; separabilidade endógena; validade de construto; auditoria algorítmica; similaridade facial.
+\endgroup
+\clearpage
+
+% ABSTRACT - página 4
+\begingroup\SingleSpacing\setlength{\parindent}{0pt}\fontsize{10.5}{13.2}\selectfont
+\frontheading{ABSTRACT}
+This study starts from a deliberately provocative question: if a machine is given photographs from public wanted-person lists and is induced to search them for a supposed pattern of ``facial criminality,'' can it produce a statistically convincing classification? The experiment is designed to show why the computational answer may appear positive while the scientific answer remains negative. The pipeline turns faces into embeddings, clusters similarities, defines a synthetic target from the same facial geometry, and evaluates how well that target can be recovered. The system can therefore appear to have learned ``criminality'' when it has actually relearned a rule produced by its own representation. Wanted-person lists are also products of institutional selection rather than probability samples of criminality. In the final reconstruction, 9,482 valid embeddings were evaluated through grouped cross-validation with strictly train-only fitting, yielding mean ROC-AUC 0.896 and PR-AUC 0.348. Stability was examined across 611 configurations and 60,045 pairwise comparisons; at k = 64, median ARI was 0.085 and median target Jaccard was 0.004, showing strong configuration dependence. A synthetic control reached ROC-AUC = 1.000 without any external social construct, demonstrating that perfect separability can be entirely circular. In an independent FairFace arm, composition and sampling perturbations were associated with material changes in partitions and target identity while target prevalence and ROC-AUC changed little; because image identity and initialization also varied, this does not identify a causal demographic effect. Race is central to the interpretation, but the main corpus lacks validated per-record race/color labels and compatible denominators, so visual impressions of over- or under-representation are not treated as findings. The conclusion is direct: the mathematics of the pipeline is real, but this study provides no mathematical basis for linking facial appearance to criminality. It shows how data selection, demographic composition, and endogenous labeling can give an appearance of objectivity to a prejudicial and scientifically invalid inference.\par\vspace{4pt}
+Keywords: public wanted-person lists; racial bias; selection bias; ``facial criminality''; endogenous separability; construct validity; algorithmic auditing; face similarity.
+\endgroup
+\clearpage
+
+% LISTAS - todas na mesma página, como no Word.
+\begingroup\SingleSpacing\setlength{\parindent}{0pt}\fontsize{10.5}{12}\selectfont
+\frontheading{LISTA DE FIGURAS}
+\listadefigurainterno
+\vspace{5pt}\frontheading{LISTA DE TABELAS}
+\listadetabelainterno
+\vspace{5pt}\frontheading{LISTA DE QUADROS}
+\listadequadrosinterno
+\vspace{5pt}\frontheading{LISTA DE ABREVIATURAS E SIGLAS}
+\begin{tabular}{@{}p{2.2cm}p{12.5cm}@{}}
+Sigla & Significado\\
+ARI & índice de Rand ajustado\\
+CNJ & Conselho Nacional de Justiça\\
+DOI & identificador de objeto digital\\
+IA & inteligência artificial\\
+IC & intervalo de confiança\\
+IQR & intervalo interquartil\\
+LGPD & Lei Geral de Proteção de Dados Pessoais\\
+NIST & National Institute of Standards and Technology\\
+OOF & predição fora da dobra (out-of-fold)\\
+PCA & análise de componentes principais\\
+PR-AUC & área sob a curva precisão-revocação\\
+ROC-AUC & área sob a curva ROC\\
+RQ & pergunta de pesquisa\\
+SHA-256 & algoritmo de hash seguro de 256 bits\\
+UFMG & Universidade Federal de Minas Gerais\\
+\end{tabular}
+\endgroup
+\clearpage
+
+% SUMÁRIO - página 6
+\begingroup\SingleSpacing\fontsize{10.5}{12}\selectfont
+\tableofcontents*
+\endgroup
+\clearpage
+
+% PARTE TEXTUAL: numeração reinicia em 1.
+\textual
+\setcounter{page}{1}
+\pagestyle{abntbody}
+\input{conteudo.tex}
+\end{document}
