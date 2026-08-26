@@ -104,6 +104,13 @@ def test_grouped_cross_fitting_exports_required_fold_metrics_and_composition(tmp
     assert np.allclose(metrics["pr_auc_baseline"], metrics["prevalence"])
     assert metrics["brier"].notna().all()
     assert (tables / "cross_fitted_metrics.csv").exists()
+    predictions = pd.read_csv(tables / "oof_predictions.csv")
+    assert len(predictions) == len(records)
+    assert predictions["record_id"].is_unique
+    assert {
+        "record_id", "group_id", "fold", "y_true", "score_raw",
+        "prob_calibrated", "cluster_label", "distance_to_centroid",
+    }.issubset(predictions.columns)
     assert (tables / "split_composition.csv").exists()
     assert (tables / "fit_audit_events.csv").exists()
 

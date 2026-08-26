@@ -1,0 +1,36 @@
+{
+  "metrics": {
+    "auc": {
+      "alpha": 0.05,
+      "lower": 0.9665475297850061,
+      "n_bootstrap": 2000,
+      "point": 0.9729841404904322,
+      "upper": 0.9790655313840362,
+      "valid_resamples": 2000
+    },
+    "balanced_accuracy": {
+      "alpha": 0.05,
+      "lower": 0.5,
+      "n_bootstrap": 2000,
+      "point": 0.5,
+      "upper": 0.5,
+      "valid_resamples": 2000
+    },
+    "brier": {
+      "alpha": 0.05,
+      "lower": 0.033446920812302494,
+      "n_bootstrap": 2000,
+      "point": 0.03637164710743897,
+      "upper": 0.03949419243074644,
+      "valid_resamples": 2000
+    },
+    "pr_auc": {
+      "alpha": 0.05,
+      "lower": 0.8413870031170885,
+      "n_bootstrap": 2000,
+      "point": 0.8693537544702797,
+      "upper": 0.8966242623299686,
+      "valid_resamples": 2000
+    }
+  }
+}

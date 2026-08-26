@@ -6,6 +6,14 @@ Os executores de separabilidade endógena, FairFace pareado, ablação de alvo, 
 
 Os parâmetros padrão correspondem às grades confirmatórias do plano. Para validar instalação e formatos, reduza explicitamente seeds, k, replicações e amostras e grave em um diretório com sufixo `_smoke`. Resultados de smoke não devem ser citados como evidência científica.
 
+## Especificações de experimento
+
+`face_profile_ml.experiment_specs` define `FitSpec` para fatores que alteram o
+ajuste de clustering e `AnalysisSpec` para a análise específica de uma regra de
+alvo. As especificações são imutáveis e geram os identificadores determinísticos
+`fit_id` e `spec_id`; scripts que reutilizam ajustes devem indexar o fit somente
+por `fit_id` e manter regra, semente de alvo e protocolo em `AnalysisSpec`.
+
 ## Padronizacao de faces
 
 O script `scripts/standardize_faces.py` prepara as imagens de `data_curated` para uso em modelos de similaridade facial. Ele cria novas imagens padronizadas e nunca altera nem sobrescreve os arquivos originais.

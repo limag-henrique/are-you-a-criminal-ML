@@ -1,0 +1,29 @@
+{
+  "method": "group bootstrap within fold; mean of fold metrics",
+  "metrics": {
+    "auc": {
+      "point": 0.8961697122912773,
+      "lower": 0.8841851809427151,
+      "upper": 0.9075550585997988,
+      "n_bootstrap": 2000,
+      "alpha": 0.05,
+      "valid_resamples": 2000
+    },
+    "pr_auc": {
+      "point": 0.34820725609501474,
+      "lower": 0.3153639756241388,
+      "upper": 0.39387596650048873,
+      "n_bootstrap": 2000,
+      "alpha": 0.05,
+      "valid_resamples": 2000
+    },
+    "brier": {
+      "point": 0.043298673025940385,
+      "lower": 0.03977194143035299,
+      "upper": 0.04677471219549816,
+      "n_bootstrap": 2000,
+      "alpha": 0.05,
+      "valid_resamples": 2000
+    }
+  }
+}

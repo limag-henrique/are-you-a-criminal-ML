@@ -44,8 +44,8 @@ def _global_centroid(labels: np.ndarray, X: np.ndarray) -> np.ndarray:
 
 
 def most_separated_cluster(labels: np.ndarray, centroids: np.ndarray, X: np.ndarray) -> int:
-    """Select the centroid farthest from the global sample centroid."""
-    return outlier_cluster(labels, centroids, X)
+    """Compatibility alias for :func:`isolated_cluster`."""
+    return isolated_cluster(labels, centroids, X)
 
 
 def random_cluster(
@@ -79,12 +79,28 @@ def outlier_cluster(labels: np.ndarray, centroids: np.ndarray, X: np.ndarray) ->
     return -max(distances)[1]
 
 
+def isolated_cluster(labels: np.ndarray, centroids: np.ndarray, X: np.ndarray) -> int:
+    """Select the centroid with the most distant nearest observed neighbour."""
+    del X
+    ids = _cluster_ids(labels)
+    observed_centroids = np.vstack(
+        [_centroid(cluster_id, centroids) for cluster_id in ids]
+    )
+    pairwise = np.linalg.norm(
+        observed_centroids[:, None, :] - observed_centroids[None, :, :], axis=2
+    )
+    np.fill_diagonal(pairwise, np.inf)
+    nearest_distances = pairwise.min(axis=1)
+    return int(ids[np.argmax(nearest_distances)])
+
+
 TARGET_RULES: dict[str, Callable[..., int]] = {
     "largest": largest_cluster,
     "compact": most_compact_cluster,
     "most_compact": most_compact_cluster,
     "separated": most_separated_cluster,
     "most_separated": most_separated_cluster,
+    "isolated": isolated_cluster,
     "random": random_cluster,
     "central": central_cluster,
     "outlier": outlier_cluster,
@@ -107,4 +123,3 @@ def select_target_cluster(
     if function is random_cluster:
         return random_cluster(labels, centroids, X, np.random.default_rng(seed))
     return function(labels, centroids, X)
-

@@ -30,4 +30,18 @@ def test_target_rule_ties_are_deterministic() -> None:
     centroids[9] = 2.0
 
     assert select_target_cluster("largest", labels, centroids, values) == 4
+    assert select_target_cluster("isolated", labels, centroids, values) == 4
 
+
+def test_isolated_and_outlier_rules_use_distinct_geometry() -> None:
+    values = np.array([[0.0], [1.0], *([[10.0]] * 10)])
+    labels = np.array([0, 1, *([2] * 10)])
+    centroids = np.array([[0.0], [1.0], [10.0]])
+
+    isolated = select_target_cluster("isolated", labels, centroids, values)
+    outlier = select_target_cluster("outlier", labels, centroids, values)
+
+    assert isolated == 2
+    assert outlier == 0
+    assert isolated != outlier
+    assert select_target_cluster("separated", labels, centroids, values) == isolated

@@ -1,0 +1,4 @@
+method,threshold,records,probable_groups,multi_record_groups,max_group_size
+extreme_embedding_similarity,0.99,9482,9408,73,3
+extreme_embedding_similarity,0.995,9482,9416,65,3
+extreme_embedding_similarity,0.999,9482,9422,59,3

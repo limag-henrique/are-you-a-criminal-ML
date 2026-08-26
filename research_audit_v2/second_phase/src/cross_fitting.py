@@ -80,6 +80,7 @@ class FoldResult:
     metrics: dict[str, object]
     composition: list[dict[str, object]]
     audit_events: list[dict[str, object]]
+    predictions: pd.DataFrame
 
 
 def _fit_cluster(values: np.ndarray, config: dict[str, Any], seed: int) -> MiniBatchKMeans:
@@ -268,7 +269,31 @@ def run_fold(
             "prevalence": float(y_test.mean()),
         },
     ]
-    return FoldResult(metrics=metrics, composition=composition, audit_events=audit.events)
+    record_ids = (
+        records.iloc[test]["record_id"].astype(str).to_numpy()
+        if "record_id" in records
+        else records.index[test].astype(str).to_numpy()
+    )
+    predictions = pd.DataFrame(
+        {
+            "record_id": record_ids,
+            "group_id": groups[test].astype(str),
+            "fold": int(fold),
+            "y_true": y_test,
+            "score_raw": raw_test,
+            "prob_calibrated": test_score,
+            "cluster_label": test_labels,
+            "distance_to_centroid": np.linalg.norm(
+                test_values - model.cluster_centers_[test_labels], axis=1
+            ),
+        }
+    )
+    return FoldResult(
+        metrics=metrics,
+        composition=composition,
+        audit_events=audit.events,
+        predictions=predictions,
+    )
 
 
 def run_cross_fitting(
@@ -287,14 +312,20 @@ def run_cross_fitting(
     rows: list[dict[str, object]] = []
     composition: list[dict[str, object]] = []
     audit_events: list[dict[str, object]] = []
+    prediction_frames: list[pd.DataFrame] = []
     for fold, (train, test) in enumerate(splitter.split(vectors, groups=groups)):
         result = run_fold(records, vectors, train, test, config, fold=fold)
         rows.append(result.metrics)
         composition.extend(result.composition)
         audit_events.extend(result.audit_events)
+        prediction_frames.append(result.predictions)
 
     metrics = pd.DataFrame(rows)
     write_csv(metrics, tables / "cross_fitted_metrics.csv")
+    write_csv(
+        pd.concat(prediction_frames, ignore_index=True).sort_values("record_id", ignore_index=True),
+        tables / "oof_predictions.csv",
+    )
     write_csv(pd.DataFrame(composition), tables / "split_composition.csv")
     audit_frame = pd.DataFrame(audit_events)
     write_csv(audit_frame, tables / "fit_audit_events.csv")

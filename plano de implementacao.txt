@@ -1,289 +1,851 @@
-# Plano de Implementação — Melhorias para Submissão do Artigo
+Sim. Comparei as duas respostas anteriores com os dois `.tex` novos e também confrontei o manuscrito com as regras atuais da **ACM FAccT 2027**, que é o alvo que faz mais sentido para este trabalho.
 
-## Contexto
+A conclusão principal é esta:
 
-O artigo atual (`artigo/conteudo.tex`, tag `paper-v1.1-final`) já possui uma base sólida:
-validação cruzada agrupada com GroupKFold, auditoria de leakage (25 eventos, 0 overlaps), 611 execuções de estabilidade (60.045 comparações pareadas), experimento FairFace com 4 cenários e controle sintético (AUC = 1,000; Jaccard = 0,000). 
+> **O núcleo científico melhorou bastante, especialmente E1 e E4, mas eu ainda não submeteria esta versão.**
+> Há quatro experimentos confirmatórios que o próprio texto admite estarem incompletos, há uma sobreafirmação lógica importante envolvendo a Proposição 1 e, independentemente da ciência, o arquivo atual violaria vários requisitos formais de submissão da FAccT e teria risco real de *desk rejection*.
 
-O objetivo agora é transformar esse caso em uma **contribuição metodológica geral**, posicionada para FAccT, e preencher as lacunas experimentais e conceituais apontadas pelos revisores.
+Ninguém pode garantir aprovação, mas dá para chegar a uma versão em que os principais motivos previsíveis de rejeição estejam eliminados.
 
----
+## 1. O que realmente melhorou desde a versão anterior
 
-## Mudança de Framing (Textual — sem código)
+As modificações não foram cosméticas. E1 ficou substancialmente melhor: o manuscrito agora formaliza \(Z=f(X), Y=h(Z), s=g(Z)\), apresenta a Proposição 1 com prova por construção e inclui o corolário train-only, além de apontar para o experimento executável. 
 
-O enquadramento central deve migrar de:
-> "AUC alta não significa criminalidade."
+E4 também foi corretamente elevado. O paradoxo AUC–estabilidade agora é chamado explicitamente de resultado central, com ROC-AUC 0,896 versus Jaccard 0,004, e ganhou uma figura dedicada. 
 
-para:
-> **Correct out-of-sample evaluation does not establish construct validity when the target itself is endogenously generated from the representation being evaluated.**
+Além disso, houve progresso de engenharia relevante: o texto agora documenta scripts de FairFace replicado, ablação das seis regras de alvo, sensibilidade do `group_id`, preservação OOF no novo `cv-fit` e registro posterior do hash do modelo.  
 
-Essa mudança vale para qualquer domínio (risco, personalidade, empregabilidade, emoção, confiança), tornando a contribuição geral, não apenas crítica a um experimento específico.
+Então a versão nova está **consideravelmente mais madura** que o PDF anterior.
 
----
-
-## Entrega 1 — Formalização Matemática da Separabilidade Endógena
-
-**Localização:** `artigo/conteudo.tex` — Seção 2.2 (Framework) + novo módulo teórico
-
-### O que falta hoje
-- As Eqs. (2.1)–(2.2) existem mas são declarações informais.
-- Não há proposição/teorema com construção explícita.
-- O artigo afirma `Sep(s,Y) ⇏ Valid(Y,C)` mas não demonstra por construção que isso vale **mesmo com train/test corretos, sem leakage e com boa calibração**.
-
-### Tarefas de código
-- [ ] **Criar `face_profile_ml/endogenous_target.py`** com:
-  - Função `construct_endogenous_pipeline(X, f, h, g, seed)` que implementa explicitamente o cenário Z=f(X), Y=h(Z), s=g(Z).
-  - Função `measure_separability_vs_validity(Y, C_external, s, X_test)` retornando AUC interna e correlação com critério externo.
-  - Classe `EndogenousProposition` que gera um exemplo construtivo parametrizável (dimensão d, n amostras, k clusters, seed) e retorna: AUC_internal, AUC_vs_external, Jaccard entre rodadas.
-
-- [ ] **Criar `scripts/run_proposition_demo.py`** que:
-  - Executa a construção para d=512 (ArcFace-like), n=500, k∈{2,4,8}, seed∈{0..9}.
-  - Salva em `artifacts/proposition/` uma tabela CSV `proposition_results.csv` com colunas: `d, n, k, seed, auc_internal, auc_vs_null, jaccard_rerun, calibration_brier`.
-  - Demonstra que AUC_internal → 1.0 enquanto AUC_vs_null permanece próximo de 0.5 (acaso).
-
-### Tarefas de texto (LaTeX)
-- [ ] Adicionar **Proposição 1** na Seção 2.2 com:
-  - Enunciado formal: ∀ε>0, ∃ pipeline (f,h,g) tal que AUC(s,Y)>1−ε e para qualquer C externo independente de Z, AUC(s,C) = 0.5.
-  - Prova por construção referenciando `run_proposition_demo.py`.
-  - Corolário explicitando que o resultado é válido mesmo com GroupKFold correto, sem leakage e com calibração logística.
+O problema é que você documentou muito bem aquilo que ainda falta. Para um revisor isso torna as lacunas ainda mais fáceis de identificar.
 
 ---
 
-## Entrega 2 — FairFace Pareado, Replicado e com Decomposição de Variância
+# 2. Há quatro resultados que eu considero obrigatórios antes da submissão
 
-**Localização:** `scripts/`, `face_profile_ml/`, `artigo/conteudo.tex` — Seção 2.6 + Resultados
+O próprio manuscrito diz que a grade FairFace de 50 replicações **ainda não foi executada integralmente**. 
 
-### O que falta hoje
-- O desenho atual tem 4 cenários com 1 seed cada — não decompõe composição vs. amostragem vs. seed vs. k.
-- O texto já admite isso como limitação (Seção 5): *"Uma extensão adequada exige 50–100 replicações independentes ou um desenho pareado."*
+Também declara que:
 
-### Tarefas de código
+* a ablação de 50 sementes não foi concluída;
+* a sensibilidade do `group_id` não foi concluída;
+* o multiverse permanece pendente;
+* os resultados principais antigos ainda não possuem OOF individual/IC bootstrap. 
 
-#### 2a. Novo script de amostragem pareada
-- [ ] **Criar `scripts/run_fairface_replicated.py`** com:
-  - Parâmetros: `--n-replications 50 --seeds-per-rep 5 --k-values 32,64,128 --scenarios A,B,C,D`.
-  - Lógica: para cada replicação `r`, sortear um **núcleo fixo** de imagens compartilhado entre todos os cenários (~70% do N) e complementar com sorteio independente por cenário para atingir as quotas. Isso isola parcialmente efeito de composição do efeito de amostragem.
-  - Salvar por execução: `sample_id`, `scenario`, `replication`, `seed`, `k`, `cluster_label`, `is_target`, `score`, `prob_calibrated`, `distance_to_centroid`, `fairface_category`.
-  - Output: `artifacts/fairface_replicated/oof_predictions.parquet` + `variance_decomposition.csv`.
+Isso é provavelmente o maior obstáculo científico atual.
 
-#### 2b. Decomposição de variância (ANOVA/bootstrap)
-- [ ] **Criar `face_profile_ml/variance_decomposition.py`** com:
-  - Função `decompose_variance(df, outcome_col, factors)` usando ANOVA de efeitos fixos ou bootstrap permutacional.
-  - Fatores: `scenario` (composição), `replication` (amostragem), `seed` (inicialização), `k` (hiperparâmetro).
-  - Retorna `VarianceDecompositionResult` com frações explicadas por cada fator para AUC, Jaccard e tamanho do alvo.
+Minha classificação agora seria:
 
-### Tarefas de texto (LaTeX)
-- [ ] Substituir Seção 2.6 e Tabela 4 pelos novos resultados com:
-  - Tabela de decomposição de variância (composição % vs. amostragem % vs. seed % vs. k %).
-  - Figura substituindo image3.png: curva de estabilidade do Jaccard entre cenários, por número de replicações (convergência).
-  - Texto enfatizando que, no novo desenho, é possível separar o efeito de composição do efeito de amostragem.
+| Item anterior                              | Estado nos novos `.tex`            | Para submeter                          |
+| ------------------------------------------ | ---------------------------------- | -------------------------------------- |
+| **E1 — Proposição matemática**             | ✅ concluído                        | manter, com correção conceitual abaixo |
+| **E2 — FairFace 50+ replicações pareadas** | 🟡 código pronto, corrida pendente | **obrigatório executar**               |
+| **E3 — 6 regras de alvo**                  | 🟡 código pronto, corrida pendente | **obrigatório executar**               |
+| **E4 — AUC × Jaccard central**             | ✅ concluído                        | manter e fortalecer                    |
+| **E5 — OOF + bootstrap**                   | 🟡 infraestrutura pronta           | **rerodar a análise principal**        |
+| **E6b — `group_id` sensitivity**           | 🟡 código pronto                   | **executar**                           |
+| **E6a — outros clusterings**               | ❌ ausente                          | fortemente recomendado                 |
+| **E7 — multiverse**                        | ❌ pendente                         | para a versão “top-tier”, eu faria     |
 
----
-
-## Entrega 3 — Ablação das Definições do Cluster-Alvo (Target Rule Ablation)
-
-**Localização:** `face_profile_ml/`, `scripts/`, `artigo/conteudo.tex`
-
-### O que falta hoje
-- O pipeline usa exclusivamente `largest_cluster` (regra hardcoded em `cli.py` linha 201 e Apêndice A.2).
-- O artigo menciona ablação como trabalho futuro (Seção 5): *"ablar a regra do alvo"*, mas não a executa.
-
-### Tarefas de código
-
-#### 3a. Módulo de regras de seleção de alvo
-- [ ] **Criar `face_profile_ml/target_rules.py`** com as seguintes funções:
-  ```python
-  def largest_cluster(labels, centroids, X) -> int
-  def most_compact_cluster(labels, centroids, X) -> int   # menor intra-cluster variance
-  def most_separated_cluster(labels, centroids, X) -> int # maior distância ao centroide global
-  def random_cluster(labels, centroids, X, rng) -> int    # controle nulo
-  def central_cluster(labels, centroids, X) -> int        # mais próximo ao centroide global
-  def outlier_cluster(labels, centroids, X) -> int        # mais distante ao centroide global
-  ```
-  - Cada função retorna o índice do cluster selecionado.
-
-#### 3b. Script de ablação sistemática
-- [ ] **Criar `scripts/run_target_ablation.py`** com:
-  - Para cada regra × seed (50) × k (32, 64, 128): executar GroupKFold completo e salvar métricas OOF.
-  - Output principal: `artifacts/ablation/ablation_results.csv` com colunas `rule, seed, k, fold, auc, pr_auc, jaccard_vs_largest, jaccard_pairwise, prevalence`.
-  - Output secundário: `artifacts/ablation/incompatibility_matrix.csv` — para cada par de regras, o Jaccard mediano dos conjuntos-alvo resultantes.
-
-#### 3c. Integrar ablação no pipeline principal
-- [ ] Adicionar argumento `--target-rule {largest,compact,separated,random,central,outlier}` ao subcomando `fit` em `face_profile_ml/cli.py`.
-
-### Tarefas de texto (LaTeX)
-- [ ] Adicionar subseção "Ablação da Definição do Alvo" em Resultados com:
-  - Tabela: regra × AUC mediana × Jaccard-vs-largest mediano × Jaccard-pairwise (entre diferentes regras).
-  - Resultado-chave a reportar: quantas definições mutuamente incompatíveis (Jaccard < 0.1 entre si) atingem AUC > 0.85?
-  - Boxplot por regra (nova figura para substituir/complementar image2.png).
+A versão ACM não deveria conter frases como “a grade confirmatória permanece pendente”. Uma pesquisa pode naturalmente ter limitações, mas **não convém deixar pendente exatamente o experimento que resolve a principal limitação identificada pelo próprio artigo**.
 
 ---
 
-## Entrega 4 — Paradoxo Performance × Estabilidade como Resultado Central
+# 3. Encontrei um problema lógico novo e importante na Proposição 1
 
-**Localização:** `artigo/conteudo.tex` — Seção 4.4 + nova figura
+Este ponto merece correção antes de qualquer coisa.
 
-### O que falta hoje
-- O resultado AUC ≈ 0.896 com Jaccard mediano ≈ 0.004 já existe, mas está disperso entre Seções 4.3 e 4.4.
-- Não há figura dedicada mostrando a co-ocorrência em scatter plot ou figura conjunta AUC vs. Jaccard.
-- Não está formalizado como resultado central com nome/número de proposição ou resultado empírico explícito.
+A Proposição 1 prova essencialmente:
 
-### Tarefas de código
-- [ ] **Criar `scripts/plot_performance_stability_paradox.py`** que:
-  - Lê `stability_summary.csv` e `cross_fitted_metrics.csv` existentes.
-  - Gera figura de 2 painéis: (a) scatter AUC × Jaccard por seed/k; (b) linha temporal do AUC com banda de estabilidade Jaccard sobreposta.
-  - Salva em `artigo/figuras/paradox_performance_stability.png` (substituindo image2.png ou gerando nova figura).
+$$
+\operatorname{Sep}(s,Y)
+\not\Rightarrow
+\operatorname{Valid}(Y,C).
+$$
 
-### Tarefas de texto (LaTeX)
-- [ ] Criar **Resultado Empírico 1** (caixa destacada) na Seção 4.4:
-  > *"ROC-AUC = 0,896 (±0,011 entre dobras) coexiste com Jaccard mediano do alvo = 0,004 (IQR 0,000–0,047) entre seeds. Um sistema pode exibir desempenho preditivo aparentemente excelente enquanto muda radicalmente quem constitui o fenômeno aprendido."*
-- [ ] Reestruturar Seção 4.4 para ser o resultado central do artigo, não um resultado secundário.
-- [ ] Atualizar Seção 1 (boxtext) para referenciar explicitamente esse resultado empírico pelo número.
+Mais concretamente, demonstra que pode existir:
 
----
+$$
+AUC(s,Y)=1
+$$
 
-## Entrega 5 — OOF Completo + Bootstrap/ICs + Pipeline Reproduzível
+e, para um critério independente \(C\),
 
-**Localização:** `face_profile_ml/`, `scripts/`
+$$
+AUC(s,C)=0.5.
+$$
 
-### O que falta hoje
-- O artigo admite explicitamente na Seção 5: *"ausência de predições OOF por observação nos outputs preservados"*.
-- Não há ICs bootstrap sobre AUC, PR-AUC ou Brier.
-- O SHA-256 do modelo `w600k_r50.onnx` não foi registrado no manifesto FairFace.
+Isso está correto como construção de contraexemplo. 
 
-### Tarefas de código
+Mas depois o manuscrito afirma:
 
-#### 5a. Salvar predições OOF por observação
-- [ ] **Modificar `face_profile_ml/cli.py`** (subcomando `fit` ou novo subcomando `cv-fit`) para salvar, após GroupKFold:
-  - `artifacts/cv/oof_predictions.csv` com colunas: `sample_id, group_id, fold, y_true, score_raw, prob_calibrated, cluster_label, distance_to_centroid, seed, k, target_rule, threshold`.
-  - Hash SHA-256 do arquivo no manifesto principal.
+> “A Proposição 1 estabelece que essa coexistência [AUC alta + Jaccard baixo] não é uma coincidência empírica, mas uma consequência estrutural...”
 
-#### 5b. Bootstrap sobre OOF
-- [ ] **Criar `face_profile_ml/bootstrap_ci.py`** com:
-  - `bootstrap_auc(y_true, scores, n_bootstrap=2000, seed=42, alpha=0.05)` → `BootstrapResult(point, lower, upper)`.
-  - Métricas suportadas: AUC, PR-AUC, Brier, Jaccard (target set), balanced accuracy.
-  - Salvar em `artifacts/cv/bootstrap_metrics.json`.
+e, ainda mais forte:
 
-#### 5c. Registrar hash do modelo de embedding
-- [ ] **Criar `scripts/register_model_hash.py`** que localiza `w600k_r50.onnx` no ambiente InsightFace, calcula SHA-256 e salva em `artifacts/model_hashes.json`.
-- [ ] Integrar esse hash ao manifesto da corrida FairFace.
+> “esse paradoxo [...] é estruturalmente inevitável quando label e escore compartilham a mesma geometria.” 
 
-### Tarefas de texto (LaTeX)
-- [ ] Substituir a frase de limitação sobre OOF por resultados concretos: ICs bootstrap por dobra e globais.
-- [ ] Atualizar Apêndice A.2 com coluna de SHA-256 do modelo de embedding e caminho de `oof_predictions.csv`.
+**A Proposição 1 não prova isso.**
 
----
+Ela prova separabilidade sem validade de construto/critério externo. Ela **não prova baixa estabilidade nem Jaccard baixo**.
 
-## Entrega 6 — Generalização: Outros Clusterings, Embeddings e Limiares de Identidade
+Além disso, “inevitável” está matematicamente errado: um alvo endógeno pode perfeitamente ser estável.
 
-**Localização:** `face_profile_ml/`, `scripts/`
+Você tem duas opções.
 
-> [!NOTE]
-> Esta entrega aumenta principalmente resistência a objeções de revisores. Para FAccT, é desejável mas pode ser parcialmente substituída pelas Entregas 1–4 se o tempo for limitado.
+A mais simples é trocar a afirmação por algo como:
 
-### 6a. Outros algoritmos de clustering
-- [ ] **Criar `face_profile_ml/clustering_backends.py`** com interface uniforme:
-  ```python
-  class ClusteringBackend(Protocol):
-      def fit_predict(self, X: np.ndarray, seed: int) -> np.ndarray: ...
-  ```
-  - Implementações: `MiniBatchKMeansBackend`, `KMeansBackend`, `GMMBackend` (GaussianMixture), `AgglomerativeBackend`.
-- [ ] **Criar `scripts/run_clustering_comparison.py`** que executa todos os backends com k=64, seeds 0–19, e compara AUC, Jaccard entre backends e Jaccard cross-backend (incompatibilidade).
+> a Proposição 1 demonstra que elevada separabilidade interna pode ocorrer sem validade externa; a baixa estabilidade observada é uma propriedade empírica adicional deste pipeline.
 
-### 6b. Análise de sensibilidade do `group_id`
-- [ ] **Criar `scripts/run_groupid_sensitivity.py`** que:
-  - Reconstrói `group_id` para limiares: 0.995, 0.997, 0.999, 0.9995.
-  - Para cada limiar, recalcula: número de grupos, % de duplicatas, AUC, PR-AUC, Jaccard, ARI, tamanho do alvo.
-  - Salva curva em `artifacts/groupid_sensitivity/sensitivity_curve.csv`.
-- [ ] Adicionar figura de curva ao artigo (Seção 5 ou Apêndice B).
+Mas para a versão mais forte eu faria uma **Proposição 2**.
 
-### 6c. Experimento de desacoplamento embedding–target
-- [ ] **Criar `scripts/run_embedding_decoupling.py`** que:
-  - Cria Y usando embedding A (ArcFace buffalo_l) e tenta predizê-lo com embedding B (ex: PCA-64 de buffalo_l como proxy de embedding alternativo, ou features HOG como baseline degradado).
-  - Inverte: cria Y com B, prediz com A.
-  - Mede quanto do desempenho decorre do fato de label e score compartilharem a mesma geometria.
+Ela poderia formalizar algo do tipo:
+
+$$
+AUC(s_1,Y_1)=AUC(s_2,Y_2)=1
+$$
+
+enquanto
+
+$$
+J(Y_1,Y_2)\rightarrow0.
+$$
+
+Ou seja:
+
+> **dois alvos endógenos mutuamente incompatíveis podem ser individualmente perfeitamente separáveis.**
+
+Isso conecta diretamente:
+
+**teoria → ablação de regras → multiverse → resultado empírico.**
+
+Na minha avaliação, essa Proposição 2 aumentaria bastante a originalidade do trabalho.
 
 ---
 
-## Entrega 7 (Opcional/Alta Novidade) — Multiverse / Specification-Curve Analysis
+# 4. Também precisa separar três conceitos que ainda aparecem parcialmente misturados
 
-> [!IMPORTANT]
-> Este é o experimento de maior potencial de impacto para FAccT. Requer as Entregas 3 e 6 implementadas primeiro.
+Hoje o texto usa algumas vezes “validade externa” para se referir ao desempenho contra um critério externo.
 
-- [ ] **Criar `scripts/run_multiverse.py`** que executa combinações de:
-  - embedding × PCA (sim/não) × k (32,64,128) × seed (50) × target_rule (6) × groupid_threshold (4)
-  - Filtra pipelines com AUC > 0.85 e calcula Jaccard pairwise entre todos os conjuntos-alvo resultantes.
-  - Responde: **quantas pipelines distintas atingem AUC > 0.85 enquanto identificam conjuntos de pessoas quase incompatíveis (Jaccard < 0.1)?**
-  - Salva: `artifacts/multiverse/specification_curve.csv` + figura de specification curve (eixo x = pipelines ordenadas por AUC; eixo y superior = AUC; eixo y inferior = Jaccard pairwise).
+Tecnicamente são coisas diferentes.
 
-- [ ] Adicionar seção "Specification-Curve Analysis" em Resultados com a figura.
+**Validade de construto** pergunta se \(Y\) realmente operacionaliza o conceito \(C\).
 
----
+**Validade de critério** pergunta se a medida se relaciona adequadamente a uma variável/critério externo.
 
-## Reestruturação do Artigo (Reorganização Textual)
+**Validade externa** pergunta se o resultado generaliza para outras populações, contextos, ambientes ou processos de seleção.
 
-### Seção de Ameaças à Validade
-- [ ] Reorganizar Capítulo 5 (Limitações) em quatro tipos explícitos:
-  1. **Validade de construto** — endogeneidade do alvo, ablação das regras.
-  2. **Validade interna** — leakage (já resolvido), group_id (análise de sensibilidade).
-  3. **Validade externa** — FairFace pareado e replicado, datasets adicionais.
-  4. **Validade de conclusão** — ausência de OOF/ICs (a resolver com Entrega 5).
+Portanto, quando a Proposição 1 diz:
 
-### Contribuições (Seção 1.1)
-- [ ] Atualizar C1–C5 para refletir os novos resultados:
-  - C1: acrescentar Proposição 1 (formalização).
-  - C3: atualizar contagem de execuções (adicionar multiverse se implementado).
-  - C4: atualizar FairFace com novo desenho pareado e decomposição de variância.
-  - Adicionar C6: *"Ablação de definições de alvo mostra que X definições mutuamente incompatíveis atingem AUC > 0.85."*
+$$
+C\perp Z \Rightarrow AUC(g(Z),C)=0.5,
+$$
+
+isso é um argumento sobre **ausência de associação com um critério externo naquele contraexemplo**, não propriamente “external validity = 0.5”.
+
+Eu revisaria essa terminologia em todo o paper.
+
+Também deixaria explicitíssimo:
+
+> A hipótese \(C\perp Z\) da Proposição 1 é usada para construir um contraexemplo lógico; o trabalho **não afirma empiricamente que criminalidade seja independente de toda característica codificada em \(Z\)**.
+
+Isso fecha outra possível interpretação equivocada de um revisor matematicamente atento.
 
 ---
 
-## Priorização para Submissão FAccT
+# 5. E2 agora é o experimento mais importante do artigo
 
-| Prioridade | Entrega | Justificativa |
-|---|---|---|
-| 🔴 Obrigatória | **E1** — Proposição formal | Fundação teórica; diferencia de crítica informal |
-| 🔴 Obrigatória | **E2** — FairFace pareado | Elimina confusão composição/amostragem apontada por revisores |
-| 🔴 Obrigatória | **E3** — Ablação target rules | Demonstra arbitrariedade; quantifica incompatibilidade |
-| 🔴 Obrigatória | **E4** — Paradoxo AUC×Jaccard como resultado central | Reformulação do framing; resultado mais forte |
-| 🟡 Importante | **E5** — OOF + Bootstrap/ICs | Remove limitação documental explícita; aumenta credibilidade |
-| 🟡 Importante | **E6b** — Sensibilidade do group_id | Ataca ameaça à validade interna identificada |
-| 🟢 Desejável | **E6a** — Outros clusterings | Generaliza além do MiniBatchKMeans |
-| 🟢 Desejável | **E7** — Multiverse | Maior novidade empírica; ideal mas requer tempo |
+No estado atual, o FairFace continua sendo um desenho em que composição e identidade das imagens mudam simultaneamente. O próprio texto reconhece que, por isso, não identifica efeito causal demográfico. 
+
+A corrida pareada de 50 replicações deve substituir o experimento atual como evidência principal.
+
+Eu não manteria a Tabela 4 atual como tabela principal depois disso.
+
+A análise definitiva deveria permitir algo como:
+
+$$
+Var(M)=
+V_{\text{composition}}
++
+V_{\text{sampling}}
++
+V_{\text{seed}}
++
+V_k
++
+V_{\text{interactions}}
++
+V_\epsilon
+$$
+
+para pelo menos:
+
+* ROC-AUC;
+* PR-AUC;
+* Jaccard;
+* ARI;
+* tamanho/prevalência do alvo.
+
+Mas há uma sutileza: **Jaccard pareado não gera observações independentes simplesmente porque há muitos pares**. A decomposição deve respeitar a hierarquia `replicate × scenario × seed × k`, por exemplo mediante modelo de efeitos mistos ou bootstrap hierárquico.
+
+Não transforme milhares de comparações em milhares de “n” independentes.
 
 ---
 
-## Arquivos Novos a Criar
+# 6. O mesmo problema existe nas 60.045 comparações atuais
 
-| Arquivo | Tipo | Entrega |
-|---|---|---|
-| `face_profile_ml/endogenous_target.py` | Python | E1 |
-| `face_profile_ml/target_rules.py` | Python | E3 |
-| `face_profile_ml/variance_decomposition.py` | Python | E2 |
-| `face_profile_ml/bootstrap_ci.py` | Python | E5 |
-| `face_profile_ml/clustering_backends.py` | Python | E6a |
-| `scripts/run_proposition_demo.py` | Python | E1 |
-| `scripts/run_fairface_replicated.py` | Python | E2 |
-| `scripts/run_target_ablation.py` | Python | E3 |
-| `scripts/plot_performance_stability_paradox.py` | Python | E4 |
-| `scripts/run_groupid_sensitivity.py` | Python | E6b |
-| `scripts/register_model_hash.py` | Python | E5 |
-| `scripts/run_clustering_comparison.py` | Python | E6a |
-| `scripts/run_embedding_decoupling.py` | Python | E6c |
-| `scripts/run_multiverse.py` | Python | E7 |
+A ideia de comparar todas as partições em pares é boa.
 
-## Arquivos Existentes a Modificar
+O problema seria interpretá-las inferencialmente como 60.045 replicações independentes.
 
-| Arquivo | Modificação | Entrega |
-|---|---|---|
-| [`face_profile_ml/cli.py`](file:///c:/Users/Henrique%20Lima/Desktop/Repositórios/ia-uspJailer/face_profile_ml/cli.py) | Arg `--target-rule`; salvar OOF | E3, E5 |
-| [`artigo/conteudo.tex`](file:///c:/Users/Henrique%20Lima/Desktop/Repositórios/ia-uspJailer/artigo/conteudo.tex) | Proposição, ablação, paradoxo, FairFace, ameaças | E1–E5 |
-| `artigo/figuras/image2.png` | Substituir por figura paradoxo AUC×Jaccard | E4 |
-| `artigo/figuras/image3.png` | Substituir por figura FairFace com replicações | E2 |
+Com 100 sementes:
 
-## Verificação Final
+$$
+\binom{100}{2}=4950
+$$
 
-- [ ] Compilar `artigo/main.tex` sem erros após todas as mudanças textuais.
-- [ ] Rodar `pytest tests/` para garantir que novos módulos têm cobertura mínima.
-- [ ] Confirmar que `artifacts/proposition/`, `artifacts/ablation/`, `artifacts/fairface_replicated/`, `artifacts/cv/oof_predictions.csv` e `artifacts/multiverse/` existem e têm outputs verificáveis.
-- [ ] Atualizar tag Git (`paper-v2.0-facct` ou similar) após validação.
+comparações reutilizam repetidamente cada execução.
+
+Atualmente você reporta corretamente 4.950 pares por \(k\). 
+
+Eu acrescentaria explicitamente:
+
+> “Pairwise comparisons are descriptive and are not treated as independent experimental units; inferential uncertainty is estimated at the run/replication level.”
+
+Isso evita uma acusação de **pseudorreplicação**.
+
+---
+
+# 7. E3 pode produzir um resultado ainda mais forte que o atual AUC 0,896 × Jaccard 0,004
+
+Hoje o paradoxo tem uma pequena fragilidade conceitual.
+
+AUC = 0,896 vem da validação cruzada da especificação primária.
+
+Jaccard = 0,004 vem da comparação entre soluções produzidas por sementes diferentes.
+
+Eles são resultados compatíveis e muito interessantes, mas não são necessariamente o par de métricas da **mesma especificação individual**.
+
+A ablação pode resolver isso elegantemente.
+
+Suponha que você obtenha:
+
+$$
+AUC_{largest}=0.90
+$$
+
+$$
+AUC_{compact}=0.91
+$$
+
+$$
+AUC_{outlier}=0.88
+$$
+
+mas:
+
+$$
+J(Y_{largest},Y_{compact})=0.03
+$$
+
+e:
+
+$$
+J(Y_{largest},Y_{outlier})=0.01.
+$$
+
+A pergunta deixa de ser:
+
+> “O mesmo algoritmo é instável?”
+
+e passa a ser:
+
+> **“Quantas definições incompatíveis de fenômeno produzem simultaneamente resultados preditivos excelentes?”**
+
+Isso é cientificamente muito mais poderoso.
+
+Eu faria E3 **antes de congelar o argumento central do paper**.
+
+---
+
+# 8. E7 pode transformar esse resultado em contribuição de alto impacto
+
+O multiverse não é estritamente necessário para que o trabalho seja publicável.
+
+Mas para a versão que você está chamando de “perfeita”, eu faria.
+
+Monte o universo de especificações a partir de escolhas defensáveis:
+
+$$
+\text{encoder}
+\times
+\text{clustering}
+\times
+k
+\times
+n_{\text{init}}
+\times
+\text{seed}
+\times
+\text{target rule}
+\times
+\text{representation}.
+$$
+
+Depois responda:
+
+$$
+P(AUC>0.85)
+$$
+
+e, dentre essas especificações:
+
+$$
+P(Jaccard<0.1\mid AUC>0.85).
+$$
+
+Essa pode se tornar a figura principal.
+
+Imagine uma conclusão empírica do tipo:
+
+> “78% das especificações atingiram AUC > 0,85, mas 64% dos pares dessas especificações produziram conjuntos-alvo com Jaccard < 0,1.”
+
+O valor aqui não está nos números hipotéticos, mas na estrutura da evidência:
+
+**boa performance deixa de selecionar uma interpretação única do fenômeno.**
+
+Isso conversa diretamente com subespecificação, indeterminação de rótulos e validade de construto.
+
+---
+
+# 9. Faça E6a, ao menos numa versão compacta
+
+O manuscrito ainda reconhece expressamente que as conclusões são condicionadas ao `MiniBatchKMeans`. 
+
+E o protocolo primário ainda usa `n_init=3`. 
+
+Um revisor de ML pode imediatamente responder:
+
+> “Vocês provaram apenas que MiniBatchKMeans com três inicializações é instável.”
+
+Eu eliminaria essa objeção antes que ela apareça.
+
+No mínimo:
+
+| Fator     | Valores                      |
+| --------- | ---------------------------- |
+| Algoritmo | MiniBatchKMeans, KMeans, GMM |
+| `n_init`  | 3, 10, 20, 50                |
+| \(k\)     | 32, 64, 128                  |
+| seeds     | conjunto fixo pré-declarado  |
+
+Agglomerative é possível, mas há uma dificuldade: ele não possui naturalmente `predict(test)` equivalente ao KMeans. Se for incluído no protocolo OOF, você precisa especificar uma regra legítima de atribuição out-of-sample; não faça uma adaptação ad hoc apenas para completar a tabela.
+
+Se KMeans completo e `n_init=50` ainda produzirem baixa concordância de alvo, essa crítica praticamente desaparece.
+
+---
+
+# 10. Eu acrescentaria um segundo encoder facial
+
+PCA-64 não é uma representação independente; é uma transformação do mesmo embedding.
+
+O argumento ficaria mais forte com:
+
+$$
+Z_1=f_1(X)
+$$
+
+e
+
+$$
+Z_2=f_2(X),
+$$
+
+usando duas famílias independentes de reconhecimento facial.
+
+Então você pode testar:
+
+$$
+J(h(Z_1),h(Z_2)).
+$$
+
+Se a suposta estrutura humana muda radicalmente quando muda o encoder, isso reforça que ela é uma propriedade contingente da representação.
+
+Não considero obrigatório para aceitação.
+
+Para a versão “melhor possível”, considero muito valioso.
+
+---
+
+# 11. O experimento FairFace ainda tem uma arbitrariedade que a última modificação não resolveu
+
+C e D continuam escolhendo especificamente **Middle Eastern** como categoria perturbada. 
+
+Isso permite a pergunta:
+
+> “Por que Middle Eastern?”
+
+Mesmo que a escolha tenha sido feita antes de olhar os resultados, o leitor não tem um motivo científico muito forte para essa categoria.
+
+Para eliminar definitivamente qualquer suspeita de cherry-picking, eu faria a perturbação para **todas as sete categorias**.
+
+Melhor ainda: além dos cenários discretos, gere distribuições de composição diferentes e estime uma relação contínua:
+
+$$
+D(P_i,P_j)
+\longrightarrow
+D(\mathcal C_i,\mathcal C_j),
+$$
+
+onde \(D(P_i,P_j)\) mede diferença na composição da amostra e o segundo termo mede diferença das partições/alvos.
+
+Isso generaliza o resultado.
+
+---
+
+# 12. Há literatura de 2026 muito próxima que ainda não entrou
+
+Na seção atual de trabalhos relacionados, você cita validade de construto, proxies, subespecificação etc., mas ainda não aparece *The Proxy Presumption: From Semantic Embeddings to Valid Social Measures*, publicado na ACL 2026. 
+
+Esse trabalho argumenta justamente contra assumir que geometria de embeddings constitui automaticamente uma medida válida de construtos sociais e propõe um **Construct Validity Protocol**. ([ACL Anthology][1])
+
+Ele precisa entrar.
+
+Não porque destrói a novidade do seu trabalho, mas porque se tornou provavelmente o **vizinho intelectual mais próximo**.
+
+Você precisa dizer claramente:
+
+> Proxy Presumption: questiona transformar geometria de embeddings em medidas sociais sem validação.
+
+versus
+
+> seu trabalho: formaliza e demonstra alvos endógenos, separabilidade interna, multiplicidade/instabilidade do alvo, seleção sociotécnica e um caso executável em representação facial.
+
+Também acrescentaria literatura recente especificamente sobre **facial analysis AI como pseudotecnologia/fisiognomia**; há inclusive trabalho de 2026 discutindo esse enquadramento. ([Springer Nature Link][2])
+
+Isso fortalecerá muito a seção de originalidade.
+
+---
+
+# 13. Eu mudaria a arquitetura científica do paper
+
+Ainda existem **RQ1–RQ5** e **C1–C5**. 
+
+Isso era adequado à monografia, mas não é ideal para um paper de 14 páginas.
+
+Eu reduziria para três perguntas e três contribuições conceituais:
+
+**RQ-A — Endogeneidade.**
+Alta separabilidade fora da amostra pode surgir sem evidência de validade de construto?
+
+**RQ-B — Unicidade/estabilidade.**
+O alvo permanece substantivamente o mesmo sob especificações computacionais plausíveis?
+
+**RQ-C — Composição.**
+Quanto da variação do alvo é atribuível à composição, amostragem e escolhas computacionais?
+
+E o paper passaria a ter três grandes resultados:
+
+**Teoria:** Proposição 1 + Proposição 2 + controle sintético.
+
+**Multiverse:** especificações altamente separáveis mas estruturalmente incompatíveis.
+
+**FairFace confirmatório:** decomposição pareada de composição/amostragem/configuração.
+
+Isso é muito mais memorável para um revisor.
+
+---
+
+# 14. RQ1 atual não combina perfeitamente com os dados disponíveis
+
+Hoje RQ1 pergunta essencialmente quem entra e quem fica fora das listas.
+
+Mas sua própria seção de proveniência informa que a variável de fonte e o componente temporal permanecem não recuperados e que várias análises institucionais não são identificáveis. 
+
+Portanto você não consegue empiricamente responder “quem ficou de fora”.
+
+A cadeia sociotécnica é uma **análise de mecanismos de seleção e limites de identificabilidade**, não uma estimativa quantitativa do processo seletivo.
+
+Duas soluções são defensáveis:
+
+**melhor:** recuperar fonte/data/origem por registro;
+
+ou, se isso não for possível:
+
+**mais rigorosa:** retirar essa formulação como RQ e tratá-la como enquadramento sociotécnico da validade externa.
+
+Eu escolheria a segunda para não abrir mais uma frente gigantesca de coleta.
+
+---
+
+# 15. Não submetaria esta monografia como o arquivo da ACM
+
+Este é um ponto completamente independente da qualidade científica.
+
+Seu `main.tex` atual usa:
+
+```latex
+\documentclass{abntex2}
+```
+
+com formatação ABNT. 
+
+Ele também contém explicitamente:
+
+* nome do autor;
+* UFMG;
+* ISBN;
+* DOI;
+* copyright;
+* ficha catalográfica;
+* forma de citação. 
+
+Para **FAccT 2027**, isso não pode ser enviado assim.
+
+A conferência exige submissão single-column, anonimizada, e recomenda algo equivalente a:
+
+```latex
+\documentclass[manuscript,screen,review,anonymous]{acmart}
+```
+
+Submissões que violam anonimato, tamanho ou formatação podem sofrer *desk rejection*. ([FAccT][3])
+
+Ou seja:
+
+### mantenha esta monografia como *extended technical report*.
+
+E crie **um segundo projeto LaTeX**, especificamente para FAccT.
+
+Não tente fazer um único documento servir para ABNT e ACM.
+
+---
+
+# 16. A anonimização atual está muito distante do necessário
+
+Há inclusive:
+
+```latex
+pdfauthor={Henrique Lima Gusmão}
+```
+
+nos metadados do PDF. 
+
+Além disso, a versão atual divulga GitHub, tag, commit, DOI, Kaggle e autoria. 
+
+A FAccT exige que autores, afiliações e links externos não identifiquem os autores; violações podem ser rejeitadas sem revisão. ([FAccT][3])
+
+Portanto a versão de revisão precisa remover:
+
+nome, UFMG, ISBN, DOI, Zenodo, URL pessoal, Kaggle identificável, GitHub identificável, commits pesquisáveis, CRediT, conflitos de interesse identificáveis e metadados PDF.
+
+Inclusive uma busca pelo hash de um commit público pode revelar o repositório.
+
+O artefato de revisão deve ser uma cópia anônima com histórico Git sanitizado ou um suplemento enviado anonimamente.
+
+---
+
+# 17. O fato de a monografia já ter DOI e ISBN merece uma consulta formal à FAccT
+
+Aqui há uma questão importante.
+
+A FAccT não aceita trabalhos já publicados de forma substancialmente equivalente, **mas abre exceção para technical reports e preprints não revisados por pares**. ([FAccT][3])
+
+Sua própria monografia se descreve como publicação independente **sem revisão por pares**. 
+
+Isso parece compatível em espírito com a exceção de technical report/preprint.
+
+Porém, ela tem:
+
+* ISBN;
+* DOI;
+* ficha catalográfica;
+* “1ª edição”.
+
+Isso a torna mais formal que um arXiv típico.
+
+Eu **não arriscaria interpretação**.
+
+Antes da submissão, enviaria aos Program Chairs uma pergunta curta explicando que existe uma monografia técnica independente, com DOI/ISBN, não revisada por pares, e perguntaria se ela se enquadra na exceção para technical reports/preprints.
+
+É melhor esclarecer isso agora do que descobrir numa triagem de integridade.
+
+---
+
+# 18. O problema ético do Kaggle continua sendo, para mim, um dos maiores riscos do paper
+
+O manuscrito diz que as 9.584 imagens estão num dataset Kaggle sob licença **CC0 1.0** e que vêm de FBI, Interpol e polícias brasileiras. 
+
+Um revisor pode perguntar:
+
+> Quem possui os direitos autorais dessas fotografias?
+
+e:
+
+> O criador do dataset tinha autoridade para relicenciar todas essas imagens como CC0?
+
+O manuscrito não responde isso.
+
+A FAccT 2027 diz explicitamente que questões de datasets coletados de forma problemática, privacidade, direitos e **copyright** podem ser escaladas para os Program Chairs. ([FAccT][3])
+
+Para maximizar segurança científica e ética, eu faria uma revisão formal de proveniência/licenciamento.
+
+Se não houver segurança jurídica suficiente, eu consideraria não redistribuir as fotografias.
+
+Você pode publicar:
+
+* código;
+* manifests pseudonimizados;
+* hashes;
+* estatísticas agregadas;
+* synthetic control;
+* FairFace conforme os termos da base;
+* resultados reprodutíveis permitidos.
+
+**Reprodutibilidade responsável não exige necessariamente redistribuir uma coleção de rostos identificáveis.**
+
+Esse argumento combina muito bem com a própria filosofia do paper.
+
+---
+
+# 19. A seção ética deve ser mais forte, mas alguns elementos atuais devem sair da versão anônima
+
+A seção atual sobre LGPD, não reidentificação, ausência de inferência racial e proibição de uso operacional é boa. 
+
+Para FAccT, eu a transformaria formalmente em:
+
+**Ethical Considerations and Adverse Impacts.**
+
+E incluiria de forma explícita:
+
+necessidade da coleta, base legal/ética, riscos de permanência das imagens, mitigação, retenção, acesso, redistribuição, risco de uso indevido do código e por que não são divulgados scores individuais.
+
+FAccT recomenda que preocupações éticas e impactos adversos sejam tratados diretamente. ([FAccT][3])
+
+Mas, na versão anônima, retire:
+
+* Author Contributions;
+* Competing Interests;
+* agradecimentos/afiliações identificáveis.
+
+A própria FAccT diz que esses elementos não devem aparecer na submissão anônima. ([FAccT][3])
+
+---
+
+# 20. Há uma nova exigência da FAccT particularmente importante neste projeto: uso de IA generativa
+
+Este ponto merece muita atenção.
+
+A política atual da **FAccT 2027 proíbe o uso de LLMs para gerar o texto da publicação**. Ela permite assistência mais limitada, como formatação, gramática ou fluência, desde que divulgada. E exige uma **Generative AI Usage Statement** mesmo quando nenhum LLM foi usado. ([FAccT][3])
+
+Portanto:
+
+> **não copie texto produzido por mim para a versão FAccT.**
+
+Use esta conversa para:
+
+* crítica;
+* identificação de falhas;
+* desenho experimental;
+* checagem lógica;
+* planejamento;
+* revisão de consistência.
+
+Mas a redação final da publicação precisa respeitar a política da conferência.
+
+Se trechos atuais foram diretamente produzidos por um LLM, eu os reescreveria pessoalmente a partir dos resultados, código, notas e argumentos científicos.
+
+A declaração de uso de IA é obrigatória e a ausência de divulgação pode causar *desk rejection*. ([FAccT][3])
+
+---
+
+# 21. O paper ACM precisa ficar muito menor
+
+A monografia atual tem aproximadamente **9,3 mil palavras antes das declarações**, além de várias tabelas, quatro figuras e apêndice.
+
+A FAccT permite no máximo **14 páginas de conteúdo, single-column, excluindo referências**, e uma página adicional reservada para endmatter. ([FAccT][3])
+
+Eu não tentaria “espremer” este texto.
+
+A estratégia correta é **reestruturar**.
+
+Moveria para suplemento:
+
+* história detalhada dos estados 11.724 → 9.764 → 9.546 → 9.584;
+* commits e árvores Git;
+* especificação completa de ambiente;
+* tabelas extensas de estabilidade;
+* detalhes de todos os limiares;
+* arqueologia do pipeline histórico;
+* tabelas auxiliares.
+
+O main paper deve conter apenas o necessário para sustentar as alegações.
+
+---
+
+# 22. A repetição precisa cair bastante
+
+O mesmo argumento aparece atualmente no:
+
+abstract → introdução → box do Resultado 1 → resultados → discussão → conclusão.
+
+Isso funcionava muito bem em monografia.
+
+Em 14 páginas, custa espaço e dá sensação de redundância.
+
+O resultado:
+
+$$
+AUC=0.896,\quad Jaccard=0.004
+$$
+
+deve aparecer em destaque no abstract, uma vez em resultados e depois ser interpretado na discussão.
+
+Não precisa ser reexplicado cinco vezes.
+
+---
+
+# 23. Eu substituiria o formato das figuras antes da ACM
+
+Hoje há figuras chamadas `image3.png`, `image4.png` e inclusão manual com dimensões fixadas simultaneamente em largura e altura. 
+
+Na versão ACM:
+
+* use ambientes `figure`;
+* `\caption{}`;
+* `\label{}`;
+* `\Description{}` para acessibilidade;
+* preferencialmente PDF vetorial para gráficos;
+* não force largura e altura simultaneamente se isso deformar a figura;
+* todos os eixos/legendas em inglês;
+* tipografia legível em 100% de zoom.
+
+FAccT incentiva expressamente submissões acessíveis. ([FAccT][3])
+
+O mesmo vale para tabelas: substitua as estruturas ABNT manuais por `table`, `booktabs` e captions normais do `acmart`.
+
+---
+
+# 24. As citações também precisam ser refeitas para ACM
+
+Há outro detalhe técnico.
+
+No `.tex`, as citações aparecem frequentemente como texto comum:
+
+> `(Bowyer et al., 2020)`
+
+e o documento usa `\nocite{*}` para colocar todas as referências no final. 
+
+Para a versão ACM eu não manteria isso.
+
+Use o sistema bibliográfico real:
+
+```latex
+\cite{bowyer2020}
+```
+
+etc., com o **ACM Reference Format** exigido para submissões arquivais. A FAccT especifica esse formato. ([FAccT][3])
+
+Isso melhora consistência, links, acessibilidade e anonimização de autocitações.
+
+---
+
+# 25. Eu transformaria o título
+
+O título atual funciona muito bem para uma monografia brasileira.
+
+Para FAccT eu usaria algo mais internacional e que exponha imediatamente a contribuição técnica, por exemplo:
+
+**The Illusion of “Facial Criminality”: Endogenous Separability, Construct Validity, and Selection Bias in Face-Embedding Pipelines**
+
+Não digo que esse texto deva ser copiado para a submissão — especialmente pela política de LLMs — mas essa é a **estrutura de título** que eu buscaria:
+
+> fenômeno provocativo + mecanismo científico + domínio.
+
+Isso posiciona o artigo como trabalho de validade de mensuração, e não como paper tentando detectar criminalidade.
+
+---
+
+# 26. O encaixe com FAccT é muito bom
+
+O CFP 2027 inclui explicitamente trabalhos de auditoria de datasets, algoritmos e modelos, avaliação de riscos, métricas e práticas de avaliação. Também inclui trabalhos teóricos e de fundamentos normativos. ([FAccT][4])
+
+Eu escolheria como foco primário:
+
+**Evaluations and evaluation practices**
+
+e provavelmente como secundários:
+
+**Normative foundations and implications**
+
+e talvez:
+
+**System development and deployment.**
+
+Isso ajuda o paper a cair nas mãos de revisores que entendem a combinação de ML + validade de construto + auditoria sociotécnica.
+
+A adequação temática, para mim, é uma das partes mais fortes do trabalho.
+
+---
+
+# 27. Como eu imagino a versão final “top-tier”
+
+Meu desenho final seria aproximadamente:
+
+| Seção                           | Conteúdo principal                                                                 |
+| ------------------------------- | ---------------------------------------------------------------------------------- |
+| Introduction                    | problema, gap, 3 contribuições                                                     |
+| Related Work                    | construct validity, proxy presumption, underspecification, algorithmic physiognomy |
+| Framework                       | \(Z=f(X)\), \(Y=h(Z)\), Prop. 1 e Prop. 2                                          |
+| Data & Sociotechnical Selection | corpus + limites + ética                                                           |
+| Experimental Design             | OOF, group_id, multiverse, FairFace pareado                                        |
+| Result 1                        | synthetic endogenous separability                                                  |
+| Result 2                        | specification multiplicity / AUC × incompatibility                                 |
+| Result 3                        | FairFace variance decomposition                                                    |
+| Discussion                      | construct validity + implications                                                  |
+| Limitations                     | concisa                                                                            |
+| Ethical Considerations          | endmatter                                                                          |
+| Generative AI Usage             | endmatter                                                                          |
+
+Essa versão não seria uma monografia reduzida.
+
+Seria **um novo paper construído a partir da monografia**.
+
+Essa diferença é fundamental.
+
+---
+
+# Minha classificação final do que ainda falta
+
+Se o objetivo fosse apenas “publicável”, eu pararia depois de **E2 + E3 + E5 + E6b + anonimização/formatação**.
+
+Se o objetivo é realmente **maximizar a chance de strong accept na FAccT**, eu executaria a sequência abaixo:
+
+1. corrigir imediatamente a afirmação incorreta de que a Proposição 1 prova instabilidade;
+2. criar a Proposição 2 sobre não unicidade/incompatibilidade de alvos separáveis;
+3. executar E3 completo;
+4. executar E2 completo com 50–100 replicações pareadas e decomposição hierárquica;
+5. executar E6b;
+6. rerodar E5 com OOF individual e ICs;
+7. executar E6a incluindo `n_init` maior;
+8. executar um multiverse E7 e transformar isso no principal resultado empírico;
+9. se recursos permitirem, testar um segundo encoder;
+10. generalizar FairFace além de `Middle Eastern`;
+11. incorporar *Proxy Presumption* e literatura de fisiognomia algorítmica 2026;
+12. resolver/licenciar adequadamente o corpus de imagens e reconsiderar a distribuição CC0;
+13. obter, se possível, uma determinação institucional escrita sobre ética/proteção de dados;
+14. esclarecer com os Program Chairs o status da monografia DOI/ISBN como technical report/preprint;
+15. criar do zero a versão anônima `acmart`, com no máximo 14 páginas;
+16. remover todo identificador, repositório público pesquisável, commit e metadado de autoria;
+17. adicionar Ethical Considerations e a declaração obrigatória de uso de IA;
+18. fazer a redação final humana em inglês;
+19. fazer uma auditoria final de claims: **cada frase causal, universal ou normativa precisa ser estritamente suportada pelo experimento correspondente**;
+20. só então congelar o repositório/artifacts da corrida que efetivamente sustenta a submissão.
+
+O prazo atual da **FAccT 2027** é 27 de outubro de 2026 para registro do abstract e **3 de novembro de 2026 para o paper**. ([FAccT][4]) Há tempo suficiente para fazer isso direito, mas eu colocaria o desenvolvimento de texto em segundo plano agora. **O gargalo é concluir a evidência experimental confirmatória e depois reconstruir o artigo no formato ACM.**
+
+Se você completar E2, E3, E5, E6b, E6a e E7 e corrigir a parte teórica que identifiquei, minha avaliação muda bastante: eu deixaria de enxergar o trabalho como “um argumento crítico muito bem demonstrado” e passaria a enxergá-lo como **um framework teórico-empírico de auditoria de validade de construto, com uma demonstração particularmente forte em face embeddings**. Esse é um posicionamento muito mais competitivo para FAccT.
+
+[1]: https://aclanthology.org/2026.acl-long.1048/?utm_source=chatgpt.com "The Proxy Presumption: From Semantic Embeddings to Valid Social Measures - ACL Anthology"
+[2]: https://link.springer.com/article/10.1007/s13194-026-00732-1?utm_source=chatgpt.com "Facial analysis AI as social pseudotechnology | European Journal for Philosophy of Science | Springer Nature Link"
+[3]: https://facctconference.org/2027/authorguide.html "ACM FAccT - 2027 Author Guide"
+[4]: https://facctconference.org/2027/cfp.html "ACM FAccT - 2027 CFP"

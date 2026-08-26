@@ -92,3 +92,64 @@ def bootstrap_auc(
         y_true, scores, metric="auc", n_bootstrap=n_bootstrap, seed=seed, alpha=alpha
     )
 
+
+def bootstrap_grouped_fold_metric(
+    y_true: np.ndarray,
+    values: np.ndarray,
+    folds: np.ndarray,
+    groups: np.ndarray,
+    *,
+    metric: str,
+    n_bootstrap: int = 2000,
+    seed: int = 42,
+    alpha: float = 0.05,
+    threshold: float = 0.5,
+) -> BootstrapResult:
+    """Resample whole groups within folds and average fold-level metrics."""
+    first = np.asarray(y_true).reshape(-1)
+    second = np.asarray(values).reshape(-1)
+    fold_values = np.asarray(folds).reshape(-1)
+    group_values = np.asarray(groups).reshape(-1)
+    if not (len(first) == len(second) == len(fold_values) == len(group_values)) or not len(first):
+        raise ValueError("Inputs must be non-empty and have equal length")
+    if n_bootstrap < 1 or not 0 < alpha < 1:
+        raise ValueError("n_bootstrap must be positive and alpha must be in (0, 1)")
+    if any(len(np.unique(fold_values[group_values == group])) != 1 for group in np.unique(group_values)):
+        raise ValueError("Each group must belong to exactly one fold")
+    function = _metric_function(metric, threshold)
+    fold_ids = np.unique(fold_values)
+    indices_by_group = {
+        group: np.flatnonzero(group_values == group) for group in np.unique(group_values)
+    }
+
+    def fold_mean(indices_by_fold: list[np.ndarray]) -> float:
+        estimates = []
+        for indices in indices_by_fold:
+            if metric in {"auc", "pr_auc"} and len(np.unique(first[indices])) != 2:
+                raise ValueError("Fold resample contains a single class")
+            estimates.append(function(first[indices], second[indices]))
+        return float(np.mean(estimates))
+
+    original_indices = [np.flatnonzero(fold_values == fold) for fold in fold_ids]
+    point = fold_mean(original_indices)
+    rng = np.random.default_rng(seed)
+    estimates: list[float] = []
+    for _ in range(n_bootstrap):
+        sampled_folds: list[np.ndarray] = []
+        for fold in fold_ids:
+            fold_index = np.flatnonzero(fold_values == fold)
+            fold_groups = np.unique(group_values[fold_index])
+            sampled_groups = rng.choice(fold_groups, size=len(fold_groups), replace=True)
+            sampled_folds.append(
+                np.concatenate([indices_by_group[group] for group in sampled_groups])
+            )
+        try:
+            estimate = fold_mean(sampled_folds)
+        except ValueError:
+            continue
+        if np.isfinite(estimate):
+            estimates.append(estimate)
+    if not estimates:
+        raise ValueError("No valid bootstrap resamples were produced")
+    lower, upper = np.quantile(estimates, [alpha / 2, 1 - alpha / 2])
+    return BootstrapResult(point, float(lower), float(upper), n_bootstrap, alpha, len(estimates))

@@ -1,0 +1,8 @@
+stage,fit_scope,test_use,leakage_guard
+representation,train_only,none,FitAuditTrail
+clustering,train_only,none,FitAuditTrail
+target_selection,train_only,none,FitAuditTrail
+centroid,train_only,none,FitAuditTrail
+calibration,train_only,none,FitAuditTrail
+threshold,train_only,none,FitAuditTrail
+prediction,train_only,evaluation_only,FitAuditTrail

@@ -1,0 +1,18 @@
+{
+  "metrics": {
+    "auc": 0.9790224712152751,
+    "balanced_accuracy": 0.5,
+    "brier": 0.04465016932219487,
+    "n": 9482,
+    "pr_auc": 0.7479004639726454
+  },
+  "oof_predictions": "artifacts\\cv_oof_grouped_confirmatory\\oof_predictions.csv",
+  "oof_sha256": "8e0e9e8fc8685626cf7b8ea97a470a2d810a6a8b51c6c71ed4b5582ad507fe58",
+  "parameters": {
+    "bootstrap_rounds": 2000,
+    "k": 64,
+    "n_splits": 5,
+    "seed": 42,
+    "target_rule": "largest"
+  }
+}
